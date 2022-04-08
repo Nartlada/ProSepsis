@@ -28,10 +28,12 @@ uid = rstudioapi::askForPassword("Database user")
 pwd = rstudioapi::askForPassword("Database password")
 dbConn <- dbConnector(server, database, uid, pwd)
 tblpart1  <- dbGetQuery(dbConn,'select * from "tblpart1"')
+tblLabVItalS  <- dbGetQuery(dbConn,'select * from "tblLabVItalS"')
 
 ## Data wrangling for each data frame ------------------------------------------
 source(paste0(code_folder, "/tblpart1.R"))
+source(paste0(code_folder, "/tblLabVItalS.R"))
 
-#source(paste0(code_folder, "/PSMast.R"))
+source(paste0(code_folder, "/PSMast.R"))
 source(paste0(code_folder, "/Flowchart.R"))
 #source(paste0(code_folder, "/PSDashboard.R"))
