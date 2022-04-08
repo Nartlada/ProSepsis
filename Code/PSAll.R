@@ -7,6 +7,7 @@ library(tidyverse)
 library(lubridate)
 library(DBI)
 library(odbc)
+library(haven)
 
 ## Set folders -----------------------------------------------------------------
 code_folder <- paste0(getwd(), "/Code")
@@ -24,6 +25,8 @@ dbConnector <- function(server, database, uid, pwd) {
 
 server = "1.20.151.54,11433"
 database = "ProSepsis"
+#uid = "hqa3"
+#pwd = "T@M!2564"
 uid = rstudioapi::askForPassword("Database user")
 pwd = rstudioapi::askForPassword("Database password")
 dbConn <- dbConnector(server, database, uid, pwd)
@@ -31,6 +34,9 @@ tblpart1  <- dbGetQuery(dbConn,'select * from "tblpart1"')
 
 ## Data wrangling for each data frame ------------------------------------------
 source(paste0(code_folder, "/tblpart1.R"))
+
+# Import from SAS
+psmast <- read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL)
 
 #source(paste0(code_folder, "/PSMast.R"))
 source(paste0(code_folder, "/Flowchart.R"))
