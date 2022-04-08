@@ -13,17 +13,14 @@ tblpart1 <- tblpart1 %>%
     # Convert datetime to date
     across(c(matches("Date"), DOB, matches("ColDT")), as.Date),
     
-    # Enrolled if non-blank SepsisID
-    enrolled = ifelse(is.na(SepsisID),0,1),
-    
-    # Recode 0 in Y/N (1/2) and multiple choices (1,2,3...) to missing
-    across(c(SirsTemp:SirsWBC,
-             qS_RR:qS_Glasgow),
+    # Recode 0 in multiple choices (1,2,3...) to missing
+    across(c(Age15, Refer, Refer48hrs, IsEligible, IsConsent, ChildConsent, 
+             SirsTemp:qS_Glasgow),
            function(f) {ifelse(f == 0, NA, f)}),
     
     # Recode 2 in Y/N (1/2) to 0
-    across(c(SirsTemp:SirsWBC,
-             qS_RR:qS_Glasgow),
+    across(c(Age15, Refer, Refer48hrs, IsEligible, IsConsent, ChildConsent, 
+             SirsTemp:qS_Glasgow),
            function(f) {ifelse(f == 2, 0, f)}),
     
     # Rename and factor HospitalID
