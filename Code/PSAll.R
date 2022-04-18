@@ -39,7 +39,7 @@ source(paste0(code_folder, "/tblLabVItalS.R"))
 #source(paste0(code_folder, "/PSMast.R"))
 
 # Import from SAS
-psmast <- read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL)
+psmast <- read_sas("C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat", NULL)
 
 #source(paste0(code_folder, "/PSMast.R"))
 source(paste0(code_folder, "/Flowchart.R"))
