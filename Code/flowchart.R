@@ -41,7 +41,7 @@ l5 <- paste0(df$enr, ' (', scales::percent(df$enr/df$sussep,0.1), ') enrolled su
 l6 <- paste0(df2$nonsepsis, ' (', scales::percent(df2$nonsepsis/df$enr,0.1), ') non-sepsis')
 l7 <- paste0(df2$sepsis, ' (', scales::percent(df2$sepsis/df$enr,0.1), ') sepsis','\n','(SOFA >= 2 or doctor determine)')
 l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic shock','\n','(MAP <65 mmHg)')
-l9 <- paste0(df2$pending, ' (', scales::percent(df2$pending/df$enr,0.1), ') pending')
+# l9 <- paste0(df2$pending, ' (', scales::percent(df2$pending/df$enr,0.1), ') pending')
 
 DiagrammeR::grViz("digraph graphtest {
   
@@ -60,10 +60,9 @@ DiagrammeR::grViz("digraph graphtest {
   infection [label = '@@2']
   s_sepsis [label = '@@4']
   enrolled [label = '@@5']
-  sepsis [label = '@@6', width = 4]
-  severe [label = '@@7', width = 4]
+  nonsepsis [label = '@@6', width = 4]
+  sepsis [label = '@@7', width = 4]
   shock [label = '@@8', width = 4]
-  nosepsis [label = '@@9', width = 4]
   blank [label = '', width = 0.01, height = 0.01]
   excluded [label = '@@3']
   
@@ -73,10 +72,9 @@ DiagrammeR::grViz("digraph graphtest {
   blank -> excluded[ minlen = 5 ];
   blank -> infection;
   infection -> s_sepsis -> enrolled;
+  enrolled -> nonsepsis;
   enrolled -> sepsis;
-  enrolled -> severe;
-  enrolled -> shock;
-  enrolled -> nosepsis
+  enrolled -> shock
 }
   [1]: l1
   [2]: l2
@@ -86,6 +84,5 @@ DiagrammeR::grViz("digraph graphtest {
   [6]: l6
   [7]: l7
   [8]: l8
-  [9]: l9
 ") 
 
