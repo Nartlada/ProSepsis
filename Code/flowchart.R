@@ -3,8 +3,8 @@ library(DiagrammeRsvg)
 library(DiagrammeR)
 
 df <- tblpart1 %>% 
-#  filter(Hospital=='Nakorn Phanom') %>%
-#  filter(Hospital=='Mae Sot') %>% 
+  # filter(Hospital=='Nakorn Phanom') %>%
+  # filter(Hospital=='Mae Sot') %>% 
   summarise(scr = n(),
             inf = sum(IFTropSep == TRUE | 
                         IFRespiratory == TRUE |
@@ -22,15 +22,22 @@ df <- tblpart1 %>%
             enr = sum(!is.na(SepsisID), na.rm = TRUE))
 
 df2 <- psmast %>%
-#  filter(HospitalID ==1) %>%
-#  filter(HospitalID ==2) %>%
-  mutate(Sepsis_Scale = ifelse(Sepsis_Scale == 1 &
-                               (SepReview1 %in% c(1,2,3) | SepReview2 %in% c(1,2,3)),2,Sepsis_Scale)) %>% 
-  summarise(nonsepsis = sum(Sepsis_Scale == 1, na.rm = TRUE),
-            sepsis    = sum(Sepsis_Scale == 2, na.rm = TRUE),
-            shock     = sum(Sepsis_Scale == 3, na.rm = TRUE),
-            pending   = sum(is.na(Sepsis_Scale), na.rm = TRUE))
-  
+  # filter(HospitalID ==1) %>%
+  # filter(HospitalID ==2) %>%
+  # mutate(Sepsis_Scale = ifelse(Sepsis_Scale == 1 &
+  #                              (SepReview1 %in% c(1,2,3) | 
+  #                               SepReview2 %in% c(1,2,3) | 
+  #                               SepReview3 %in% c(1,2,3)), 2, Sepsis_Scale)) %>% 
+  # summarise(nonsepsis = sum(Sepsis_Scale == 1, na.rm = TRUE),
+  #           sepsis    = sum(Sepsis_Scale == 2, na.rm = TRUE),
+  #           shock     = sum(Sepsis_Scale == 3, na.rm = TRUE),
+  #           missing   = sum(is.na(Sepsis_Scale), na.rm = TRUE))
+  mutate(SepReviewr = ifelse(SepsisID %in% c('2-0050-1','2-0051-9'),3,SepReviewr)) %>% 
+  summarise(nonsepsis = sum(SepReviewr == 4, na.rm = TRUE),
+            sepsis    = sum(SepReviewr == 1, na.rm = TRUE),
+            shock     = sum(SepReviewr == 3, na.rm = TRUE),
+            missing   = sum(is.na(SepReviewr), na.rm = TRUE))
+
 l1 <- paste0(scales::comma(df$scr),' persons age >= 15 years visit at ER/OPD', '\n', ' were screened')
 l2 <- paste0(df$inf, ' (', scales::percent(df$inf/df$scr,0.1), ') with suspected infection')
 l3 <- paste0(df$exc, ' (', scales::percent(df$exc/df$scr,0.1), ') Admitted > 48 hours','\n', 'from referral hospital')
@@ -39,14 +46,15 @@ l4 <- paste0(df$sussep, ' (', scales::percent(df$sussep/df$inf,0.1), ') suspecte
              df$sofa, ' (', scales::percent(df$sofa/df$inf,0.1), ') SOFA >= 2')
 l5 <- paste0(df$enr, ' (', scales::percent(df$enr/df$sussep,0.1), ') enrolled suspected sepsis')
 l6 <- paste0(df2$nonsepsis, ' (', scales::percent(df2$nonsepsis/df$enr,0.1), ') non-sepsis')
-l7 <- paste0(df2$sepsis, ' (', scales::percent(df2$sepsis/df$enr,0.1), ') sepsis','\n','(SOFA >= 2 or doctor determine)')
-l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic shock','\n','(MAP <65 mmHg)')
-# l9 <- paste0(df2$pending, ' (', scales::percent(df2$pending/df$enr,0.1), ') pending')
+l7 <- paste0(df2$sepsis, ' (', scales::percent(df2$sepsis/df$enr,0.1), ') sepsis')
+l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic shock')
+l9 <- paste0(df2$missing, ' (', scales::percent(df2$missing/df$enr,0.1), ') missing')
 
 DiagrammeR::grViz("digraph graphtest {
   
   graph [layout = dot,
-         label = '',
+         label = ' ',
+         # label = 'Mae Sot',
          labelloc = t,
          fontname = Helvetica,
          fontsize  = 36]
@@ -63,6 +71,7 @@ DiagrammeR::grViz("digraph graphtest {
   nonsepsis [label = '@@6', width = 4]
   sepsis [label = '@@7', width = 4]
   shock [label = '@@8', width = 4]
+  missing [label = '@@9', width = 4]
   blank [label = '', width = 0.01, height = 0.01]
   excluded [label = '@@3']
   
@@ -74,7 +83,8 @@ DiagrammeR::grViz("digraph graphtest {
   infection -> s_sepsis -> enrolled;
   enrolled -> nonsepsis;
   enrolled -> sepsis;
-  enrolled -> shock
+  enrolled -> shock;
+  enrolled -> missing
 }
   [1]: l1
   [2]: l2
@@ -84,5 +94,6 @@ DiagrammeR::grViz("digraph graphtest {
   [6]: l6
   [7]: l7
   [8]: l8
+  [9]: l9
 ") 
 
