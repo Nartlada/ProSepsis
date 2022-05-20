@@ -25,10 +25,10 @@ dbConnector <- function(server, database, uid, pwd) {
 
 server = "1.20.151.54,11433"
 database = "ProSepsis"
-#uid = "hqa3"
-#pwd = "T@M!2564"
-uid = rstudioapi::askForPassword("Database user")
-pwd = rstudioapi::askForPassword("Database password")
+uid = "hqa3"
+pwd = "T@M!2564"
+#uid = rstudioapi::askForPassword("Database user")
+#pwd = rstudioapi::askForPassword("Database password")
 dbConn <- dbConnector(server, database, uid, pwd)
 tblpart1  <- dbGetQuery(dbConn,'select * from "tblpart1"')
 tblLabVItalS  <- dbGetQuery(dbConn,'select * from "tblLabVItalS"')
@@ -39,8 +39,9 @@ source(paste0(code_folder, "/tblLabVItalS.R"))
 #source(paste0(code_folder, "/PSMast.R"))
 
 # Import from SAS
-psmast <- read_sas("C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat", NULL)
+psmast <- read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL)
 
 #source(paste0(code_folder, "/PSMast.R"))
 source(paste0(code_folder, "/Flowchart.R"))
 #source(paste0(code_folder, "/PSDashboard.R"))
+

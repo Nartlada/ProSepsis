@@ -46,7 +46,7 @@ l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic s
 DiagrammeR::grViz("digraph graphtest {
   
   graph [layout = dot,
-         label = '',
+         label = 'ALL',
          labelloc = t,
          fontname = Helvetica,
          fontsize  = 36]
