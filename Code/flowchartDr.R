@@ -72,12 +72,20 @@ df2 <- psmast %>%
   
   summarise(
             enr = n(),       
-            exc_mortal = sum(dead4 == 1, na.rm = TRUE),
-            nonsepsis = sum(Sofa_Sepsis == 2, na.rm = TRUE),
-            sepsis    = sum(Sofa_Sepsis == 1, na.rm = TRUE),
-            complete   = sum(!is.na(DischargeStatus) &!is.na(Sofa_Sepsis), na.rm = TRUE),
-            CompleteSepsis    = sum(!is.na(DischargeStatus) & Sofa_Sepsis == 1, na.rm = TRUE),
-            CompleteNonsepsis = sum(!is.na(DischargeStatus) & Sofa_Sepsis == 2, na.rm = TRUE))
+           # exc_mortal = sum(dead4 == 1, na.rm = TRUE),
+            exc_sep = sum(is.na(Review_Scaler), na.rm = TRUE),
+            nonsepsis_np = sum(Review_Scaler == 1 & HospitalID == 1, na.rm = TRUE),
+            nonsepsis_ms = sum(Review_Scaler == 1 & HospitalID ==2, na.rm = TRUE),
+            sepsis_np    = sum(Review_Scaler == 2 & HospitalID == 1, na.rm = TRUE),
+            sepsis_ms    = sum(Review_Scaler == 2 & HospitalID == 2, na.rm = TRUE),
+            shock_np    = sum(Review_Scaler == 3 & HospitalID == 1, na.rm = TRUE),
+            shock_ms    = sum(Review_Scaler == 3 & HospitalID == 2, na.rm = TRUE),
+            d_nonsepsis_np = sum(dead4 == 1 & Review_Scaler == 1 & HospitalID == 1, na.rm = TRUE),
+            d_nonsepsis_ms = sum(dead4 == 1 & Review_Scaler == 1 & HospitalID ==2, na.rm = TRUE),
+            d_sepsis_np    = sum(dead4 == 1 & Review_Scaler == 2 & HospitalID == 1, na.rm = TRUE),
+            d_sepsis_ms    = sum(dead4 == 1 & Review_Scaler == 2 & HospitalID == 2, na.rm = TRUE),
+            d_shock_np    = sum(dead4 == 1 & Review_Scaler == 3 & HospitalID == 1, na.rm = TRUE),
+            d_shock_ms    = sum(dead4 == 1 & Review_Scaler == 3 & HospitalID == 2, na.rm = TRUE))
  
 l1 <- paste0(scales::comma(df$scrNP),' patients at NP', '\n', ' were screened')
 l2 <- paste0(scales::comma(df$scrMS),' patients at MS', '\n', ' were screened') 
@@ -99,28 +107,37 @@ l11 <- paste0(df$exc_consent, ' (', scales::percent(df$exc_consent/df$sirs_or_qs
               df$Reason5, ' (', scales::percent(df$Reason5/df$sirs_or_qs,0.1), ') Other ')
 l12 <- paste0(df2$enr, ' (', scales::percent(df2$enr/df$sirs_or_qs,0.1), ') enrolled suspected sepsis')
 #l14 <- paste0(df2$exc_mortal, ' (', scales::percent(df2$exc_mortal/df$sirs_or_qs,0.1), ')  28 days mortality')
-l13 <- 'exclude ?'
-l14 <- 'Non Sepsis'
-l15 <- 'Sepsis'
-l16 <- 'Shock'
-l17 <- 'Dead Non s'
-l18 <- 'Dead Sepsis'
-l19 <- 'Dead Shock'
+l13 <- paste0(df2$exc_sep, ' (', scales::percent(df2$exc_sep/df$sirs_or_qs,0.1), ')  excluded')
+l14 <- paste0((df2$nonsepsis_np + df2$nonsepsis_ms), ' (', scales::percent((df2$nonsepsis_np + df2$nonsepsis_ms)/df$sirs_or_qs,0.1), ') Non sepsis \n\n',
+              df2$nonsepsis_np , ' (', scales::percent(df2$nonsepsis_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$nonsepsis_ms, ' (', scales::percent( df2$nonsepsis_ms/df$sirs_or_qs,0.1), ') at MS')
+l15 <- paste0((df2$sepsis_np + df2$sepsis_ms), ' (', scales::percent((df2$sepsis_np + df2$sepsis_ms)/df$sirs_or_qs,0.1), ') sepsis \n\n',
+              df2$sepsis_np , ' (', scales::percent(df2$sepsis_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$sepsis_ms, ' (', scales::percent( df2$sepsis_ms/df$sirs_or_qs,0.1), ') at MS')
+l16 <- paste0((df2$shock_np + df2$shock_ms), ' (', scales::percent((df2$shock_np + df2$shock_ms)/df$sirs_or_qs,0.1), ') shock \n\n',
+              df2$shock_np , ' (', scales::percent(df2$shock_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$shock_ms, ' (', scales::percent( df2$shock_ms/df$sirs_or_qs,0.1), ') at MS')
 
-# l8 <- paste0(df$enr, ' (', scales::percent(df$enr/df$sussep,0.1), ') enrolled suspected sepsis')
-# l9 <- paste0(df2$complete, ' (', scales::percent(df2$complete/df$enr,0.1), ') with complete data','\n','(having discharge status)')
-# l10 <- paste0(df2$CompleteNonsepsis, ' (', scales::percent(df2$CompleteNonsepsis/df2$complete,0.1), ') non-sepsis')
-# l11 <- paste0(df2$CompleteSepsis, ' (', scales::percent(df2$CompleteSepsis/df2$complete,0.1), ') sepsis','\n','(SOFA >= 2)')
-# #l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic shock','\n','(MAP <=65 mmHg and lactate > 2.0)')
-#l8 <- paste0(df2$pending, ' (', scales::percent(df2$pending/df$enr,0.1), ') pending')
+l17 <- paste0((df2$d_nonsepsis_np + df2$d_nonsepsis_ms), ' (', scales::percent((df2$d_nonsepsis_np + df2$d_nonsepsis_ms)/df$sirs_or_qs,0.1), ') 28 days mortality \n\n',
+              df2$d_nonsepsis_np , ' (', scales::percent(df2$d_nonsepsis_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$d_nonsepsis_ms, ' (', scales::percent( df2$d_nonsepsis_ms/df$sirs_or_qs,0.1), ') at MS')
+
+l18 <- paste0((df2$d_sepsis_np + df2$d_sepsis_ms), ' (', scales::percent((df2$d_sepsis_np + df2$d_sepsis_ms)/df$sirs_or_qs,0.1), ') 28 days mortality \n\n',
+              df2$d_sepsis_np , ' (', scales::percent(df2$d_sepsis_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$d_sepsis_ms, ' (', scales::percent( df2$d_sepsis_ms/df$sirs_or_qs,0.1), ') at MS')
+
+l19 <- paste0((df2$d_shock_np + df2$d_shock_ms), ' (', scales::percent((df2$d_shock_np + df2$d_shock_ms)/df$sirs_or_qs,0.1), ') 28 days mortality\n\n',
+              df2$d_shock_np , ' (', scales::percent(df2$d_shock_np/df$sirs_or_qs,0.1), ') at NP \n',
+              df2$d_shock_ms, ' (', scales::percent( df2$d_shock_ms/df$sirs_or_qs,0.1), ') at MS')
+
 
 DiagrammeR::grViz("digraph graphtest {
   
   graph [layout = dot,
-         label = 'All',
+         label = <<b>Figure 1.</b>  Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities<br/>Sepsis outcomes determined by Physician Review<br/><br/>>,
          labelloc = t,
          fontname = Helvetica,
-         fontsize  = 36,
+         fontsize  = 30,
          compound = true]
        
   node [shape = box, color = gray,
@@ -202,9 +219,9 @@ DiagrammeR::grViz("digraph graphtest {
   s_enr -> blank4[ dir = none ];
   blank4 -> excs[minlen = 5 ];
                   {rank = same; blank4 excs};
-  blank4 -> blank5[ dir = none ];
+
   
-  blank5 -> out2[lhead = cluster2]
+  blank4 -> out2[lhead = cluster2]
   
 
   
