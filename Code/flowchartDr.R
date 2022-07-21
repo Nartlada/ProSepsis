@@ -72,6 +72,7 @@ df2 <- psmast %>%
   
   summarise(
             enr = n(),       
+            exc_disc= sum(is.na(DischargeStatus), na.rm = TRUE),
            # exc_mortal = sum(dead4 == 1, na.rm = TRUE),
             exc_sep = sum(is.na(Review_Scaler), na.rm = TRUE),
             nonsepsis_np = sum(Review_Scaler == 1 & HospitalID == 1, na.rm = TRUE),
