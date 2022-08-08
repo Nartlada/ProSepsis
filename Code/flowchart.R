@@ -1,214 +1,324 @@
-library(rsvg)
-library(DiagrammeRsvg)
-library(DiagrammeR)
-library(tidyverse)
-library(haven)
-
-#-- haven is used to read data from other prg i.e _sas, _stata --#
-
-tblpart1 <- read_sas("C:/MyD/Sepsis_Pro/MF/tblpart1.sas7bdat", NULL) 
-psmast <- read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL)
-
-df <- tblpart1 %>% 
-mutate(
-  infect = ifelse(IFTropSep == TRUE |
-                    IFRespiratory == TRUE |
-                    IFBlood == TRUE |
-                    IFGas == TRUE |
-                    IFUrine == TRUE |
-                    IFSkin == TRUE |
-                    IFNerve == TRUE |
-                    IFOth == TRUE,1,0),
-  sirstemp= ifelse (SirsTemp ==2,0,SirsTemp),
-  sirshr = ifelse(SirsHR ==2,0,SirsHR),
-  sirsrr = ifelse(SirsRR ==2,0,SirsRR),
-  sirswbc = ifelse(SirsWBC ==2,0,SirsWBC),
-  qs_rr = ifelse(qS_RR ==2,0,qS_RR),
-  qs_bp = ifelse(qS_BP ==2,0,qS_BP),
-  qs_glasgow = ifelse(qS_Glasgow ==2,0,qS_Glasgow),
-  sirs_count = sirstemp + sirshr + sirsrr +sirswbc,
-  qs_count = qs_rr + qs_bp + qs_glasgow) %>% 
-
-
-# filter(Hospital=='Nakorn Phanom') %>%
-# filter(Hospital=='Mae Sot') %>% 
-  summarise(scr = n(),
-            scrNP = sum(HospitalID == 1, na.rm=TRUE),
-            scrMS = sum(HospitalID == 2, na.rm=TRUE),
-            exc48 = sum(Refer48hrs == 1, na.rm = TRUE),
-            excinf = sum(IFNo == 1, na.rm = TRUE),
-
-            inf = sum(IFTropSep == TRUE |
-                       IFRespiratory == TRUE |
-                       IFBlood == TRUE |
-                       IFGas == TRUE |
-                       IFUrine == TRUE |
-                       IFSkin == TRUE |
-                       IFNerve == TRUE |
-                       IFOth == TRUE, na.rm = TRUE),
-           
-            exc_sirs = sum(infect == 1 & sirs_count < 2 & qs_count < 2,na.rm = TRUE),
-
-           # sirs = sum(SirsTemp + SirsHR + SirsRR + SirsWBC >= 2, na.rm = TRUE),
-           
-            sirs_or_qs = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2), na.rm = TRUE),
-            sirsp_qsp = sum(infect == 1 & (sirs_count >= 2 & qs_count >= 2), na.rm = TRUE),
-            sirsp_qsm = sum(infect == 1 & (sirs_count >= 2 & qs_count < 2), na.rm = TRUE),
-            sirsm_qsp = sum(infect == 1 & (sirs_count < 2 & qs_count >= 2), na.rm = TRUE),
-            sofa = sum(qS_RR + qS_BP + qS_Glasgow >= 2, na.rm = TRUE),
-            exc_consent = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2, na.rm = TRUE),
-           Reason1 = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2 & ReasonNo == 1, na.rm = TRUE),
-           Reason2 = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2 & ReasonNo == 2, na.rm = TRUE),
-           Reason3 = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2 & ReasonNo == 3, na.rm = TRUE),
-           Reason4 = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2 & ReasonNo == 4, na.rm = TRUE),
-           Reason5 = sum(infect == 1 & (sirs_count >= 2 | qs_count >= 2) & IsConsent == 2 & ReasonNo == 5, na.rm = TRUE),
-  )
-           
-
-df2 <- psmast %>%
-#  filter(ScreenDate <= '2022-02-25') %>% 
-# filter(HospitalID ==1) %>%
- #filter(HospitalID ==2) %>%
-  
+df_sumscr <- df_scr %>%
   summarise(
-            enr = n(),       
-            exc_mortal = sum(dead4 == 1, na.rm = TRUE),
-            nonsepsis = sum(Sofa_Sepsis == 2, na.rm = TRUE),
-            sepsis    = sum(Sofa_Sepsis == 1, na.rm = TRUE),
-            complete   = sum(!is.na(DischargeStatus) &!is.na(Sofa_Sepsis), na.rm = TRUE),
-            CompleteSepsis    = sum(!is.na(DischargeStatus) & Sofa_Sepsis == 1, na.rm = TRUE),
-            CompleteNonsepsis = sum(!is.na(DischargeStatus) & Sofa_Sepsis == 2, na.rm = TRUE))
- 
-l1 <- paste0(scales::comma(df$scrNP),' patients at NP', '\n', ' were screened')
-l2 <- paste0(scales::comma(df$scrMS),' patients at MS', '\n', ' were screened') 
-l3 <- paste0(scales::comma(df$scr),' total patients age >= 15 years',  '\n', 'visit at ER/OPD were screened')
-l4 <- paste0(df$exc48, ' (', scales::percent(df$exc48/df$scr,0.1), ') Admitted > 48 hours from referral hospital \n',
-             df$excinf, ' (', scales::percent(df$excinf/df$scr,0.1), ') no source of infection'
-)
-l5 <- paste0(df$inf, ' (', scales::percent(df$inf/df$scr,0.1), ') with suspected infection')
-l6 <- paste0(df$exc_sirs, ' (', scales::percent(df$exc_sirs/df$scr,0.1), ')  SIRS or qSOFA < 2')
-l7 <- paste0(df$sirs_or_qs, ' (', scales::percent(df$sirs_or_qs/df$inf,0.1), ') suspected sepsis (SIRS or qSOFA >= 2)')
-l8 <- paste0(df$sirsp_qsp, ' (', scales::percent(df$sirsp_qsp/df$sirs_or_qs,0.1), ') SIRS + qSOFA +')
-l9 <- paste0(df$sirsp_qsm, ' (', scales::percent(df$sirsp_qsm/df$sirs_or_qs,0.1), ') SIRS + qSOFA -')
-l10 <- paste0(df$sirsm_qsp, ' (', scales::percent(df$sirsm_qsp/df$sirs_or_qs,0.1), ') SIRS - qSOFA +')
-l11 <- paste0(df$exc_consent, ' (', scales::percent(df$exc_consent/df$sirs_or_qs,0.1), ') Not agree to participate \n',
-              df$Reason1, ' (', scales::percent(df$Reason1/df$sirs_or_qs,0.1), ') No interest \n',
-              df$Reason2, ' (', scales::percent(df$Reason2/df$sirs_or_qs,0.1), ') No benefit\n',
-              df$Reason3, ' (', scales::percent(df$Reason3/df$sirs_or_qs,0.1), ') Guardian N/A \n',
-              df$Reason4, ' (', scales::percent(df$Reason4/df$sirs_or_qs,0.1), ') Condition N/A \n',
-              df$Reason5, ' (', scales::percent(df$Reason5/df$sirs_or_qs,0.1), ') Other ')
-l12 <- paste0(df2$enr, ' (', scales::percent(df2$enr/df$sirs_or_qs,0.1), ') enrolled suspected sepsis')
-#l14 <- paste0(df2$exc_mortal, ' (', scales::percent(df2$exc_mortal/df$sirs_or_qs,0.1), ')  28 days mortality')
-l13 <- 'exclude ?'
-l14 <- 'Non Sepsis'
-l15 <- 'Sepsis'
-l16 <- 'Shock'
-l17 <- 'Dead Non s'
-l18 <- 'Dead Sepsis'
-l19 <- 'Dead Shock'
+    scr         = n(),
+    scr_NP      = sum(HospitalID == 1, na.rm = TRUE),
+    scr_MS      = sum(HospitalID == 2, na.rm = TRUE),
+    exc_48      = sum(Refer48hrs == 1, na.rm = TRUE),
+    exc_inf     = sum(IFNo == 1, na.rm = TRUE),
+    inf         = sum(infect, na.rm = TRUE),
+    exc_sirs_qs = sum(infect == 1 &
+                        (N_sirs <  2 & N_QSofa <  2), na.rm = TRUE),
+    sep         = sum(infect == 1 &
+                        (N_sirs >= 2 | N_QSofa >= 2), na.rm = TRUE),
+    pos_pos     = sum(infect == 1 &
+                        (N_sirs >= 2 & N_QSofa >= 2), na.rm = TRUE),
+    pos_neg     = sum(infect == 1 &
+                        (N_sirs >= 2 & N_QSofa <  2), na.rm = TRUE),
+    neg_pos     = sum(infect == 1 &
+                        (N_sirs <  2 & N_QSofa >= 2), na.rm = TRUE),
+    exc_con     = sum(infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+                        IsConsent == 2, na.rm = TRUE),
+    reason1     = sum(
+      infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+        IsConsent == 2 &
+        ReasonNo == 1,
+      na.rm = TRUE
+    ),
+    reason2     = sum(
+      infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+        IsConsent == 2 &
+        ReasonNo == 2,
+      na.rm = TRUE
+    ),
+    reason3     = sum(
+      infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+        IsConsent == 2 &
+        ReasonNo == 3,
+      na.rm = TRUE
+    ),
+    reason4     = sum(
+      infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+        IsConsent == 2 &
+        ReasonNo == 4,
+      na.rm = TRUE
+    ),
+    reason5     = sum(
+      infect == 1 & (N_sirs >= 2 | N_QSofa >= 2) &
+        IsConsent == 2 &
+        ReasonNo == 5,
+      na.rm = TRUE
+    )
+  )
 
-# l8 <- paste0(df$enr, ' (', scales::percent(df$enr/df$sussep,0.1), ') enrolled suspected sepsis')
-# l9 <- paste0(df2$complete, ' (', scales::percent(df2$complete/df$enr,0.1), ') with complete data','\n','(having discharge status)')
-# l10 <- paste0(df2$CompleteNonsepsis, ' (', scales::percent(df2$CompleteNonsepsis/df2$complete,0.1), ') non-sepsis')
-# l11 <- paste0(df2$CompleteSepsis, ' (', scales::percent(df2$CompleteSepsis/df2$complete,0.1), ') sepsis','\n','(SOFA >= 2)')
-# #l8 <- paste0(df2$shock, ' (', scales::percent(df2$shock/df$enr,0.1), ') septic shock','\n','(MAP <=65 mmHg and lactate > 2.0)')
-#l8 <- paste0(df2$pending, ' (', scales::percent(df2$pending/df$enr,0.1), ') pending')
+df_sumenr <- df_enr %>%
+  mutate(across(c(dead,Sepsis_Scale), ~ as.numeric(.))) %>% 
+  summarise(
+    enr         = n(),
+    exc_pending = sum(is.na(dead), na.rm = TRUE),
+    d           = sum(dead == 1, na.rm = TRUE),
+    d_non       = sum(dead == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    d_sepsis    = sum(dead == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    d_shock     = sum(dead == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    a           = sum(dead == 2, na.rm = TRUE),
+    a_non       = sum(dead == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    a_sepsis    = sum(dead == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    a_shock     = sum(dead == 2 & Sepsis_Scale == 3, na.rm = TRUE)
+  )
 
-DiagrammeR::grViz("digraph graphtest {
+l1 <-
+  paste0(comma(df_sumscr$scr_NP),
+         ' patients at NP',
+         '\n',
+         ' were screened')
+l2 <-
+  paste0(comma(df_sumscr$scr_MS),
+         ' patients at MS',
+         '\n',
+         ' were screened')
+l3 <-
+  paste0(
+    comma(df_sumscr$scr),
+    ' total patients age >= 15 years',
+    '\n',
+    'visit at ER/OPD were screened'
+  )
+l4 <-
+  paste0(
+    df_sumscr$exc_48,
+    ' (',
+    percent(df_sumscr$exc_48/df_sumscr$scr, 0.1),
+    ') admitted more than 48 hours from referral hospital'
+  )
+l5 <-
+  paste0(
+    df_sumscr$exc_inf,
+    ' (',
+    percent(df_sumscr$exc_inf/df_sumscr$scr, 0.1),
+    ') no source of infection'
+  )
+l6 <-
+  paste0(
+    comma(df_sumscr$inf),
+    ' (',
+    percent(df_sumscr$inf/df_sumscr$scr, 0.1),
+    ') with suspected infection'
+  )
+l7 <-
+  paste0(
+    df_sumscr$exc_sirs_qs,
+    ' (',
+    percent(df_sumscr$exc_sirs_qs/df_sumscr$inf, 0.1),
+    ')  SIRS & qSOFA < 2'
+  )
+l8 <-
+  paste0(
+    df_sumscr$sep,
+    ' (',
+    percent(df_sumscr$sep/df_sumscr$inf, 0.1),
+    ') suspected sepsis (SIRS >= 2 or qSOFA >= 2)'
+  )
+l9 <-
+  paste0(
+    df_sumscr$pos_pos,
+    ' (',
+    percent(df_sumscr$pos_pos/df_sumscr$sep, 0.1),
+    ') SIRS + qSOFA +'
+  )
+l10 <-
+  paste0(
+    df_sumscr$pos_neg,
+    ' (',
+    percent(df_sumscr$pos_neg/df_sumscr$sep, 0.1),
+    ') SIRS + qSOFA -'
+  )
+l11 <-
+  paste0(
+    df_sumscr$neg_pos,
+    ' (',
+    percent(df_sumscr$neg_pos/df_sumscr$sep, 0.1),
+    ') SIRS - qSOFA +'
+  )
+l12 <-
+  paste0(
+    df_sumscr$exc_con,
+    ' (',
+    percent(df_sumscr$exc_con/df_sumscr$sep, 0.1),
+    ') not agree to participate'
+  )
+l13 <-
+  paste0(
+    df_sumscr$reason1,
+    ' (',
+    percent(df_sumscr$reason1/df_sumscr$sep, 0.1),
+    ') not interest'
+  )
+l14 <-
+  paste0(
+    df_sumscr$reason2,
+    ' (',
+    percent(df_sumscr$reason2/df_sumscr$sep, 0.1),
+    ') no benefit'
+  )
+l15 <-
+  paste0(
+    df_sumscr$reason3,
+    ' (',
+    percent(df_sumscr$reason3/df_sumscr$sep, 0.1),
+    ') guardian N/A'
+  )
+l16 <-
+  paste0(
+    df_sumscr$reason4,
+    ' (',
+    percent(df_sumscr$reason4/df_sumscr$sep, 0.1),
+    ') not in condition'
+  )
+l17 <-
+  paste0(
+    df_sumscr$reason5,
+    ' (',
+    percent(df_sumscr$reason5/df_sumscr$sep, 0.1),
+    ') other'
+  )
+l18 <-
+  paste0(
+    df_sumenr$enr,
+    ' (',
+    percent(df_sumenr$enr/df_sumscr$sep, 0.1),
+    ') enrolled suspected sepsis'
+  )
+l19 <-
+  paste0(
+    df_sumenr$exc_pending,
+    ' (',
+    percent(df_sumenr$exc_pending/df_sumenr$enr, 0.1),
+    ')  in pending'
+  )
+l20 <- paste0(df_sumenr$d, ' (', percent(df_sumenr$d/df_sumenr$enr, 0.1), ') 28 days mortality')
+l21 <- paste0(df_sumenr$d_non, ' (', percent(df_sumenr$d_non/df_sumenr$d, 0.1), ') non-sepsis')
+l22 <- paste0(df_sumenr$d_sepsis, ' (', percent(df_sumenr$d_sepsis/df_sumenr$d, 0.1), ') sepsis')
+l23 <- paste0(df_sumenr$d_shock, ' (', percent(df_sumenr$d_shock/df_sumenr$d, 0.1), ') septic shock')
+l24 <- paste0(df_sumenr$a, ' (', percent(df_sumenr$a/df_sumenr$enr, 0.1), ') survivors')
+l25 <- paste0(df_sumenr$a_non, ' (', percent(df_sumenr$a_non/df_sumenr$a, 0.1), ') non-sepsis')
+l26 <- paste0(df_sumenr$a_sepsis, ' (', percent(df_sumenr$a_sepsis/df_sumenr$a, 0.1), ') sepsis')
+l27 <- paste0(df_sumenr$a_shock, ' (', percent(df_sumenr$a_shock/df_sumenr$a, 0.1), ') septic shock')
+
+d <- DiagrammeR::grViz(
+  "digraph flowchart {
+
+    graph [layout = dot,
+           label = '',
+           labelloc = t,
+           fontname = Helvetica,
+           fontsize  = 28,
+           compound = true]
   
-  graph [layout = dot,
-         label = 'All',
-         labelloc = t,
-         fontname = Helvetica,
-         fontsize  = 36,
-         compound = true]
-       
-  node [shape = box, color = gray,
-        style = filled, fillcolor = WhiteSmoke, 
-        fontname = Helvetica, fontsize = 20,
-        fixedsize = t, width = 6, height = 0.8]
-        
-  subgraph cluster1 {
-  label = ''
-  node [shape = box, color = gray,
-        style = filled, fillcolor = WhiteSmoke, 
-        fontname = Helvetica, fontsize = 20,
-        fixedsize = t, width = 4, height = 0.8]
-        
-    sirs_qs_3 [label = '@@10']
-    sirs_qs_2 [label = '@@9']
-    sirs_qs_1 [label = '@@8']
+    node [shape = box, 
+          color = gray,
+          style = filled, 
+          fillcolor = WhiteSmoke,
+          fontname = Helvetica, 
+          fontsize = 20,
+          fixedsize = t, 
+          width = 6, 
+          height = 0.8]
+  
+    subgraph cluster1 {
     
-    sirs_qs_3;
-    sirs_qs_2;
-    sirs_qs_1
-   {rank = same; sirs_qs_3 sirs_qs_2 sirs_qs_1};
-  }
+      label = ''
+      node [shape = box, 
+            color = gray,
+            style = filled, 
+            fillcolor = WhiteSmoke,
+            fontname = Helvetica, 
+            fontsize = 20,
+            fixedsize = t, 
+            width = 4, 
+            height = 0.8]
+  
+      neg_pos [label = '@@11']
+      pos_neg [label = '@@10']
+      pos_pos [label = '@@9']
+  
+      neg_pos;
+      pos_neg;
+      pos_pos;
+      {rank = same; neg_pos pos_neg pos_pos}
       
-  subgraph cluster2 {
-  label = ''
-  node [shape = box, color = gray,
-        style = filled, fillcolor = WhiteSmoke, 
-        fontname = Helvetica, fontsize = 20,
-        fixedsize = t, width = 4, height = 0.8]
-        
-    out3 [label = '@@16']
-    out2 [label = '@@15']
-    out1 [label = '@@14']
-    dead1 [label = '@@17']
-    dead2 [label = '@@18']
-    dead3 [label = '@@19']
-    
-    out1 -> dead1;
-    out2 -> dead2;
-    out3 -> dead3
-    {rank = same; out1 out2 out3};
+    }
+  
+    scr_NP [label = '@@1']
+    scr_MS [label = '@@2']
+    scr [label = '@@3']
+    exc_48 [label =
+<
+&#8226; @@4<br ALIGN = 'LEFT'/>
+&#8226; @@5<br ALIGN = 'LEFT'/>
+>
+        ]
+    inf [label = '@@6']
+    exc_inf [label = '@@7']
+    sep [label = '@@8']
+    exc_con [label =
+<    
+@@12<br/><br/>
+&#8226; @@13<br ALIGN = 'LEFT'/>
+&#8226; @@14<br ALIGN = 'LEFT'/>
+&#8226; @@15<br ALIGN = 'LEFT'/>
+&#8226; @@16<br ALIGN = 'LEFT'/>
+&#8226; @@17<br ALIGN = 'LEFT'/>
+>
+        ]
+    enr [label = '@@18']
+    exc_pending [label = '@@19']
+    d [label = 
+<
+@@20<br/><br/>
+&#8226; @@21<br ALIGN = 'LEFT'/>
+&#8226; @@22<br ALIGN = 'LEFT'/>
+&#8226; @@23<br ALIGN = 'LEFT'/>
+>
+      ]
+    a [label = 
+<
+@@24<br/><br/>
+&#8226; @@25<br ALIGN = 'LEFT'/>
+&#8226; @@26<br ALIGN = 'LEFT'/>
+&#8226; @@27<br ALIGN = 'LEFT'/>
+>
+      ]
+  
+    blank1 [label = '', width = 0.01, height = 0.01]
+    blank2 [label = '', width = 0.01, height = 0.01]
+    blank3 [label = '', width = 0.01, height = 0.01]
+    blank4 [label = '', width = 0.01, height = 0.01]
+    blank5 [label = '', width = 0.01, height = 0.01]
+  
+    scr_NP  -> scr [minlen = 3];
+    scr     -> scr_MS [dir = back, minlen = 3];
+    {rank = same; scr_NP scr scr_MS};
+    scr     -> blank1 [dir = none];
+    blank1  -> exc_48 [minlen = 5];
+    {rank = same; blank1 exc_48};
+    blank1  -> inf;
+    inf     -> blank2 [dir = none];
+    blank2  -> exc_inf [minlen = 5];
+    {rank = same; blank2 exc_inf};
+    blank2  -> sep;
+    sep     -> pos_neg [lhead = cluster1];
+    pos_neg -> blank3 [dir = none , ltail = cluster1];
+    blank3  -> exc_con [minlen = 5];
+    {rank = same; blank3 exc_con};
+    blank3  -> enr;
+    enr     -> blank4 [dir = none];
+    blank4  -> exc_pending [minlen = 5];
+    {rank = same; blank4 exc_pending};
+    blank4  -> blank5 [dir = none];
+    blank5  -> d;
+    blank5  -> a
     
   }
-    
-  screenedNP [label = '@@1']
-  screenedMS [label = '@@2']
-  screened [label = '@@3']
-  exc48 [label = '@@4']
-  infection [label = '@@5']
-  exc2 [label = '@@6']
-  s_sepsis [label = '@@7']
-  exc_consent [label = '@@11']
-  s_enr [label = '@@12']
-  excs [label = '@@13']
-  
-  blank1 [label = '', width = 0.01, height = 0.01]
-  blank2 [label = '', width = 0.01, height = 0.01]
-  blank3 [label = '', width = 0.01, height = 0.01]
-  blank4 [label = '', width = 0.01, height = 0.01]
-  blank5 [label = '', width = 0.01, height = 0.01]
-  
-  screenedNP -> screened [ minlen = 3 ];
-  screened -> screenedMS[dir = back, minlen = 3];
-                  {rank = same; screenedNP screened screenedMS};
-  screened -> blank1[ dir = none ];
-  blank1 -> exc48[minlen = 5 ];
-                  {rank = same; blank1 exc48};
-  blank1 -> infection;
-  infection -> blank2[ dir = none ];
-  blank2 -> exc2[minlen = 5 ];
-                  {rank = same; blank2 exc2};
-  blank2 -> s_sepsis;
-  s_sepsis ->  sirs_qs_2[lhead = cluster1];
-  sirs_qs_2 -> blank3[ dir = none , ltail = cluster1];
-  blank3 -> exc_consent[minlen = 5 ];
-                  {rank = same; blank3 exc_consent};
-  blank3 -> s_enr;
-  s_enr -> blank4[ dir = none ];
-  blank4 -> excs[minlen = 5 ];
-                  {rank = same; blank4 excs};
-  blank4 -> blank5[ dir = none ];
-  
-  blank5 -> out2[lhead = cluster2]
-  
 
-  
-}
   [1]: l1
   [2]: l2
   [3]: l3
@@ -228,5 +338,13 @@ DiagrammeR::grViz("digraph graphtest {
   [17]: l17
   [18]: l18
   [19]: l19
-") 
-
+  [20]: l20
+  [21]: l21
+  [22]: l22
+  [23]: l23
+  [24]: l24
+  [25]: l25
+  [26]: l26
+  [27]: l27
+      
+")
