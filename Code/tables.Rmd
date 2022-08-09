@@ -20,6 +20,7 @@ library(purrr)      # Apply mean function to each element
 library(scales)     # Format numeric values
 library(DiagrammeR) # Create flowchart
 library(gtsummary)  # Create publication-ready summary tables 
+library(survival)   # Survival analysis
 library(gt)         # Format gtsummary output
 
 theme_gtsummary_compact(font_size = 10)
@@ -108,8 +109,8 @@ df_enr <-
   mutate(
     dead = factor(
       dead,
-      levels = c(2, 1),
-      labels = c('Alive', 'Dead')
+      levels = c(1, 2),
+      labels = c('Dead', 'Alive')
     ),
     Sex = factor(
       Sex,
@@ -244,6 +245,8 @@ d
 ```
 </center>
 
+<br>
+
 \newpage
 **Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
@@ -282,8 +285,9 @@ t1 <- format_table(t1)
 t1
 ```
 
-\newpage
+<br>
 
+\newpage
 ```{r t1_cc}
 vars <- sort_var(names(select(df_enr, CCFever:CCJointPain)))
 t1_cc <- df_enr %>%
@@ -315,6 +319,8 @@ t1_if <- df_enr %>%
   format_table("Source of Infection")
 t1_if
 ```
+
+<br>
 
 \newpage
 **Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
@@ -408,8 +414,9 @@ t2_cul_s <- df_enr %>%
 t2_cul_s
 ```
 
-\newpage
+<br>
 
+\newpage
 ```{r t2_rdt}
 vars <-
   sort_var(names(
@@ -490,6 +497,8 @@ t2_trt <- df_enr %>%
 t2_trt
 ```
 
+<br>
+
 \newpage
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
@@ -529,3 +538,16 @@ t4 <- df_enr %>%
   format_table()
 t4
 ```
+
+
+```{r}
+# uni <- df_enr %>%
+#   select(Age_year, Sex, Refer, Sepsis:Cancer, Liver, TotalCharge, dead, stime) %>%
+#   mutate(dead = ifelse(dead == 0, 2, dead)) %>%
+#   tbl_uvregression(method = coxph,
+#                    y = Surv(stime, dead),
+#                    exponentiate = TRUE) %>%
+#   add_global_p()
+# uni
+```
+
