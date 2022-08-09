@@ -24,9 +24,10 @@ library(survival)   # Survival analysis
 library(gt)         # Format gtsummary output
 
 theme_gtsummary_compact(font_size = 10)
+# theme_gtsummary_journal("lancet")
 
 # Format gtsummary outputs
-format_table <- function(t, group = "") {
+format_table <- function(t, grp = "") {
 
   # Hide p-values of SIRSqSOFA, SIRS, and QSofa in table 1
   if (deparse(substitute(t)) == 't1') {
@@ -37,7 +38,7 @@ format_table <- function(t, group = "") {
   
   t <- t %>%
     add_overall() %>%                            # Add overall column
-    bold_p(t = 0.05) %>%                         # Add p-value column
+    bold_p(t = 0.05) %>%                         # Bold p-value if significant
     modify_spanning_header(c("stat_1", "stat_2") ~ "**Mortality Outcome**") %>%
     # Empty stub head label and split header line
     modify_header(                     
@@ -58,25 +59,29 @@ format_table <- function(t, group = "") {
       footnote = str_glue(n_miss, " cases are pending for final outcome"),
       locations = cells_column_labels(columns = "stat_0")
     )
-  
-  # Add a row group
-  if (group != "") {
+
+  # Add a row group for 'check all that apply' variables
+  if (grp != "") {
     t <- t %>%
-      tab_row_group(group = group,
+      tab_row_group(group = grp,
                     rows = everything()) %>%
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_row_groups(groups = everything()))
   }
+  
   return(t)
+  
 }
 
 # Sort dichotomous variables by descending proportion
 sort_var <- function(vars) {
-  s <- df_enr %>%
+  
+  df_enr %>%
     filter(!is.na(dead)) %>% 
     select(vars) %>%
     map_dbl(mean, na.rm = TRUE) %>%
     sort(decreasing = TRUE)
+  
 }
 
 ```
@@ -281,7 +286,7 @@ t1 <- df_enr %>%
     sort = list(Occupation ~ "frequency")
   ) %>%
   bold_labels()
-t1 <- format_table(t1)
+t1 < format_table(t1)
 t1
 ```
 
@@ -292,7 +297,7 @@ t1
 vars <- sort_var(names(select(df_enr, CCFever:CCJointPain)))
 t1_cc <- df_enr %>%
   select(dead, names(vars), CCOther) %>%
-  tbl_summary(by = dead) %>%
+  tbl_summary(by = dead) %>% 
   format_table("Chief Complaint")
 t1_cc
 ```
