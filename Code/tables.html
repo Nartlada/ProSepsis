@@ -1578,7 +1578,7 @@ pre code {
 
 
 <h1 class="title toc-ignore">Pro-sepsis</h1>
-<h4 class="date">Compiled on August 09, 2022 - 09:36</h4>
+<h4 class="date">Compiled on August 09, 2022 - 15:19</h4>
 
 </div>
 
@@ -1587,8 +1587,8 @@ pre code {
 of screening and enroll patients with sepsis who participating in this
 sepsis epidemiology activities</p>
 <center>
-<div id="htmlwidget-89e0f9dfe83aba6e7b8f" style="width:672px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-89e0f9dfe83aba6e7b8f">{"x":{"diagram":"digraph flowchart {\n\n    graph [layout = dot,\n           label = \"\",\n           labelloc = t,\n           fontname = Helvetica,\n           fontsize  = 28,\n           compound = true]\n  \n    node [shape = box, \n          color = gray,\n          style = filled, \n          fillcolor = WhiteSmoke,\n          fontname = Helvetica, \n          fontsize = 20,\n          fixedsize = t, \n          width = 6, \n          height = 0.8]\n  \n    subgraph cluster1 {\n    \n      label = \"\"\n      node [shape = box, \n            color = gray,\n            style = filled, \n            fillcolor = WhiteSmoke,\n            fontname = Helvetica, \n            fontsize = 20,\n            fixedsize = t, \n            width = 4, \n            height = 0.8]\n  \n      neg_pos [label = \"30 (4.5%) SIRS - qSOFA +\"]\n      pos_neg [label = \"453 (68.1%) SIRS + qSOFA -\"]\n      pos_pos [label = \"182 (27.4%) SIRS + qSOFA +\"]\n  \n      neg_pos;\n      pos_neg;\n      pos_pos;\n      {rank = same; neg_pos pos_neg pos_pos}\n      \n    }\n  \n    scr_NP [label = \"1,297 patients at NP\n were screened\"]\n    scr_MS [label = \"492 patients at MS\n were screened\"]\n    scr [label = \"1,789 total patients age >= 15 years\nvisit at ER/OPD were screened\"]\n    exc_48 [label =\n<\n&#8226; 125 (7.0%) admitted more than 48 hours from referral hospital<br ALIGN = \"LEFT\"/>\n&#8226; 506 (28.3%) no source of infection<br ALIGN = \"LEFT\"/>\n>\n        ]\n    inf [label = \"1,155 (64.6%) with suspected infection\"]\n    exc_inf [label = \"490 (42.4%)  SIRS & qSOFA < 2\"]\n    sep [label = \"665 (57.6%) suspected sepsis (SIRS >= 2 or qSOFA >= 2)\"]\n    exc_con [label =\n<    \n91 (13.7%) not agree to participate<br/><br/>\n&#8226; 45 (6.8%) not interest<br ALIGN = \"LEFT\"/>\n&#8226; 3 (0.5%) no benefit<br ALIGN = \"LEFT\"/>\n&#8226; 6 (0.9%) guardian N/A<br ALIGN = \"LEFT\"/>\n&#8226; 17 (2.6%) not in condition<br ALIGN = \"LEFT\"/>\n&#8226; 20 (3.0%) other<br ALIGN = \"LEFT\"/>\n>\n        ]\n    enr [label = \"574 (86.3%) enrolled suspected sepsis\"]\n    exc_pending [label = \"243 (42.3%)  in pending\"]\n    d [label = \n<\n83 (14.5%) 28 days mortality<br/><br/>\n&#8226; 0 (0.0%) non-sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 39 (47.0%) sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 44 (53.0%) septic shock<br ALIGN = \"LEFT\"/>\n>\n      ]\n    a [label = \n<\n248 (43.2%) survivors<br/><br/>\n&#8226; 40 (16.1%) non-sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 172 (69.4%) sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 36 (14.5%) septic shock<br ALIGN = \"LEFT\"/>\n>\n      ]\n  \n    blank1 [label = \"\", width = 0.01, height = 0.01]\n    blank2 [label = \"\", width = 0.01, height = 0.01]\n    blank3 [label = \"\", width = 0.01, height = 0.01]\n    blank4 [label = \"\", width = 0.01, height = 0.01]\n    blank5 [label = \"\", width = 0.01, height = 0.01]\n  \n    scr_NP  -> scr [minlen = 3];\n    scr     -> scr_MS [dir = back, minlen = 3];\n    {rank = same; scr_NP scr scr_MS};\n    scr     -> blank1 [dir = none];\n    blank1  -> exc_48 [minlen = 5];\n    {rank = same; blank1 exc_48};\n    blank1  -> inf;\n    inf     -> blank2 [dir = none];\n    blank2  -> exc_inf [minlen = 5];\n    {rank = same; blank2 exc_inf};\n    blank2  -> sep;\n    sep     -> pos_neg [lhead = cluster1];\n    pos_neg -> blank3 [dir = none , ltail = cluster1];\n    blank3  -> exc_con [minlen = 5];\n    {rank = same; blank3 exc_con};\n    blank3  -> enr;\n    enr     -> blank4 [dir = none];\n    blank4  -> exc_pending [minlen = 5];\n    {rank = same; blank4 exc_pending};\n    blank4  -> blank5 [dir = none];\n    blank5  -> d;\n    blank5  -> a\n    \n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d9f0444615a5d46809b8" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d9f0444615a5d46809b8">{"x":{"diagram":"digraph flowchart {\n\n    graph [layout = dot,\n           label = \"\",\n           labelloc = t,\n           fontname = Helvetica,\n           fontsize  = 28,\n           compound = true]\n  \n    node [shape = box, \n          color = gray,\n          style = filled, \n          fillcolor = WhiteSmoke,\n          fontname = Helvetica, \n          fontsize = 20,\n          fixedsize = t, \n          width = 6, \n          height = 0.8]\n  \n    subgraph cluster1 {\n    \n      label = \"\"\n      node [shape = box, \n            color = gray,\n            style = filled, \n            fillcolor = WhiteSmoke,\n            fontname = Helvetica, \n            fontsize = 20,\n            fixedsize = t, \n            width = 4, \n            height = 0.8]\n  \n      neg_pos [label = \"30 (4.5%) SIRS - qSOFA +\"]\n      pos_neg [label = \"453 (68.1%) SIRS + qSOFA -\"]\n      pos_pos [label = \"182 (27.4%) SIRS + qSOFA +\"]\n  \n      neg_pos;\n      pos_neg;\n      pos_pos;\n      {rank = same; neg_pos pos_neg pos_pos}\n      \n    }\n  \n    scr_NP [label = \"1,297 patients at NP\n were screened\"]\n    scr_MS [label = \"492 patients at MS\n were screened\"]\n    scr [label = \"1,789 total patients age >= 15 years\nvisit at ER/OPD were screened\"]\n    exc_48 [label =\n<\n&#8226; 125 (7.0%) admitted more than 48 hours from referral hospital<br ALIGN = \"LEFT\"/>\n&#8226; 506 (28.3%) no source of infection<br ALIGN = \"LEFT\"/>\n>\n        ]\n    inf [label = \"1,155 (64.6%) with suspected infection\"]\n    exc_inf [label = \"490 (42.4%)  SIRS & qSOFA < 2\"]\n    sep [label = \"665 (57.6%) suspected sepsis (SIRS >= 2 or qSOFA >= 2)\"]\n    exc_con [label =\n<    \n91 (13.7%) not agree to participate<br/><br/>\n&#8226; 45 (6.8%) not interest<br ALIGN = \"LEFT\"/>\n&#8226; 3 (0.5%) no benefit<br ALIGN = \"LEFT\"/>\n&#8226; 6 (0.9%) guardian N/A<br ALIGN = \"LEFT\"/>\n&#8226; 17 (2.6%) not in condition<br ALIGN = \"LEFT\"/>\n&#8226; 20 (3.0%) other<br ALIGN = \"LEFT\"/>\n>\n        ]\n    enr [label = \"574 (86.3%) enrolled suspected sepsis\"]\n    exc_pending [label = \"243 (42.3%)  in pending\"]\n    d [label = \n<\n83 (14.5%) 28 days mortality<br/><br/>\n&#8226; 0 (0.0%) non-sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 39 (47.0%) sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 44 (53.0%) septic shock<br ALIGN = \"LEFT\"/>\n>\n      ]\n    a [label = \n<\n248 (43.2%) survivors<br/><br/>\n&#8226; 40 (16.1%) non-sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 172 (69.4%) sepsis<br ALIGN = \"LEFT\"/>\n&#8226; 36 (14.5%) septic shock<br ALIGN = \"LEFT\"/>\n>\n      ]\n  \n    blank1 [label = \"\", width = 0.01, height = 0.01]\n    blank2 [label = \"\", width = 0.01, height = 0.01]\n    blank3 [label = \"\", width = 0.01, height = 0.01]\n    blank4 [label = \"\", width = 0.01, height = 0.01]\n    blank5 [label = \"\", width = 0.01, height = 0.01]\n  \n    scr_NP  -> scr [minlen = 3];\n    scr     -> scr_MS [dir = back, minlen = 3];\n    {rank = same; scr_NP scr scr_MS};\n    scr     -> blank1 [dir = none];\n    blank1  -> exc_48 [minlen = 5];\n    {rank = same; blank1 exc_48};\n    blank1  -> inf;\n    inf     -> blank2 [dir = none];\n    blank2  -> exc_inf [minlen = 5];\n    {rank = same; blank2 exc_inf};\n    blank2  -> sep;\n    sep     -> pos_neg [lhead = cluster1];\n    pos_neg -> blank3 [dir = none , ltail = cluster1];\n    blank3  -> exc_con [minlen = 5];\n    {rank = same; blank3 exc_con};\n    blank3  -> enr;\n    enr     -> blank4 [dir = none];\n    blank4  -> exc_pending [minlen = 5];\n    {rank = same; blank4 exc_pending};\n    blank4  -> blank5 [dir = none];\n    blank5  -> d;\n    blank5  -> a\n    \n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </center>
 <p><br></p>
 <div style="page-break-after: always;"></div>
@@ -1596,12 +1596,12 @@ sepsis epidemiology activities</p>
 baseline demographic data and clinical characteristics of the enrolled
 suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during
 November 2021- July 8, 2022 (N=574)</p>
-<div id="jaziopkwku" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zqegvfuijy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#jaziopkwku .gt_table {
+#zqegvfuijy .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1626,7 +1626,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_heading {
+#zqegvfuijy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1638,7 +1638,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_title {
+#zqegvfuijy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1650,7 +1650,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#jaziopkwku .gt_subtitle {
+#zqegvfuijy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1662,13 +1662,13 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#jaziopkwku .gt_bottom_border {
+#zqegvfuijy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_col_headings {
+#zqegvfuijy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1683,7 +1683,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_col_heading {
+#zqegvfuijy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1703,7 +1703,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#jaziopkwku .gt_column_spanner_outer {
+#zqegvfuijy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1715,15 +1715,15 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#jaziopkwku .gt_column_spanner_outer:first-child {
+#zqegvfuijy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jaziopkwku .gt_column_spanner_outer:last-child {
+#zqegvfuijy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jaziopkwku .gt_column_spanner {
+#zqegvfuijy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1735,7 +1735,7 @@ November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#jaziopkwku .gt_group_heading {
+#zqegvfuijy .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1760,7 +1760,7 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#jaziopkwku .gt_empty_group_heading {
+#zqegvfuijy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1775,15 +1775,15 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#jaziopkwku .gt_from_md > :first-child {
+#zqegvfuijy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jaziopkwku .gt_from_md > :last-child {
+#zqegvfuijy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jaziopkwku .gt_row {
+#zqegvfuijy .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1802,7 +1802,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#jaziopkwku .gt_stub {
+#zqegvfuijy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1815,7 +1815,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#jaziopkwku .gt_stub_row_group {
+#zqegvfuijy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1829,11 +1829,11 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#jaziopkwku .gt_row_group_first td {
+#zqegvfuijy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jaziopkwku .gt_summary_row {
+#zqegvfuijy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1843,16 +1843,16 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#jaziopkwku .gt_first_summary_row {
+#zqegvfuijy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_first_summary_row.thick {
+#zqegvfuijy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jaziopkwku .gt_last_summary_row {
+#zqegvfuijy .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1862,7 +1862,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_grand_summary_row {
+#zqegvfuijy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1872,7 +1872,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#jaziopkwku .gt_first_grand_summary_row {
+#zqegvfuijy .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1882,11 +1882,11 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_striped {
+#zqegvfuijy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jaziopkwku .gt_table_body {
+#zqegvfuijy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1895,7 +1895,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_footnotes {
+#zqegvfuijy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1909,7 +1909,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_footnote {
+#zqegvfuijy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1918,7 +1918,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#jaziopkwku .gt_sourcenotes {
+#zqegvfuijy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1932,7 +1932,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#jaziopkwku .gt_sourcenote {
+#zqegvfuijy .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1940,36 +1940,36 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#jaziopkwku .gt_left {
+#zqegvfuijy .gt_left {
   text-align: left;
 }
 
-#jaziopkwku .gt_center {
+#zqegvfuijy .gt_center {
   text-align: center;
 }
 
-#jaziopkwku .gt_right {
+#zqegvfuijy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jaziopkwku .gt_font_normal {
+#zqegvfuijy .gt_font_normal {
   font-weight: normal;
 }
 
-#jaziopkwku .gt_font_bold {
+#zqegvfuijy .gt_font_bold {
   font-weight: bold;
 }
 
-#jaziopkwku .gt_font_italic {
+#zqegvfuijy .gt_font_italic {
   font-style: italic;
 }
 
-#jaziopkwku .gt_super {
+#zqegvfuijy .gt_super {
   font-size: 65%;
 }
 
-#jaziopkwku .gt_two_val_uncert {
+#zqegvfuijy .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1978,31 +1978,31 @@ November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#jaziopkwku .gt_footnote_marks {
+#zqegvfuijy .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#jaziopkwku .gt_asterisk {
+#zqegvfuijy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jaziopkwku .gt_slash_mark {
+#zqegvfuijy .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#jaziopkwku .gt_fraction_numerator {
+#zqegvfuijy .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#jaziopkwku .gt_fraction_denominator {
+#zqegvfuijy .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2224,12 +2224,12 @@ November 2021- July 8, 2022 (N=574)</p>
 </div>
 <p><br></p>
 <div style="page-break-after: always;"></div>
-<div id="joynvsrajr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="spfkuvdbab" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#joynvsrajr .gt_table {
+#spfkuvdbab .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2254,7 +2254,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_heading {
+#spfkuvdbab .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2266,7 +2266,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_title {
+#spfkuvdbab .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2278,7 +2278,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#joynvsrajr .gt_subtitle {
+#spfkuvdbab .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2290,13 +2290,13 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#joynvsrajr .gt_bottom_border {
+#spfkuvdbab .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_col_headings {
+#spfkuvdbab .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2311,7 +2311,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_col_heading {
+#spfkuvdbab .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2331,7 +2331,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#joynvsrajr .gt_column_spanner_outer {
+#spfkuvdbab .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2343,15 +2343,15 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#joynvsrajr .gt_column_spanner_outer:first-child {
+#spfkuvdbab .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#joynvsrajr .gt_column_spanner_outer:last-child {
+#spfkuvdbab .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#joynvsrajr .gt_column_spanner {
+#spfkuvdbab .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2363,7 +2363,7 @@ November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#joynvsrajr .gt_group_heading {
+#spfkuvdbab .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2388,7 +2388,7 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#joynvsrajr .gt_empty_group_heading {
+#spfkuvdbab .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2403,15 +2403,15 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#joynvsrajr .gt_from_md > :first-child {
+#spfkuvdbab .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#joynvsrajr .gt_from_md > :last-child {
+#spfkuvdbab .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#joynvsrajr .gt_row {
+#spfkuvdbab .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2430,7 +2430,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#joynvsrajr .gt_stub {
+#spfkuvdbab .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2443,7 +2443,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#joynvsrajr .gt_stub_row_group {
+#spfkuvdbab .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2457,11 +2457,11 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#joynvsrajr .gt_row_group_first td {
+#spfkuvdbab .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#joynvsrajr .gt_summary_row {
+#spfkuvdbab .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2471,16 +2471,16 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#joynvsrajr .gt_first_summary_row {
+#spfkuvdbab .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_first_summary_row.thick {
+#spfkuvdbab .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#joynvsrajr .gt_last_summary_row {
+#spfkuvdbab .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2490,7 +2490,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_grand_summary_row {
+#spfkuvdbab .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2500,7 +2500,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#joynvsrajr .gt_first_grand_summary_row {
+#spfkuvdbab .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2510,11 +2510,11 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_striped {
+#spfkuvdbab .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#joynvsrajr .gt_table_body {
+#spfkuvdbab .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2523,7 +2523,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_footnotes {
+#spfkuvdbab .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2537,7 +2537,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_footnote {
+#spfkuvdbab .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2546,7 +2546,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#joynvsrajr .gt_sourcenotes {
+#spfkuvdbab .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2560,7 +2560,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#joynvsrajr .gt_sourcenote {
+#spfkuvdbab .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2568,36 +2568,36 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#joynvsrajr .gt_left {
+#spfkuvdbab .gt_left {
   text-align: left;
 }
 
-#joynvsrajr .gt_center {
+#spfkuvdbab .gt_center {
   text-align: center;
 }
 
-#joynvsrajr .gt_right {
+#spfkuvdbab .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#joynvsrajr .gt_font_normal {
+#spfkuvdbab .gt_font_normal {
   font-weight: normal;
 }
 
-#joynvsrajr .gt_font_bold {
+#spfkuvdbab .gt_font_bold {
   font-weight: bold;
 }
 
-#joynvsrajr .gt_font_italic {
+#spfkuvdbab .gt_font_italic {
   font-style: italic;
 }
 
-#joynvsrajr .gt_super {
+#spfkuvdbab .gt_super {
   font-size: 65%;
 }
 
-#joynvsrajr .gt_two_val_uncert {
+#spfkuvdbab .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2606,31 +2606,31 @@ November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#joynvsrajr .gt_footnote_marks {
+#spfkuvdbab .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#joynvsrajr .gt_asterisk {
+#spfkuvdbab .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#joynvsrajr .gt_slash_mark {
+#spfkuvdbab .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#joynvsrajr .gt_fraction_numerator {
+#spfkuvdbab .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#joynvsrajr .gt_fraction_denominator {
+#spfkuvdbab .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2764,12 +2764,12 @@ November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="yhkaxjciec" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ruectkiofm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yhkaxjciec .gt_table {
+#ruectkiofm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2794,7 +2794,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_heading {
+#ruectkiofm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2806,7 +2806,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_title {
+#ruectkiofm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2818,7 +2818,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#yhkaxjciec .gt_subtitle {
+#ruectkiofm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2830,13 +2830,13 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#yhkaxjciec .gt_bottom_border {
+#ruectkiofm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_col_headings {
+#ruectkiofm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2851,7 +2851,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_col_heading {
+#ruectkiofm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2871,7 +2871,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#yhkaxjciec .gt_column_spanner_outer {
+#ruectkiofm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2883,15 +2883,15 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#yhkaxjciec .gt_column_spanner_outer:first-child {
+#ruectkiofm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yhkaxjciec .gt_column_spanner_outer:last-child {
+#ruectkiofm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yhkaxjciec .gt_column_spanner {
+#ruectkiofm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2903,7 +2903,7 @@ November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#yhkaxjciec .gt_group_heading {
+#ruectkiofm .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2928,7 +2928,7 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#yhkaxjciec .gt_empty_group_heading {
+#ruectkiofm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2943,15 +2943,15 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#yhkaxjciec .gt_from_md > :first-child {
+#ruectkiofm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yhkaxjciec .gt_from_md > :last-child {
+#ruectkiofm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yhkaxjciec .gt_row {
+#ruectkiofm .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2970,7 +2970,7 @@ November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#yhkaxjciec .gt_stub {
+#ruectkiofm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2983,7 +2983,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#yhkaxjciec .gt_stub_row_group {
+#ruectkiofm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2997,11 +2997,11 @@ November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#yhkaxjciec .gt_row_group_first td {
+#ruectkiofm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yhkaxjciec .gt_summary_row {
+#ruectkiofm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3011,16 +3011,16 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#yhkaxjciec .gt_first_summary_row {
+#ruectkiofm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_first_summary_row.thick {
+#ruectkiofm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yhkaxjciec .gt_last_summary_row {
+#ruectkiofm .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3030,7 +3030,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_grand_summary_row {
+#ruectkiofm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3040,7 +3040,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#yhkaxjciec .gt_first_grand_summary_row {
+#ruectkiofm .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3050,11 +3050,11 @@ November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_striped {
+#ruectkiofm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yhkaxjciec .gt_table_body {
+#ruectkiofm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3063,7 +3063,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_footnotes {
+#ruectkiofm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3077,7 +3077,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_footnote {
+#ruectkiofm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3086,7 +3086,7 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#yhkaxjciec .gt_sourcenotes {
+#ruectkiofm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3100,7 +3100,7 @@ November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#yhkaxjciec .gt_sourcenote {
+#ruectkiofm .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3108,36 +3108,36 @@ November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#yhkaxjciec .gt_left {
+#ruectkiofm .gt_left {
   text-align: left;
 }
 
-#yhkaxjciec .gt_center {
+#ruectkiofm .gt_center {
   text-align: center;
 }
 
-#yhkaxjciec .gt_right {
+#ruectkiofm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yhkaxjciec .gt_font_normal {
+#ruectkiofm .gt_font_normal {
   font-weight: normal;
 }
 
-#yhkaxjciec .gt_font_bold {
+#ruectkiofm .gt_font_bold {
   font-weight: bold;
 }
 
-#yhkaxjciec .gt_font_italic {
+#ruectkiofm .gt_font_italic {
   font-style: italic;
 }
 
-#yhkaxjciec .gt_super {
+#ruectkiofm .gt_super {
   font-size: 65%;
 }
 
-#yhkaxjciec .gt_two_val_uncert {
+#ruectkiofm .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -3146,31 +3146,31 @@ November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#yhkaxjciec .gt_footnote_marks {
+#ruectkiofm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#yhkaxjciec .gt_asterisk {
+#ruectkiofm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yhkaxjciec .gt_slash_mark {
+#ruectkiofm .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#yhkaxjciec .gt_fraction_numerator {
+#ruectkiofm .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#yhkaxjciec .gt_fraction_denominator {
+#ruectkiofm .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -3263,12 +3263,12 @@ November 2021- July 8, 2022 (N=574)</p>
 <p><strong>Table 2</strong>: Clinical information and laboratory result
 of enrolled suspected sepsis cases participating at Nakhon Phanom and
 Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
-<div id="oqzzgbbulp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lzimipfuqn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#oqzzgbbulp .gt_table {
+#lzimipfuqn .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3293,7 +3293,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_heading {
+#lzimipfuqn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3305,7 +3305,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_title {
+#lzimipfuqn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3317,7 +3317,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#oqzzgbbulp .gt_subtitle {
+#lzimipfuqn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3329,13 +3329,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#oqzzgbbulp .gt_bottom_border {
+#lzimipfuqn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_col_headings {
+#lzimipfuqn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3350,7 +3350,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_col_heading {
+#lzimipfuqn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3370,7 +3370,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#oqzzgbbulp .gt_column_spanner_outer {
+#lzimipfuqn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3382,15 +3382,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#oqzzgbbulp .gt_column_spanner_outer:first-child {
+#lzimipfuqn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oqzzgbbulp .gt_column_spanner_outer:last-child {
+#lzimipfuqn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oqzzgbbulp .gt_column_spanner {
+#lzimipfuqn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3402,7 +3402,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#oqzzgbbulp .gt_group_heading {
+#lzimipfuqn .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3427,7 +3427,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#oqzzgbbulp .gt_empty_group_heading {
+#lzimipfuqn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3442,15 +3442,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#oqzzgbbulp .gt_from_md > :first-child {
+#lzimipfuqn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oqzzgbbulp .gt_from_md > :last-child {
+#lzimipfuqn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oqzzgbbulp .gt_row {
+#lzimipfuqn .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3469,7 +3469,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#oqzzgbbulp .gt_stub {
+#lzimipfuqn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3482,7 +3482,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#oqzzgbbulp .gt_stub_row_group {
+#lzimipfuqn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3496,11 +3496,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#oqzzgbbulp .gt_row_group_first td {
+#lzimipfuqn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#oqzzgbbulp .gt_summary_row {
+#lzimipfuqn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3510,16 +3510,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#oqzzgbbulp .gt_first_summary_row {
+#lzimipfuqn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_first_summary_row.thick {
+#lzimipfuqn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#oqzzgbbulp .gt_last_summary_row {
+#lzimipfuqn .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3529,7 +3529,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_grand_summary_row {
+#lzimipfuqn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3539,7 +3539,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#oqzzgbbulp .gt_first_grand_summary_row {
+#lzimipfuqn .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3549,11 +3549,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_striped {
+#lzimipfuqn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oqzzgbbulp .gt_table_body {
+#lzimipfuqn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3562,7 +3562,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_footnotes {
+#lzimipfuqn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3576,7 +3576,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_footnote {
+#lzimipfuqn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3585,7 +3585,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#oqzzgbbulp .gt_sourcenotes {
+#lzimipfuqn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3599,7 +3599,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#oqzzgbbulp .gt_sourcenote {
+#lzimipfuqn .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3607,36 +3607,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#oqzzgbbulp .gt_left {
+#lzimipfuqn .gt_left {
   text-align: left;
 }
 
-#oqzzgbbulp .gt_center {
+#lzimipfuqn .gt_center {
   text-align: center;
 }
 
-#oqzzgbbulp .gt_right {
+#lzimipfuqn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oqzzgbbulp .gt_font_normal {
+#lzimipfuqn .gt_font_normal {
   font-weight: normal;
 }
 
-#oqzzgbbulp .gt_font_bold {
+#lzimipfuqn .gt_font_bold {
   font-weight: bold;
 }
 
-#oqzzgbbulp .gt_font_italic {
+#lzimipfuqn .gt_font_italic {
   font-style: italic;
 }
 
-#oqzzgbbulp .gt_super {
+#lzimipfuqn .gt_super {
   font-size: 65%;
 }
 
-#oqzzgbbulp .gt_two_val_uncert {
+#lzimipfuqn .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -3645,31 +3645,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#oqzzgbbulp .gt_footnote_marks {
+#lzimipfuqn .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#oqzzgbbulp .gt_asterisk {
+#lzimipfuqn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#oqzzgbbulp .gt_slash_mark {
+#lzimipfuqn .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#oqzzgbbulp .gt_fraction_numerator {
+#lzimipfuqn .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#oqzzgbbulp .gt_fraction_denominator {
+#lzimipfuqn .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -3783,12 +3783,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="vjyvxfcfhz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lvumyphxby" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vjyvxfcfhz .gt_table {
+#lvumyphxby .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3813,7 +3813,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_heading {
+#lvumyphxby .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3825,7 +3825,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_title {
+#lvumyphxby .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3837,7 +3837,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#vjyvxfcfhz .gt_subtitle {
+#lvumyphxby .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3849,13 +3849,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#vjyvxfcfhz .gt_bottom_border {
+#lvumyphxby .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_col_headings {
+#lvumyphxby .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3870,7 +3870,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_col_heading {
+#lvumyphxby .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3890,7 +3890,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#vjyvxfcfhz .gt_column_spanner_outer {
+#lvumyphxby .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3902,15 +3902,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#vjyvxfcfhz .gt_column_spanner_outer:first-child {
+#lvumyphxby .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vjyvxfcfhz .gt_column_spanner_outer:last-child {
+#lvumyphxby .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vjyvxfcfhz .gt_column_spanner {
+#lvumyphxby .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3922,7 +3922,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#vjyvxfcfhz .gt_group_heading {
+#lvumyphxby .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3947,7 +3947,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#vjyvxfcfhz .gt_empty_group_heading {
+#lvumyphxby .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3962,15 +3962,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#vjyvxfcfhz .gt_from_md > :first-child {
+#lvumyphxby .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vjyvxfcfhz .gt_from_md > :last-child {
+#lvumyphxby .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vjyvxfcfhz .gt_row {
+#lvumyphxby .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3989,7 +3989,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#vjyvxfcfhz .gt_stub {
+#lvumyphxby .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4002,7 +4002,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#vjyvxfcfhz .gt_stub_row_group {
+#lvumyphxby .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4016,11 +4016,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#vjyvxfcfhz .gt_row_group_first td {
+#lvumyphxby .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vjyvxfcfhz .gt_summary_row {
+#lvumyphxby .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4030,16 +4030,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#vjyvxfcfhz .gt_first_summary_row {
+#lvumyphxby .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_first_summary_row.thick {
+#lvumyphxby .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vjyvxfcfhz .gt_last_summary_row {
+#lvumyphxby .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4049,7 +4049,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_grand_summary_row {
+#lvumyphxby .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4059,7 +4059,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#vjyvxfcfhz .gt_first_grand_summary_row {
+#lvumyphxby .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4069,11 +4069,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_striped {
+#lvumyphxby .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vjyvxfcfhz .gt_table_body {
+#lvumyphxby .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4082,7 +4082,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_footnotes {
+#lvumyphxby .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4096,7 +4096,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_footnote {
+#lvumyphxby .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -4105,7 +4105,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#vjyvxfcfhz .gt_sourcenotes {
+#lvumyphxby .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4119,7 +4119,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#vjyvxfcfhz .gt_sourcenote {
+#lvumyphxby .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -4127,36 +4127,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#vjyvxfcfhz .gt_left {
+#lvumyphxby .gt_left {
   text-align: left;
 }
 
-#vjyvxfcfhz .gt_center {
+#lvumyphxby .gt_center {
   text-align: center;
 }
 
-#vjyvxfcfhz .gt_right {
+#lvumyphxby .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vjyvxfcfhz .gt_font_normal {
+#lvumyphxby .gt_font_normal {
   font-weight: normal;
 }
 
-#vjyvxfcfhz .gt_font_bold {
+#lvumyphxby .gt_font_bold {
   font-weight: bold;
 }
 
-#vjyvxfcfhz .gt_font_italic {
+#lvumyphxby .gt_font_italic {
   font-style: italic;
 }
 
-#vjyvxfcfhz .gt_super {
+#lvumyphxby .gt_super {
   font-size: 65%;
 }
 
-#vjyvxfcfhz .gt_two_val_uncert {
+#lvumyphxby .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -4165,31 +4165,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#vjyvxfcfhz .gt_footnote_marks {
+#lvumyphxby .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#vjyvxfcfhz .gt_asterisk {
+#lvumyphxby .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vjyvxfcfhz .gt_slash_mark {
+#lvumyphxby .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#vjyvxfcfhz .gt_fraction_numerator {
+#lvumyphxby .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#vjyvxfcfhz .gt_fraction_denominator {
+#lvumyphxby .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -4288,12 +4288,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="owjmazfsmw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rqctkgvoma" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#owjmazfsmw .gt_table {
+#rqctkgvoma .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -4318,7 +4318,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_heading {
+#rqctkgvoma .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4330,7 +4330,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_title {
+#rqctkgvoma .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4342,7 +4342,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#owjmazfsmw .gt_subtitle {
+#rqctkgvoma .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4354,13 +4354,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#owjmazfsmw .gt_bottom_border {
+#rqctkgvoma .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_col_headings {
+#rqctkgvoma .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4375,7 +4375,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_col_heading {
+#rqctkgvoma .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4395,7 +4395,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#owjmazfsmw .gt_column_spanner_outer {
+#rqctkgvoma .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4407,15 +4407,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#owjmazfsmw .gt_column_spanner_outer:first-child {
+#rqctkgvoma .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#owjmazfsmw .gt_column_spanner_outer:last-child {
+#rqctkgvoma .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#owjmazfsmw .gt_column_spanner {
+#rqctkgvoma .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4427,7 +4427,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#owjmazfsmw .gt_group_heading {
+#rqctkgvoma .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4452,7 +4452,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#owjmazfsmw .gt_empty_group_heading {
+#rqctkgvoma .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4467,15 +4467,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#owjmazfsmw .gt_from_md > :first-child {
+#rqctkgvoma .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#owjmazfsmw .gt_from_md > :last-child {
+#rqctkgvoma .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#owjmazfsmw .gt_row {
+#rqctkgvoma .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4494,7 +4494,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#owjmazfsmw .gt_stub {
+#rqctkgvoma .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4507,7 +4507,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#owjmazfsmw .gt_stub_row_group {
+#rqctkgvoma .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4521,11 +4521,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#owjmazfsmw .gt_row_group_first td {
+#rqctkgvoma .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#owjmazfsmw .gt_summary_row {
+#rqctkgvoma .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4535,16 +4535,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#owjmazfsmw .gt_first_summary_row {
+#rqctkgvoma .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_first_summary_row.thick {
+#rqctkgvoma .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#owjmazfsmw .gt_last_summary_row {
+#rqctkgvoma .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4554,7 +4554,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_grand_summary_row {
+#rqctkgvoma .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4564,7 +4564,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#owjmazfsmw .gt_first_grand_summary_row {
+#rqctkgvoma .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4574,11 +4574,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_striped {
+#rqctkgvoma .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#owjmazfsmw .gt_table_body {
+#rqctkgvoma .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4587,7 +4587,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_footnotes {
+#rqctkgvoma .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4601,7 +4601,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_footnote {
+#rqctkgvoma .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -4610,7 +4610,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#owjmazfsmw .gt_sourcenotes {
+#rqctkgvoma .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4624,7 +4624,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#owjmazfsmw .gt_sourcenote {
+#rqctkgvoma .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -4632,36 +4632,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#owjmazfsmw .gt_left {
+#rqctkgvoma .gt_left {
   text-align: left;
 }
 
-#owjmazfsmw .gt_center {
+#rqctkgvoma .gt_center {
   text-align: center;
 }
 
-#owjmazfsmw .gt_right {
+#rqctkgvoma .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#owjmazfsmw .gt_font_normal {
+#rqctkgvoma .gt_font_normal {
   font-weight: normal;
 }
 
-#owjmazfsmw .gt_font_bold {
+#rqctkgvoma .gt_font_bold {
   font-weight: bold;
 }
 
-#owjmazfsmw .gt_font_italic {
+#rqctkgvoma .gt_font_italic {
   font-style: italic;
 }
 
-#owjmazfsmw .gt_super {
+#rqctkgvoma .gt_super {
   font-size: 65%;
 }
 
-#owjmazfsmw .gt_two_val_uncert {
+#rqctkgvoma .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -4670,31 +4670,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#owjmazfsmw .gt_footnote_marks {
+#rqctkgvoma .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#owjmazfsmw .gt_asterisk {
+#rqctkgvoma .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#owjmazfsmw .gt_slash_mark {
+#rqctkgvoma .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#owjmazfsmw .gt_fraction_numerator {
+#rqctkgvoma .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#owjmazfsmw .gt_fraction_denominator {
+#rqctkgvoma .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -4753,12 +4753,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="gktafeibhc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="edwgrkzewr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#gktafeibhc .gt_table {
+#edwgrkzewr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -4783,7 +4783,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_heading {
+#edwgrkzewr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4795,7 +4795,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_title {
+#edwgrkzewr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4807,7 +4807,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#gktafeibhc .gt_subtitle {
+#edwgrkzewr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4819,13 +4819,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#gktafeibhc .gt_bottom_border {
+#edwgrkzewr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_col_headings {
+#edwgrkzewr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4840,7 +4840,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_col_heading {
+#edwgrkzewr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4860,7 +4860,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#gktafeibhc .gt_column_spanner_outer {
+#edwgrkzewr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4872,15 +4872,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#gktafeibhc .gt_column_spanner_outer:first-child {
+#edwgrkzewr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gktafeibhc .gt_column_spanner_outer:last-child {
+#edwgrkzewr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gktafeibhc .gt_column_spanner {
+#edwgrkzewr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4892,7 +4892,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#gktafeibhc .gt_group_heading {
+#edwgrkzewr .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4917,7 +4917,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#gktafeibhc .gt_empty_group_heading {
+#edwgrkzewr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4932,15 +4932,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#gktafeibhc .gt_from_md > :first-child {
+#edwgrkzewr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gktafeibhc .gt_from_md > :last-child {
+#edwgrkzewr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gktafeibhc .gt_row {
+#edwgrkzewr .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4959,7 +4959,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#gktafeibhc .gt_stub {
+#edwgrkzewr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4972,7 +4972,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gktafeibhc .gt_stub_row_group {
+#edwgrkzewr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4986,11 +4986,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#gktafeibhc .gt_row_group_first td {
+#edwgrkzewr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gktafeibhc .gt_summary_row {
+#edwgrkzewr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5000,16 +5000,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gktafeibhc .gt_first_summary_row {
+#edwgrkzewr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_first_summary_row.thick {
+#edwgrkzewr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gktafeibhc .gt_last_summary_row {
+#edwgrkzewr .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5019,7 +5019,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_grand_summary_row {
+#edwgrkzewr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5029,7 +5029,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gktafeibhc .gt_first_grand_summary_row {
+#edwgrkzewr .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5039,11 +5039,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_striped {
+#edwgrkzewr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gktafeibhc .gt_table_body {
+#edwgrkzewr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5052,7 +5052,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_footnotes {
+#edwgrkzewr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5066,7 +5066,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_footnote {
+#edwgrkzewr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -5075,7 +5075,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gktafeibhc .gt_sourcenotes {
+#edwgrkzewr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5089,7 +5089,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gktafeibhc .gt_sourcenote {
+#edwgrkzewr .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -5097,36 +5097,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gktafeibhc .gt_left {
+#edwgrkzewr .gt_left {
   text-align: left;
 }
 
-#gktafeibhc .gt_center {
+#edwgrkzewr .gt_center {
   text-align: center;
 }
 
-#gktafeibhc .gt_right {
+#edwgrkzewr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gktafeibhc .gt_font_normal {
+#edwgrkzewr .gt_font_normal {
   font-weight: normal;
 }
 
-#gktafeibhc .gt_font_bold {
+#edwgrkzewr .gt_font_bold {
   font-weight: bold;
 }
 
-#gktafeibhc .gt_font_italic {
+#edwgrkzewr .gt_font_italic {
   font-style: italic;
 }
 
-#gktafeibhc .gt_super {
+#edwgrkzewr .gt_super {
   font-size: 65%;
 }
 
-#gktafeibhc .gt_two_val_uncert {
+#edwgrkzewr .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -5135,31 +5135,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#gktafeibhc .gt_footnote_marks {
+#edwgrkzewr .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#gktafeibhc .gt_asterisk {
+#edwgrkzewr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gktafeibhc .gt_slash_mark {
+#edwgrkzewr .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#gktafeibhc .gt_fraction_numerator {
+#edwgrkzewr .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#gktafeibhc .gt_fraction_denominator {
+#edwgrkzewr .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -5273,12 +5273,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="gkzfywubrv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="pvcunscbvf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#gkzfywubrv .gt_table {
+#pvcunscbvf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -5303,7 +5303,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_heading {
+#pvcunscbvf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -5315,7 +5315,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_title {
+#pvcunscbvf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -5327,7 +5327,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#gkzfywubrv .gt_subtitle {
+#pvcunscbvf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -5339,13 +5339,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#gkzfywubrv .gt_bottom_border {
+#pvcunscbvf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_col_headings {
+#pvcunscbvf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5360,7 +5360,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_col_heading {
+#pvcunscbvf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5380,7 +5380,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#gkzfywubrv .gt_column_spanner_outer {
+#pvcunscbvf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5392,15 +5392,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#gkzfywubrv .gt_column_spanner_outer:first-child {
+#pvcunscbvf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gkzfywubrv .gt_column_spanner_outer:last-child {
+#pvcunscbvf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gkzfywubrv .gt_column_spanner {
+#pvcunscbvf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -5412,7 +5412,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#gkzfywubrv .gt_group_heading {
+#pvcunscbvf .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5437,7 +5437,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#gkzfywubrv .gt_empty_group_heading {
+#pvcunscbvf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -5452,15 +5452,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#gkzfywubrv .gt_from_md > :first-child {
+#pvcunscbvf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gkzfywubrv .gt_from_md > :last-child {
+#pvcunscbvf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gkzfywubrv .gt_row {
+#pvcunscbvf .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5479,7 +5479,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#gkzfywubrv .gt_stub {
+#pvcunscbvf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5492,7 +5492,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gkzfywubrv .gt_stub_row_group {
+#pvcunscbvf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5506,11 +5506,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#gkzfywubrv .gt_row_group_first td {
+#pvcunscbvf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gkzfywubrv .gt_summary_row {
+#pvcunscbvf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5520,16 +5520,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gkzfywubrv .gt_first_summary_row {
+#pvcunscbvf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_first_summary_row.thick {
+#pvcunscbvf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gkzfywubrv .gt_last_summary_row {
+#pvcunscbvf .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5539,7 +5539,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_grand_summary_row {
+#pvcunscbvf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5549,7 +5549,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gkzfywubrv .gt_first_grand_summary_row {
+#pvcunscbvf .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5559,11 +5559,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_striped {
+#pvcunscbvf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gkzfywubrv .gt_table_body {
+#pvcunscbvf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5572,7 +5572,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_footnotes {
+#pvcunscbvf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5586,7 +5586,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_footnote {
+#pvcunscbvf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -5595,7 +5595,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gkzfywubrv .gt_sourcenotes {
+#pvcunscbvf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5609,7 +5609,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#gkzfywubrv .gt_sourcenote {
+#pvcunscbvf .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -5617,36 +5617,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#gkzfywubrv .gt_left {
+#pvcunscbvf .gt_left {
   text-align: left;
 }
 
-#gkzfywubrv .gt_center {
+#pvcunscbvf .gt_center {
   text-align: center;
 }
 
-#gkzfywubrv .gt_right {
+#pvcunscbvf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gkzfywubrv .gt_font_normal {
+#pvcunscbvf .gt_font_normal {
   font-weight: normal;
 }
 
-#gkzfywubrv .gt_font_bold {
+#pvcunscbvf .gt_font_bold {
   font-weight: bold;
 }
 
-#gkzfywubrv .gt_font_italic {
+#pvcunscbvf .gt_font_italic {
   font-style: italic;
 }
 
-#gkzfywubrv .gt_super {
+#pvcunscbvf .gt_super {
   font-size: 65%;
 }
 
-#gkzfywubrv .gt_two_val_uncert {
+#pvcunscbvf .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -5655,31 +5655,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#gkzfywubrv .gt_footnote_marks {
+#pvcunscbvf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#gkzfywubrv .gt_asterisk {
+#pvcunscbvf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gkzfywubrv .gt_slash_mark {
+#pvcunscbvf .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#gkzfywubrv .gt_fraction_numerator {
+#pvcunscbvf .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#gkzfywubrv .gt_fraction_denominator {
+#pvcunscbvf .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -5763,12 +5763,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="zldvwrhadc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ckywahsrxt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#zldvwrhadc .gt_table {
+#ckywahsrxt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -5793,7 +5793,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_heading {
+#ckywahsrxt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -5805,7 +5805,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_title {
+#ckywahsrxt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -5817,7 +5817,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#zldvwrhadc .gt_subtitle {
+#ckywahsrxt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -5829,13 +5829,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#zldvwrhadc .gt_bottom_border {
+#ckywahsrxt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_col_headings {
+#ckywahsrxt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5850,7 +5850,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_col_heading {
+#ckywahsrxt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5870,7 +5870,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#zldvwrhadc .gt_column_spanner_outer {
+#ckywahsrxt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5882,15 +5882,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#zldvwrhadc .gt_column_spanner_outer:first-child {
+#ckywahsrxt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zldvwrhadc .gt_column_spanner_outer:last-child {
+#ckywahsrxt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zldvwrhadc .gt_column_spanner {
+#ckywahsrxt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -5902,7 +5902,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#zldvwrhadc .gt_group_heading {
+#ckywahsrxt .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5927,7 +5927,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#zldvwrhadc .gt_empty_group_heading {
+#ckywahsrxt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -5942,15 +5942,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#zldvwrhadc .gt_from_md > :first-child {
+#ckywahsrxt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zldvwrhadc .gt_from_md > :last-child {
+#ckywahsrxt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zldvwrhadc .gt_row {
+#ckywahsrxt .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5969,7 +5969,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#zldvwrhadc .gt_stub {
+#ckywahsrxt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5982,7 +5982,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#zldvwrhadc .gt_stub_row_group {
+#ckywahsrxt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5996,11 +5996,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#zldvwrhadc .gt_row_group_first td {
+#ckywahsrxt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zldvwrhadc .gt_summary_row {
+#ckywahsrxt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6010,16 +6010,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#zldvwrhadc .gt_first_summary_row {
+#ckywahsrxt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_first_summary_row.thick {
+#ckywahsrxt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zldvwrhadc .gt_last_summary_row {
+#ckywahsrxt .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6029,7 +6029,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_grand_summary_row {
+#ckywahsrxt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6039,7 +6039,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#zldvwrhadc .gt_first_grand_summary_row {
+#ckywahsrxt .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6049,11 +6049,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_striped {
+#ckywahsrxt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zldvwrhadc .gt_table_body {
+#ckywahsrxt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6062,7 +6062,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_footnotes {
+#ckywahsrxt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6076,7 +6076,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_footnote {
+#ckywahsrxt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -6085,7 +6085,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#zldvwrhadc .gt_sourcenotes {
+#ckywahsrxt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6099,7 +6099,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#zldvwrhadc .gt_sourcenote {
+#ckywahsrxt .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -6107,36 +6107,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#zldvwrhadc .gt_left {
+#ckywahsrxt .gt_left {
   text-align: left;
 }
 
-#zldvwrhadc .gt_center {
+#ckywahsrxt .gt_center {
   text-align: center;
 }
 
-#zldvwrhadc .gt_right {
+#ckywahsrxt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zldvwrhadc .gt_font_normal {
+#ckywahsrxt .gt_font_normal {
   font-weight: normal;
 }
 
-#zldvwrhadc .gt_font_bold {
+#ckywahsrxt .gt_font_bold {
   font-weight: bold;
 }
 
-#zldvwrhadc .gt_font_italic {
+#ckywahsrxt .gt_font_italic {
   font-style: italic;
 }
 
-#zldvwrhadc .gt_super {
+#ckywahsrxt .gt_super {
   font-size: 65%;
 }
 
-#zldvwrhadc .gt_two_val_uncert {
+#ckywahsrxt .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -6145,31 +6145,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#zldvwrhadc .gt_footnote_marks {
+#ckywahsrxt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#zldvwrhadc .gt_asterisk {
+#ckywahsrxt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zldvwrhadc .gt_slash_mark {
+#ckywahsrxt .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#zldvwrhadc .gt_fraction_numerator {
+#ckywahsrxt .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#zldvwrhadc .gt_fraction_denominator {
+#ckywahsrxt .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -6244,12 +6244,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </div>
 <p><br></p>
 <div style="page-break-after: always;"></div>
-<div id="dpeghvksey" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="emeogwcxns" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#dpeghvksey .gt_table {
+#emeogwcxns .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -6274,7 +6274,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_heading {
+#emeogwcxns .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -6286,7 +6286,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_title {
+#emeogwcxns .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -6298,7 +6298,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#dpeghvksey .gt_subtitle {
+#emeogwcxns .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -6310,13 +6310,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#dpeghvksey .gt_bottom_border {
+#emeogwcxns .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_col_headings {
+#emeogwcxns .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6331,7 +6331,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_col_heading {
+#emeogwcxns .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6351,7 +6351,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#dpeghvksey .gt_column_spanner_outer {
+#emeogwcxns .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6363,15 +6363,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#dpeghvksey .gt_column_spanner_outer:first-child {
+#emeogwcxns .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dpeghvksey .gt_column_spanner_outer:last-child {
+#emeogwcxns .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dpeghvksey .gt_column_spanner {
+#emeogwcxns .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -6383,7 +6383,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#dpeghvksey .gt_group_heading {
+#emeogwcxns .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6408,7 +6408,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#dpeghvksey .gt_empty_group_heading {
+#emeogwcxns .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -6423,15 +6423,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#dpeghvksey .gt_from_md > :first-child {
+#emeogwcxns .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dpeghvksey .gt_from_md > :last-child {
+#emeogwcxns .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dpeghvksey .gt_row {
+#emeogwcxns .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6450,7 +6450,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#dpeghvksey .gt_stub {
+#emeogwcxns .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6463,7 +6463,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#dpeghvksey .gt_stub_row_group {
+#emeogwcxns .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6477,11 +6477,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#dpeghvksey .gt_row_group_first td {
+#emeogwcxns .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dpeghvksey .gt_summary_row {
+#emeogwcxns .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6491,16 +6491,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#dpeghvksey .gt_first_summary_row {
+#emeogwcxns .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_first_summary_row.thick {
+#emeogwcxns .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dpeghvksey .gt_last_summary_row {
+#emeogwcxns .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6510,7 +6510,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_grand_summary_row {
+#emeogwcxns .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6520,7 +6520,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#dpeghvksey .gt_first_grand_summary_row {
+#emeogwcxns .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6530,11 +6530,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_striped {
+#emeogwcxns .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dpeghvksey .gt_table_body {
+#emeogwcxns .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6543,7 +6543,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_footnotes {
+#emeogwcxns .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6557,7 +6557,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_footnote {
+#emeogwcxns .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -6566,7 +6566,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#dpeghvksey .gt_sourcenotes {
+#emeogwcxns .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6580,7 +6580,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#dpeghvksey .gt_sourcenote {
+#emeogwcxns .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -6588,36 +6588,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#dpeghvksey .gt_left {
+#emeogwcxns .gt_left {
   text-align: left;
 }
 
-#dpeghvksey .gt_center {
+#emeogwcxns .gt_center {
   text-align: center;
 }
 
-#dpeghvksey .gt_right {
+#emeogwcxns .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dpeghvksey .gt_font_normal {
+#emeogwcxns .gt_font_normal {
   font-weight: normal;
 }
 
-#dpeghvksey .gt_font_bold {
+#emeogwcxns .gt_font_bold {
   font-weight: bold;
 }
 
-#dpeghvksey .gt_font_italic {
+#emeogwcxns .gt_font_italic {
   font-style: italic;
 }
 
-#dpeghvksey .gt_super {
+#emeogwcxns .gt_super {
   font-size: 65%;
 }
 
-#dpeghvksey .gt_two_val_uncert {
+#emeogwcxns .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -6626,31 +6626,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#dpeghvksey .gt_footnote_marks {
+#emeogwcxns .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#dpeghvksey .gt_asterisk {
+#emeogwcxns .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dpeghvksey .gt_slash_mark {
+#emeogwcxns .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#dpeghvksey .gt_fraction_numerator {
+#emeogwcxns .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#dpeghvksey .gt_fraction_denominator {
+#emeogwcxns .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -6769,12 +6769,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="onlgoatjwc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rbwtofgnre" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#onlgoatjwc .gt_table {
+#rbwtofgnre .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -6799,7 +6799,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_heading {
+#rbwtofgnre .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -6811,7 +6811,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_title {
+#rbwtofgnre .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -6823,7 +6823,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#onlgoatjwc .gt_subtitle {
+#rbwtofgnre .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -6835,13 +6835,13 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#onlgoatjwc .gt_bottom_border {
+#rbwtofgnre .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_col_headings {
+#rbwtofgnre .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6856,7 +6856,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_col_heading {
+#rbwtofgnre .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6876,7 +6876,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#onlgoatjwc .gt_column_spanner_outer {
+#rbwtofgnre .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6888,15 +6888,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#onlgoatjwc .gt_column_spanner_outer:first-child {
+#rbwtofgnre .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#onlgoatjwc .gt_column_spanner_outer:last-child {
+#rbwtofgnre .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#onlgoatjwc .gt_column_spanner {
+#rbwtofgnre .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -6908,7 +6908,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#onlgoatjwc .gt_group_heading {
+#rbwtofgnre .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6933,7 +6933,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#onlgoatjwc .gt_empty_group_heading {
+#rbwtofgnre .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -6948,15 +6948,15 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#onlgoatjwc .gt_from_md > :first-child {
+#rbwtofgnre .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#onlgoatjwc .gt_from_md > :last-child {
+#rbwtofgnre .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#onlgoatjwc .gt_row {
+#rbwtofgnre .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -6975,7 +6975,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#onlgoatjwc .gt_stub {
+#rbwtofgnre .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6988,7 +6988,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#onlgoatjwc .gt_stub_row_group {
+#rbwtofgnre .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7002,11 +7002,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#onlgoatjwc .gt_row_group_first td {
+#rbwtofgnre .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#onlgoatjwc .gt_summary_row {
+#rbwtofgnre .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -7016,16 +7016,16 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#onlgoatjwc .gt_first_summary_row {
+#rbwtofgnre .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_first_summary_row.thick {
+#rbwtofgnre .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#onlgoatjwc .gt_last_summary_row {
+#rbwtofgnre .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7035,7 +7035,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_grand_summary_row {
+#rbwtofgnre .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -7045,7 +7045,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#onlgoatjwc .gt_first_grand_summary_row {
+#rbwtofgnre .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7055,11 +7055,11 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_striped {
+#rbwtofgnre .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#onlgoatjwc .gt_table_body {
+#rbwtofgnre .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -7068,7 +7068,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_footnotes {
+#rbwtofgnre .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -7082,7 +7082,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_footnote {
+#rbwtofgnre .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -7091,7 +7091,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#onlgoatjwc .gt_sourcenotes {
+#rbwtofgnre .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -7105,7 +7105,7 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#onlgoatjwc .gt_sourcenote {
+#rbwtofgnre .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -7113,36 +7113,36 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#onlgoatjwc .gt_left {
+#rbwtofgnre .gt_left {
   text-align: left;
 }
 
-#onlgoatjwc .gt_center {
+#rbwtofgnre .gt_center {
   text-align: center;
 }
 
-#onlgoatjwc .gt_right {
+#rbwtofgnre .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#onlgoatjwc .gt_font_normal {
+#rbwtofgnre .gt_font_normal {
   font-weight: normal;
 }
 
-#onlgoatjwc .gt_font_bold {
+#rbwtofgnre .gt_font_bold {
   font-weight: bold;
 }
 
-#onlgoatjwc .gt_font_italic {
+#rbwtofgnre .gt_font_italic {
   font-style: italic;
 }
 
-#onlgoatjwc .gt_super {
+#rbwtofgnre .gt_super {
   font-size: 65%;
 }
 
-#onlgoatjwc .gt_two_val_uncert {
+#rbwtofgnre .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -7151,31 +7151,31 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#onlgoatjwc .gt_footnote_marks {
+#rbwtofgnre .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#onlgoatjwc .gt_asterisk {
+#rbwtofgnre .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#onlgoatjwc .gt_slash_mark {
+#rbwtofgnre .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#onlgoatjwc .gt_fraction_numerator {
+#rbwtofgnre .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#onlgoatjwc .gt_fraction_denominator {
+#rbwtofgnre .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -7328,12 +7328,12 @@ Mae Sot hospitals during November 2021- July 8, 2022 (N=574)</p>
 <p><strong>Table 4</strong>: Bivariate analysis discharge outcome of
 patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals
 during November 2021- July 8, 2022 (N=574)</p>
-<div id="urujmyqqgc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ikomaketfu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#urujmyqqgc .gt_table {
+#ikomaketfu .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -7358,7 +7358,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_heading {
+#ikomaketfu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -7370,7 +7370,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_title {
+#ikomaketfu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -7382,7 +7382,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#urujmyqqgc .gt_subtitle {
+#ikomaketfu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -7394,13 +7394,13 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#urujmyqqgc .gt_bottom_border {
+#ikomaketfu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_col_headings {
+#ikomaketfu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -7415,7 +7415,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_col_heading {
+#ikomaketfu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7435,7 +7435,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#urujmyqqgc .gt_column_spanner_outer {
+#ikomaketfu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7447,15 +7447,15 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#urujmyqqgc .gt_column_spanner_outer:first-child {
+#ikomaketfu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#urujmyqqgc .gt_column_spanner_outer:last-child {
+#ikomaketfu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#urujmyqqgc .gt_column_spanner {
+#ikomaketfu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -7467,7 +7467,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#urujmyqqgc .gt_group_heading {
+#ikomaketfu .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7492,7 +7492,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#urujmyqqgc .gt_empty_group_heading {
+#ikomaketfu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -7507,15 +7507,15 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#urujmyqqgc .gt_from_md > :first-child {
+#ikomaketfu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#urujmyqqgc .gt_from_md > :last-child {
+#ikomaketfu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#urujmyqqgc .gt_row {
+#ikomaketfu .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7534,7 +7534,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#urujmyqqgc .gt_stub {
+#ikomaketfu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7547,7 +7547,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#urujmyqqgc .gt_stub_row_group {
+#ikomaketfu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7561,11 +7561,11 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#urujmyqqgc .gt_row_group_first td {
+#ikomaketfu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#urujmyqqgc .gt_summary_row {
+#ikomaketfu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -7575,16 +7575,16 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#urujmyqqgc .gt_first_summary_row {
+#ikomaketfu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_first_summary_row.thick {
+#ikomaketfu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#urujmyqqgc .gt_last_summary_row {
+#ikomaketfu .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7594,7 +7594,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_grand_summary_row {
+#ikomaketfu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -7604,7 +7604,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#urujmyqqgc .gt_first_grand_summary_row {
+#ikomaketfu .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -7614,11 +7614,11 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_striped {
+#ikomaketfu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#urujmyqqgc .gt_table_body {
+#ikomaketfu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -7627,7 +7627,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_footnotes {
+#ikomaketfu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -7641,7 +7641,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_footnote {
+#ikomaketfu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -7650,7 +7650,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#urujmyqqgc .gt_sourcenotes {
+#ikomaketfu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -7664,7 +7664,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#urujmyqqgc .gt_sourcenote {
+#ikomaketfu .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -7672,36 +7672,36 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#urujmyqqgc .gt_left {
+#ikomaketfu .gt_left {
   text-align: left;
 }
 
-#urujmyqqgc .gt_center {
+#ikomaketfu .gt_center {
   text-align: center;
 }
 
-#urujmyqqgc .gt_right {
+#ikomaketfu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#urujmyqqgc .gt_font_normal {
+#ikomaketfu .gt_font_normal {
   font-weight: normal;
 }
 
-#urujmyqqgc .gt_font_bold {
+#ikomaketfu .gt_font_bold {
   font-weight: bold;
 }
 
-#urujmyqqgc .gt_font_italic {
+#ikomaketfu .gt_font_italic {
   font-style: italic;
 }
 
-#urujmyqqgc .gt_super {
+#ikomaketfu .gt_super {
   font-size: 65%;
 }
 
-#urujmyqqgc .gt_two_val_uncert {
+#ikomaketfu .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -7710,31 +7710,31 @@ during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#urujmyqqgc .gt_footnote_marks {
+#ikomaketfu .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#urujmyqqgc .gt_asterisk {
+#ikomaketfu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#urujmyqqgc .gt_slash_mark {
+#ikomaketfu .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#urujmyqqgc .gt_fraction_numerator {
+#ikomaketfu .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#urujmyqqgc .gt_fraction_denominator {
+#ikomaketfu .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -7843,12 +7843,12 @@ during November 2021- July 8, 2022 (N=574)</p>
 </table>
 </div>
 <p><br></p>
-<div id="rxtqzsamhj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="okmmcyusls" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rxtqzsamhj .gt_table {
+#okmmcyusls .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -7873,7 +7873,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-left-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_heading {
+#okmmcyusls .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -7885,7 +7885,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_title {
+#okmmcyusls .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -7897,7 +7897,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-width: 0;
 }
 
-#rxtqzsamhj .gt_subtitle {
+#okmmcyusls .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -7909,13 +7909,13 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-top-width: 0;
 }
 
-#rxtqzsamhj .gt_bottom_border {
+#okmmcyusls .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_col_headings {
+#okmmcyusls .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -7930,7 +7930,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_col_heading {
+#okmmcyusls .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7950,7 +7950,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#rxtqzsamhj .gt_column_spanner_outer {
+#okmmcyusls .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -7962,15 +7962,15 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 4px;
 }
 
-#rxtqzsamhj .gt_column_spanner_outer:first-child {
+#okmmcyusls .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rxtqzsamhj .gt_column_spanner_outer:last-child {
+#okmmcyusls .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rxtqzsamhj .gt_column_spanner {
+#okmmcyusls .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -7982,7 +7982,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   width: 100%;
 }
 
-#rxtqzsamhj .gt_group_heading {
+#okmmcyusls .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -8007,7 +8007,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#rxtqzsamhj .gt_empty_group_heading {
+#okmmcyusls .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -8022,15 +8022,15 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: middle;
 }
 
-#rxtqzsamhj .gt_from_md > :first-child {
+#okmmcyusls .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rxtqzsamhj .gt_from_md > :last-child {
+#okmmcyusls .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rxtqzsamhj .gt_row {
+#okmmcyusls .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -8049,7 +8049,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   overflow-x: hidden;
 }
 
-#rxtqzsamhj .gt_stub {
+#okmmcyusls .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -8062,7 +8062,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#rxtqzsamhj .gt_stub_row_group {
+#okmmcyusls .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -8076,11 +8076,11 @@ during November 2021- July 8, 2022 (N=574)</p>
   vertical-align: top;
 }
 
-#rxtqzsamhj .gt_row_group_first td {
+#okmmcyusls .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rxtqzsamhj .gt_summary_row {
+#okmmcyusls .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -8090,16 +8090,16 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#rxtqzsamhj .gt_first_summary_row {
+#okmmcyusls .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_first_summary_row.thick {
+#okmmcyusls .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rxtqzsamhj .gt_last_summary_row {
+#okmmcyusls .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -8109,7 +8109,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_grand_summary_row {
+#okmmcyusls .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -8119,7 +8119,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#rxtqzsamhj .gt_first_grand_summary_row {
+#okmmcyusls .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -8129,11 +8129,11 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-top-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_striped {
+#okmmcyusls .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rxtqzsamhj .gt_table_body {
+#okmmcyusls .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -8142,7 +8142,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_footnotes {
+#okmmcyusls .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -8156,7 +8156,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_footnote {
+#okmmcyusls .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -8165,7 +8165,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#rxtqzsamhj .gt_sourcenotes {
+#okmmcyusls .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -8179,7 +8179,7 @@ during November 2021- July 8, 2022 (N=574)</p>
   border-right-color: #D3D3D3;
 }
 
-#rxtqzsamhj .gt_sourcenote {
+#okmmcyusls .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -8187,36 +8187,36 @@ during November 2021- July 8, 2022 (N=574)</p>
   padding-right: 5px;
 }
 
-#rxtqzsamhj .gt_left {
+#okmmcyusls .gt_left {
   text-align: left;
 }
 
-#rxtqzsamhj .gt_center {
+#okmmcyusls .gt_center {
   text-align: center;
 }
 
-#rxtqzsamhj .gt_right {
+#okmmcyusls .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rxtqzsamhj .gt_font_normal {
+#okmmcyusls .gt_font_normal {
   font-weight: normal;
 }
 
-#rxtqzsamhj .gt_font_bold {
+#okmmcyusls .gt_font_bold {
   font-weight: bold;
 }
 
-#rxtqzsamhj .gt_font_italic {
+#okmmcyusls .gt_font_italic {
   font-style: italic;
 }
 
-#rxtqzsamhj .gt_super {
+#okmmcyusls .gt_super {
   font-size: 65%;
 }
 
-#rxtqzsamhj .gt_two_val_uncert {
+#okmmcyusls .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -8225,31 +8225,31 @@ during November 2021- July 8, 2022 (N=574)</p>
   margin-left: 0.1em;
 }
 
-#rxtqzsamhj .gt_footnote_marks {
+#okmmcyusls .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#rxtqzsamhj .gt_asterisk {
+#okmmcyusls .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rxtqzsamhj .gt_slash_mark {
+#okmmcyusls .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#rxtqzsamhj .gt_fraction_numerator {
+#okmmcyusls .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#rxtqzsamhj .gt_fraction_denominator {
+#okmmcyusls .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;

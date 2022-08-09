@@ -286,7 +286,7 @@ t1 <- df_enr %>%
     sort = list(Occupation ~ "frequency")
   ) %>%
   bold_labels()
-t1 < format_table(t1)
+t1 <- format_table(t1)
 t1
 ```
 
