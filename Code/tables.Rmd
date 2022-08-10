@@ -73,13 +73,13 @@ format_table <- function(t, grp = "") {
   
 }
 
-# Sort dichotomous variables by descending proportion
+# Sort dichotomous variables by descending frequency
 sort_var <- function(...) {
   
   df_enr %>%
     filter(!is.na(dead)) %>% 
     select(...) %>%
-    map_dbl(mean, na.rm = TRUE) %>%
+    map_dbl(sum, na.rm = TRUE) %>%
     sort(decreasing = TRUE)
   
 }
@@ -89,8 +89,10 @@ sort_var <- function(...) {
 ```{r data}
 # Screening
 df_scr <-
-  read_sas("C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-           "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat") %>%
+  read_sas(
+    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
+  ) %>%
   mutate(
     infect = ifelse(
       IFTropSep == 1 |
