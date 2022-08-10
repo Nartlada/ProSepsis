@@ -25,7 +25,9 @@ library(gt)         # Format gtsummary output
 
 theme_gtsummary_compact(font_size = 10)
 # theme_gtsummary_journal("lancet")
+```
 
+```{r functions}
 # Format gtsummary outputs
 format_table <- function(t, grp = "") {
 
@@ -83,7 +85,6 @@ sort_var <- function(...) {
     sort(decreasing = TRUE)
   
 }
-
 ```
 
 ```{r data}
@@ -92,23 +93,6 @@ df_scr <-
   read_sas(
     "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
     "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
-  ) %>%
-  mutate(
-    infect = ifelse(
-      IFTropSep == 1 |
-        IFRespiratory == 1 |
-        IFBlood == 1 |
-        IFGas == 1 |
-        IFUrine == 1 |
-        IFSkin == 1 |
-        IFNerve == 1 |
-        IFOth == 1,
-      1,
-      0
-    ),
-    across(SirsTemp:qS_Glasgow, ~ ifelse(. == 2, 0, .)),
-    N_sirs = SirsTemp + SirsHR + SirsRR + SirsWBC,
-    N_QSofa = qS_RR + qS_BP + qS_Glasgow
   )
 
 # Enrollment
@@ -123,13 +107,22 @@ df_enr <-
       levels = c(1, 2),
       labels = c('Dead', 'Alive')
     ),
-    SIRSqSOFA = ifelse(Group == 1, 1, 0),
-    across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .)),
-    covid19_r = ifelse(grepl('1', Covid_tests, fixed = TRUE), 1, 0),
-    dengue_r  = ifelse(grepl('1', Dengue_tests, fixed = TRUE), 1, 0),
-    denguel_r = ifelse(grepl('1', DengueL_tests, fixed = TRUE), 1, 0),
-    hbshcv_r  = ifelse(grepl('1', HBSHCV_tests, fixed = TRUE), 1, 0),
-    scrubt_r  = ifelse(grepl('1', ScrubT_tests, fixed = TRUE), 1, 0),
+    across(
+      c(
+        Sex,
+        PlaceChk_n,
+        Occupation,
+        OPD_IPD,
+        Sepsis_Scale,
+        HIV,
+        Covid21,
+        DischargeStatus,
+        DischargeType,
+        OPDOutcome,
+        Outcome28Days
+      ),
+      ~ as_factor(.)
+    ),
     across(
       c(
         Refer,
@@ -150,134 +143,35 @@ df_enr <-
         RSV
       ),
       ~ ifelse(. == 2, 0, .)
-    ),
-    across(Principal1:Principal3, ~ na_if(., "")
-    ),
-    across(
-      c(
-        Sex,
-        PlaceChk_n,
-        Occupation,
-        OPD_IPD,
-        Sepsis_Scale,
-        HIV,
-        Covid21,
-        DischargeStatus,
-        DischargeType,
-        OPDOutcome,
-        Outcome28Days
-      ),
-      ~ as_factor(.)
     )
-    # Sex = factor(Sex,
-    #              levels = c(1, 2),
-    #              labels = c('Male', 'Female')),
-    # Ward = factor(
-    #   as.numeric(substr(PlaceChk, 1, 1)),
-    #   levels = c(1, 2, 3),
-    #   labels = c('ER', 'OPD Med', 'OPD Sur')
-    # ),
-    # Occupation = factor(
-    #   ifelse(Occupation == 7, 5, Occupation),
-    #   levels = c(1:6, 8:15, 99),
-    #   labels = c(
-    #     'Unemployed/Student',
-    #     'Government employee',
-    #     'Private employee',
-    #     'Laborer',
-    #     'Farmer',
-    #     'Gardener',
-    #     'Livestock',
-    #     'Janitor/security guard',
-    #     'Fisherman',
-    #     'Teacher',
-    #     'Monk',
-    #     'Police/Military',
-    #     'Merchant',
-    #     'HCW',
-    #     'Other'
-    #   )
-    # ),
-    # OPD_IPD = factor(OPD_IPD,
-    #                  levels = c(1, 2),
-    #                  labels = c('IPD', 'OPD')),
-    # Sepsis_Scale = factor(
-    #   Sepsis_Scale,
-    #   levels = c(1, 2, 3),
-    #   labels = c('Non-sepsis', 'Sepsis', 'Septic shock')
-    # ),
-    # across(c(HIV,
-    #          Covid21),
-    #        ~ factor(
-    #          .x,
-    #          levels = 1:3,
-    #          labels = c('Yes', 'No', "Don't know")
-    #        )),
-    # DischargeStatus = factor(
-    #   DischargeStatus,
-    #   levels = c(1:3, 9),
-    #   labels = c('Complete recovery', 'Improved', 'Not improved', 'Died')
-    # ),
-    # DischargeType = factor(
-    #   DischargeType,
-    #   levels = c(1:6),
-    #   labels = c(
-    #     'With approval',
-    #     'Against advice',
-    #     'By Transfer',
-    #     'Escape',
-    #     'Dead',
-    #     'No info'
-    #   )
-    # ),
-    # OPDOutcome = factor(
-    #   OPDOutcome,
-    #   levels = c(1:6),
-    #   labels = c(
-    #     'Healthy',
-    #     'Recovering FU/other issues',
-    #     'Untreated FU in OPD',
-    #     'Untreated admit IPD',
-    #     'Untreated Transfer',
-    #     'Died'
-    #   )
-    # ),
-    # Outcome28Days = factor(
-    #   Outcome28Days,
-    #   levels = c(1:7),
-    #   labels = c(
-    #     'Cannot contact',
-    #     'Healthy',
-    #     'Partially disabled',
-    #     'Bed Ridden',
-    #     'Admit hospital',
-    #     'Died',
-    #     'Others'
-    #   )
-    # )
   )
 
 n_enr  = nrow(df_enr)
 n_miss = sum(is.na(df_enr$dead), na.rm = TRUE)
 ```
 
-<br><br>
-**Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
+<br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
 
 <center>
+
 ```{r flowchart}
 source("flowchart.R", local = knitr::knit_global())
 d
 ```
+
 </center>
 
 <br>
 
 \newpage
+
 **Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t1}
 t1 <- df_enr %>%
+  mutate(
+    SIRSqSOFA = ifelse(Group == 1, 1, 0)
+  ) %>% 
   select(
     dead,
     Age_year,
@@ -314,6 +208,7 @@ t1
 <br>
 
 \newpage
+
 ```{r t1_cc}
 vars <- names(sort_var(CCFever:CCJointPain))
 t1_cc <- df_enr %>%
@@ -351,6 +246,7 @@ t1_if
 <br>
 
 \newpage
+
 **Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t2_un}
@@ -406,6 +302,9 @@ t2_dx
 
 ```{r t2_or}
 t2_or <- df_enr %>%
+  mutate(
+    across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .))
+  ) %>% 
   select(dead, SOFA1:SOFA6, Sofa_Sepsis) %>%
   tbl_summary(
     by = dead,
@@ -447,7 +346,13 @@ t2_cul_s
 <br>
 
 \newpage
+
 ```{r t2_rdt}
+df_enr$covid19_r <- ifelse(grepl('1', df_enr$Covid_tests, fixed = TRUE), 1, 0)
+df_enr$dengue_r  <- ifelse(grepl('1', df_enr$Dengue_tests, fixed = TRUE), 1, 0)
+df_enr$denguel_r <- ifelse(grepl('1', df_enr$DengueL_tests, fixed = TRUE), 1, 0)
+df_enr$hbshcv_r  <- ifelse(grepl('1', df_enr$HBSHCV_tests, fixed = TRUE), 1, 0)
+df_enr$scrubt_r  <- ifelse(grepl('1', df_enr$ScrubT_tests, fixed = TRUE), 1, 0)
 vars <-
   names(
     sort_var(
@@ -469,7 +374,6 @@ t2_rdt <- df_enr %>%
   select(dead, vars) %>%
   tbl_summary(
     by = dead,
-    missing = "no",
     label = list(
       covid19_r ~ 'COVID-19 +',
       dengue_r  ~ 'Dengue +',
@@ -485,7 +389,8 @@ t2_rdt <- df_enr %>%
       Melio     ~ 'Melioidosis +',
       scrubt_r  ~ 'Scrub typhus +',
       RSV       ~ 'RSV +'
-    )
+    ),
+    missing = "no"
   ) %>%
   format_table("RDT")
 t2_rdt
@@ -500,7 +405,6 @@ t2_trt <- df_enr %>%
   select(dead, vars, otheranti_ever) %>%
   tbl_summary(
     by = dead,
-    missing = "no",
     label = list(
       penicillin_ever   ~ 'Penicillin',
       cephalG1_ever     ~ 'Cephalosporin 1st',
@@ -522,7 +426,8 @@ t2_trt <- df_enr %>%
       antimalaria_ever  ~ 'Antimalarial',
       parasitedrug_ever ~ 'Parasite drugs',
       otheranti_ever    ~ 'Others'
-    )
+    ),
+    missing = "no"
   ) %>%
   format_table("Treatment Received")
 t2_trt
@@ -531,18 +436,22 @@ t2_trt
 <br>
 
 \newpage
+
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t4_dx}
 vars <- names(sort_var(Pneumonia:Malaria))
 t4_dx <- df_enr %>%
-  zap_labels() %>% 
-  mutate(Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),1,0)) %>% 
-  select(dead, vars, Others) %>%
-  tbl_summary(
-    by = dead,
-    missing = "no"
+  zap_labels() %>%
+  mutate(
+    across(Principal1:Principal3, ~ na_if(., "")),
+    Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
+                    1,
+                    0)
   ) %>%
+  select(dead, vars, Others) %>%
+  tbl_summary(by = dead,
+              missing = "no") %>%
   format_table("Principal Diagnosis")
 t4_dx
 ```
@@ -571,7 +480,6 @@ t4 <- df_enr %>%
 t4
 ```
 
-
 ```{r}
 # uni <- df_enr %>%
 #   select(Age_year, Sex, Refer, Sepsis:Cancer, Liver, TotalCharge, dead, stime) %>%
@@ -582,4 +490,3 @@ t4
 #   add_global_p()
 # uni
 ```
-

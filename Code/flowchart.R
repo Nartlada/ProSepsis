@@ -1,5 +1,22 @@
 # Figures in first 11 boxes (up to enrollment) are from screening (df_scr)
 df_sumscr <- df_scr %>%
+  mutate(
+    infect = ifelse(
+      IFTropSep == 1 |
+        IFRespiratory == 1 |
+        IFBlood == 1 |
+        IFGas == 1 |
+        IFUrine == 1 |
+        IFSkin == 1 |
+        IFNerve == 1 |
+        IFOth == 1,
+      1,
+      0
+    ),
+    across(SirsTemp:qS_Glasgow, ~ ifelse(. == 2, 0, .)),
+    N_sirs = SirsTemp + SirsHR + SirsRR + SirsWBC,
+    N_QSofa = qS_RR + qS_BP + qS_Glasgow
+  ) %>%
   summarise(
     scr         = n(),
     scr_NP      = sum(HospitalID == 1, na.rm = TRUE),
