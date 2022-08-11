@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library(haven)      # Read SAS dataset
-library(purrr)      # Apply mean function to each element 
+library(purrr)      # Apply function (sum) to each element 
 library(scales)     # Format numeric values
 library(DiagrammeR) # Create flowchart
 library(gtsummary)  # Create publication-ready summary tables 
@@ -39,14 +39,14 @@ format_table <- function(t, grp = "") {
   }
   
   t <- t %>%
-    add_overall() %>%                            # Add overall column
     bold_p(t = 0.05) %>%                         # Bold p-value if significant
+    add_overall() %>%                            # Add overall column
     modify_spanning_header(c("stat_1", "stat_2") ~ "**Mortality Outcome**") %>%
     # Empty stub head label and split header line
     modify_header(                     
       update = list(
         label ~ "",
-        all_stat_cols(FALSE) ~ "**{level}**<br>N = {n}",
+        all_stat_cols(stat_0 = FALSE) ~ "**{level}**<br>N = {n}",
         stat_0 ~ "**Overall**<br>N = {N}"
       )
     ) %>%
@@ -197,10 +197,13 @@ t1 <- df_enr %>%
       SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
       Sepsis_Scale ~ 'Sepsis determination (SOFA)'
     ),
+    digits = Age_year ~ 1,
     missing = "no",
     sort = list(Occupation ~ "frequency")
   ) %>%
-  bold_labels()
+  bold_labels() %>%
+  # Add labels describing stat for each variable
+  add_stat_label()
 t1 <- format_table(t1)
 t1
 ```
