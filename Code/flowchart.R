@@ -163,7 +163,7 @@ l19 <- paste0(df_sumenr$exc_pending,
               ')  in pending')
 l20 <- paste0(df_sumenr$d,
               ' (',
-              percent(df_sumenr$d / df_sumenr$enr, 0.1),
+              percent(df_sumenr$d / (df_sumenr$d + df_sumenr$a), 0.1),
               ') 28 days mortality')
 l21 <- paste0(df_sumenr$d_non,
               ' (',
@@ -179,7 +179,7 @@ l23 <- paste0(df_sumenr$d_shock,
               ') septic shock')
 l24 <- paste0(df_sumenr$a,
               ' (',
-              percent(df_sumenr$a / df_sumenr$enr, 0.1),
+              percent(df_sumenr$a / (df_sumenr$d + df_sumenr$a), 0.1),
               ') survivors')
 l25 <- paste0(df_sumenr$a_non,
               ' (',
