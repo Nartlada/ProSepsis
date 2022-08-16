@@ -84,7 +84,7 @@ sort_var <- function(vars) {
 ```{r data}
 # Screening
 df_scr <-
-  read_sas("C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat", NULL) %>%
+  read_sas("C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat", NULL) %>%
   mutate(
     infect = ifelse(
       IFTropSep == TRUE |
@@ -105,7 +105,7 @@ df_scr <-
 
 # Enrollment
 df_enr <-
-  read_sas("C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat", NULL) %>%
+  read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL) %>%
   mutate(
     dead = factor(
       dead,
