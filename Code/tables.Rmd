@@ -91,6 +91,8 @@ sort_var <- function(...) {
 # Screening
 df_scr <-
   read_sas(
+    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
     "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
     "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   )
@@ -98,6 +100,8 @@ df_scr <-
 # Enrollment
 df_enr <-
   read_sas(
+    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
     "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
     "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   ) %>%
