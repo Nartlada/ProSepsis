@@ -1,5 +1,22 @@
-## by Nartlada
+# Figures in first 11 boxes (up to enrollment) are from screening (df_scr)
 df_sumscr <- df_scr %>%
+  mutate(
+    infect = ifelse(
+      IFTropSep == 1 |
+        IFRespiratory == 1 |
+        IFBlood == 1 |
+        IFGas == 1 |
+        IFUrine == 1 |
+        IFSkin == 1 |
+        IFNerve == 1 |
+        IFOth == 1,
+      1,
+      0
+    ),
+    across(SirsTemp:qS_Glasgow, ~ ifelse(. == 2, 0, .)),
+    N_sirs = SirsTemp + SirsHR + SirsRR + SirsWBC,
+    N_QSofa = qS_RR + qS_BP + qS_Glasgow
+  ) %>%
   summarise(
     scr         = n(),
     scr_NP      = sum(HospitalID == 1, na.rm = TRUE),
@@ -51,6 +68,7 @@ df_sumscr <- df_scr %>%
     )
   )
 
+# Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
   mutate(across(c(dead,Sepsis_Scale), ~ as.numeric(.))) %>% 
   summarise(
@@ -66,143 +84,115 @@ df_sumenr <- df_enr %>%
     a_shock     = sum(dead == 2 & Sepsis_Scale == 3, na.rm = TRUE)
   )
 
-l1 <-
-  paste0(comma(df_sumscr$scr_NP),
-         ' patients at NP',
-         '\n',
-         ' were screened')
-l2 <-
-  paste0(comma(df_sumscr$scr_MS),
-         ' patients at MS',
-         '\n',
-         ' were screened')
-l3 <-
-  paste0(
-    comma(df_sumscr$scr),
-    ' total patients age >= 15 years',
-    '\n',
-    'visit at ER/OPD were screened'
-  )
-l4 <-
-  paste0(
-    df_sumscr$exc_48,
-    ' (',
-    percent(df_sumscr$exc_48/df_sumscr$scr, 0.1),
-    ') admitted more than 48 hours from referral hospital'
-  )
-l5 <-
-  paste0(
-    df_sumscr$exc_inf,
-    ' (',
-    percent(df_sumscr$exc_inf/df_sumscr$scr, 0.1),
-    ') no source of infection'
-  )
-l6 <-
-  paste0(
-    comma(df_sumscr$inf),
-    ' (',
-    percent(df_sumscr$inf/df_sumscr$scr, 0.1),
-    ') with suspected infection'
-  )
-l7 <-
-  paste0(
-    df_sumscr$exc_sirs_qs,
-    ' (',
-    percent(df_sumscr$exc_sirs_qs/df_sumscr$inf, 0.1),
-    ')  SIRS & qSOFA < 2'
-  )
-l8 <-
-  paste0(
-    df_sumscr$sep,
-    ' (',
-    percent(df_sumscr$sep/df_sumscr$inf, 0.1),
-    ') suspected sepsis (SIRS >= 2 or qSOFA >= 2)'
-  )
-l9 <-
-  paste0(
-    df_sumscr$pos_pos,
-    ' (',
-    percent(df_sumscr$pos_pos/df_sumscr$sep, 0.1),
-    ') SIRS + qSOFA +'
-  )
-l10 <-
-  paste0(
-    df_sumscr$pos_neg,
-    ' (',
-    percent(df_sumscr$pos_neg/df_sumscr$sep, 0.1),
-    ') SIRS + qSOFA -'
-  )
-l11 <-
-  paste0(
-    df_sumscr$neg_pos,
-    ' (',
-    percent(df_sumscr$neg_pos/df_sumscr$sep, 0.1),
-    ') SIRS - qSOFA +'
-  )
-l12 <-
-  paste0(
-    df_sumscr$exc_con,
-    ' (',
-    percent(df_sumscr$exc_con/df_sumscr$sep, 0.1),
-    ') not agree to participate'
-  )
-l13 <-
-  paste0(
-    df_sumscr$reason1,
-    ' (',
-    percent(df_sumscr$reason1/df_sumscr$sep, 0.1),
-    ') not interest'
-  )
-l14 <-
-  paste0(
-    df_sumscr$reason2,
-    ' (',
-    percent(df_sumscr$reason2/df_sumscr$sep, 0.1),
-    ') no benefit'
-  )
-l15 <-
-  paste0(
-    df_sumscr$reason3,
-    ' (',
-    percent(df_sumscr$reason3/df_sumscr$sep, 0.1),
-    ') guardian N/A'
-  )
-l16 <-
-  paste0(
-    df_sumscr$reason4,
-    ' (',
-    percent(df_sumscr$reason4/df_sumscr$sep, 0.1),
-    ') not in condition'
-  )
-l17 <-
-  paste0(
-    df_sumscr$reason5,
-    ' (',
-    percent(df_sumscr$reason5/df_sumscr$sep, 0.1),
-    ') other'
-  )
-l18 <-
-  paste0(
-    df_sumenr$enr,
-    ' (',
-    percent(df_sumenr$enr/df_sumscr$sep, 0.1),
-    ') enrolled suspected sepsis'
-  )
-l19 <-
-  paste0(
-    df_sumenr$exc_pending,
-    ' (',
-    percent(df_sumenr$exc_pending/df_sumenr$enr, 0.1),
-    ')  in pending'
-  )
-l20 <- paste0(df_sumenr$d, ' (', percent(df_sumenr$d/df_sumenr$enr, 0.1), ') 28 days mortality')
-l21 <- paste0(df_sumenr$d_non, ' (', percent(df_sumenr$d_non/df_sumenr$d, 0.1), ') non-sepsis')
-l22 <- paste0(df_sumenr$d_sepsis, ' (', percent(df_sumenr$d_sepsis/df_sumenr$d, 0.1), ') sepsis')
-l23 <- paste0(df_sumenr$d_shock, ' (', percent(df_sumenr$d_shock/df_sumenr$d, 0.1), ') septic shock')
-l24 <- paste0(df_sumenr$a, ' (', percent(df_sumenr$a/df_sumenr$enr, 0.1), ') survivors')
-l25 <- paste0(df_sumenr$a_non, ' (', percent(df_sumenr$a_non/df_sumenr$a, 0.1), ') non-sepsis')
-l26 <- paste0(df_sumenr$a_sepsis, ' (', percent(df_sumenr$a_sepsis/df_sumenr$a, 0.1), ') sepsis')
-l27 <- paste0(df_sumenr$a_shock, ' (', percent(df_sumenr$a_shock/df_sumenr$a, 0.1), ') septic shock')
+# Texts for figures
+l1 <- paste0(comma(df_sumscr$scr_NP),
+             ' patients at NP',
+             '\n',
+             ' were screened')
+l2 <- paste0(comma(df_sumscr$scr_MS),
+             ' patients at MS',
+             '\n',
+             ' were screened')
+l3 <- paste0(comma(df_sumscr$scr),
+             ' total patients age >= 15 years',
+             '\n',
+             'visit at ER/OPD were screened')
+l4 <- paste0(df_sumscr$exc_48,
+             ' (',
+             percent(df_sumscr$exc_48 / df_sumscr$scr, 0.1),
+             ') admitted more than 48 hours from referral hospital')
+l5 <- paste0(df_sumscr$exc_inf,
+             ' (',
+             percent(df_sumscr$exc_inf / df_sumscr$scr, 0.1),
+             ') no source of infection')
+l6 <- paste0(comma(df_sumscr$inf),
+             ' (',
+             percent(df_sumscr$inf / df_sumscr$scr, 0.1),
+             ') with suspected infection')
+l7 <- paste0(df_sumscr$exc_sirs_qs,
+             ' (',
+             percent(df_sumscr$exc_sirs_qs / df_sumscr$inf, 0.1),
+             ')  SIRS & qSOFA < 2')
+l8 <- paste0(df_sumscr$sep,
+             ' (',
+             percent(df_sumscr$sep / df_sumscr$inf, 0.1),
+             ') suspected sepsis (SIRS >= 2 or qSOFA >= 2)')
+l9 <- paste0(df_sumscr$pos_pos,
+             ' (',
+             percent(df_sumscr$pos_pos / df_sumscr$sep, 0.1),
+             ') SIRS + qSOFA +')
+l10 <- paste0(df_sumscr$pos_neg,
+              ' (',
+              percent(df_sumscr$pos_neg / df_sumscr$sep, 0.1),
+              ') SIRS + qSOFA -')
+l11 <- paste0(df_sumscr$neg_pos,
+              ' (',
+              percent(df_sumscr$neg_pos / df_sumscr$sep, 0.1),
+              ') SIRS - qSOFA +')
+l12 <- paste0(df_sumscr$exc_con,
+              ' (',
+              percent(df_sumscr$exc_con / df_sumscr$sep, 0.1),
+              ') not agree to participate')
+l13 <- paste0(df_sumscr$reason1,
+              ' (',
+              percent(df_sumscr$reason1 / df_sumscr$sep, 0.1),
+              ') not interest')
+l14 <- paste0(df_sumscr$reason2,
+              ' (',
+              percent(df_sumscr$reason2 / df_sumscr$sep, 0.1),
+              ') no benefit')
+l15 <- paste0(df_sumscr$reason3,
+              ' (',
+              percent(df_sumscr$reason3 / df_sumscr$sep, 0.1),
+              ') guardian N/A')
+l16 <- paste0(df_sumscr$reason4,
+              ' (',
+              percent(df_sumscr$reason4 / df_sumscr$sep, 0.1),
+              ') not in condition')
+l17 <- paste0(df_sumscr$reason5,
+              ' (',
+              percent(df_sumscr$reason5 / df_sumscr$sep, 0.1),
+              ') other')
+l18 <- paste0(df_sumenr$enr,
+              ' (',
+              percent(df_sumenr$enr / df_sumscr$sep, 0.1),
+              ') enrolled suspected sepsis')
+l19 <- paste0(df_sumenr$exc_pending,
+              ' (',
+              percent(df_sumenr$exc_pending / df_sumenr$enr, 0.1),
+              ')  in pending')
+l20 <- paste0(df_sumenr$d,
+              ' (',
+              percent(df_sumenr$d / (df_sumenr$d + df_sumenr$a), 0.1),
+              ') 28 days mortality')
+l21 <- paste0(df_sumenr$d_non,
+              ' (',
+              percent(df_sumenr$d_non / df_sumenr$d, 0.1),
+              ') non-sepsis')
+l22 <- paste0(df_sumenr$d_sepsis,
+              ' (',
+              percent(df_sumenr$d_sepsis / df_sumenr$d, 0.1),
+              ') sepsis')
+l23 <- paste0(df_sumenr$d_shock,
+              ' (',
+              percent(df_sumenr$d_shock / df_sumenr$d, 0.1),
+              ') septic shock')
+l24 <- paste0(df_sumenr$a,
+              ' (',
+              percent(df_sumenr$a / (df_sumenr$d + df_sumenr$a), 0.1),
+              ') survivors')
+l25 <- paste0(df_sumenr$a_non,
+              ' (',
+              percent(df_sumenr$a_non / df_sumenr$a, 0.1),
+              ') non-sepsis')
+l26 <- paste0(df_sumenr$a_sepsis,
+              ' (',
+              percent(df_sumenr$a_sepsis / df_sumenr$a, 0.1),
+              ') sepsis')
+l27 <- paste0(df_sumenr$a_shock,
+              ' (',
+              percent(df_sumenr$a_shock / df_sumenr$a, 0.1),
+              ') septic shock')
 
 d <- DiagrammeR::grViz(
   "digraph flowchart {
