@@ -35,7 +35,7 @@ format_table <- function(t, grp = "") {
   if (deparse(substitute(t)) == 't1') {
     t <- t %>% add_p(include = -c('SIRSqSOFA', 'SIRS', 'QSofa'))
   } else {
-    t <- t %>% add_p()
+    t <- t %>% add_p(test.args = all_tests("fisher.test") ~ list(workspace=2e9))
   }
   
   t <- t %>%
@@ -90,41 +90,17 @@ sort_var <- function(...) {
 ```{r data}
 # Screening
 df_scr <-
-<<<<<<< HEAD
-  read_sas("C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat", NULL) %>%
-  mutate(
-    infect = ifelse(
-      IFTropSep == TRUE |
-        IFRespiratory == TRUE |
-        IFBlood == TRUE |
-        IFGas == TRUE |
-        IFUrine == TRUE |
-        IFSkin == TRUE |
-        IFNerve == TRUE |
-        IFOth == TRUE,
-      1,
-      0
-    ),
-    across(SirsTemp:qS_Glasgow, ~ ifelse(. == 2, 0, .)),
-    N_sirs = SirsTemp + SirsHR + SirsRR + SirsWBC,
-    N_QSofa = qS_RR + qS_BP + qS_Glasgow
-=======
   read_sas(
     "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
->>>>>>> 0330359f43563c450bd821178c384855dcd535e5
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
   )
 
 # Enrollment
 df_enr <-
-<<<<<<< HEAD
-  read_sas("C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat", NULL) %>%
-=======
   read_sas(
     "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
   ) %>%
->>>>>>> 0330359f43563c450bd821178c384855dcd535e5
   mutate(
     dead = factor(
       dead,
@@ -491,7 +467,8 @@ t4 <- df_enr %>%
          DischargeStatus,
          DischargeType,
          OPDOutcome,
-         Outcome28Days) %>%
+         Outcome28Days,
+         TotalCharge) %>%
   tbl_summary(
     by = dead,
     label = list(
