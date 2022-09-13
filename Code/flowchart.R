@@ -70,18 +70,18 @@ df_sumscr <- df_scr %>%
 
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
-  mutate(across(c(dead,Sepsis_Scale), ~ as.numeric(.))) %>% 
+  mutate(across(c(dead28,Sepsis_Scale), ~ as.numeric(.))) %>% 
   summarise(
     enr         = n(),
-    exc_pending = sum(is.na(dead), na.rm = TRUE),
-    d           = sum(dead == 1, na.rm = TRUE),
-    d_non       = sum(dead == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    d_sepsis    = sum(dead == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    d_shock     = sum(dead == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    a           = sum(dead == 2, na.rm = TRUE),
-    a_non       = sum(dead == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    a_sepsis    = sum(dead == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    a_shock     = sum(dead == 2 & Sepsis_Scale == 3, na.rm = TRUE)
+    exc_pending = sum(is.na(dead28), na.rm = TRUE),
+    d           = sum(dead28 == 1, na.rm = TRUE),
+    d_non       = sum(dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    d_sepsis    = sum(dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    d_shock     = sum(dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    a           = sum(dead28 == 2, na.rm = TRUE),
+    a_non       = sum(dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    a_sepsis    = sum(dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    a_shock     = sum(dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE)
   )
 
 # Texts for figures
