@@ -58,7 +58,7 @@ format_table <- function(t, grp = "") {
                everything() ~ px(100)) %>%
     # Add footnote about pending cases
     tab_footnote(
-      footnote = str_glue(n_miss, " cases are pending for final outcome"),
+      footnote = str_glue(n_miss_i, " cases are pending for final outcome"),
       locations = cells_column_labels(columns = "stat_0")
     )
 
@@ -96,11 +96,63 @@ df_scr <-
   )
 
 # Enrollment
-df_enr <-
+df_enr_i <-
   read_sas(
     "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
     "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
   ) %>%
+  filter(OPD_IPD == 1) %>% 
+  mutate(
+    dead28 = factor(
+      dead28,
+      levels = c(1, 2),
+      labels = c('Dead', 'Alive')
+    ),
+    across(
+      c(
+        Sex,
+        PlaceChk_n,
+        Occupation,
+        OPD_IPD,
+        Sepsis_Scale,
+        HIV,
+        Covid21,
+        DischargeStatus,
+        DischargeType,
+        OPDOutcome,
+        Outcome28Days
+      ),
+      ~ as_factor(.)
+    ),
+    across(
+      c(
+        Refer,
+        SIRS,
+        QSofa,
+        UnSmoke:UnAlcohol,
+        NP,
+        CB,
+        Sofa_Sepsis,
+        HBsAgr,
+        HBc,
+        AntiHBs,
+        AntiHCV,
+        Influenza,
+        Leptor,
+        MalariaR,
+        Melio,
+        RSV
+      ),
+      ~ ifelse(. == 2, 0, .)
+    )
+  )
+
+df_enr_o <-
+  read_sas(
+    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+  ) %>%
+  filter(OPD_IPD == 2) %>% 
   mutate(
     dead28 = factor(
       dead28,
@@ -148,6 +200,10 @@ df_enr <-
 
 n_enr  = nrow(df_enr)
 n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
+
+# n_miss_i = sum(is.na(df_enr_i$dead28), na.rm = TRUE)
+# n_miss_o = sum(is.na(df_enr_o$dead28), na.rm = TRUE)
+
 ```
 
 <br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
@@ -168,8 +224,8 @@ d
 **Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t1}
-t1 <- df_enr %>%
-  mutate(
+t1i <- df_enr_i %>%
+   mutate(
     SIRSqSOFA = ifelse(Group == 1, 1, 0)
   ) %>% 
   select(
@@ -204,8 +260,48 @@ t1 <- df_enr %>%
   bold_labels() %>%
   # Add labels describing stat for each variable
   add_stat_label()
-t1 <- format_table(t1)
-t1
+t1i <- format_table(t1i)
+
+t1o <- df_enr_o %>%
+   mutate(
+    SIRSqSOFA = ifelse(Group == 1, 1, 0)
+  ) %>% 
+  select(
+    dead28,
+    Age_year,
+    Sex,
+    PlaceChk_n,
+    Occupation,
+    Refer,
+    OPD_IPD,
+    SIRS,
+    QSofa,
+    SIRSqSOFA,
+    Sepsis_Scale
+  ) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      Age_year     ~ 'Age',
+      PlaceChk_n   ~ 'Admission ward',
+      Refer        ~ 'Transferred',
+      OPD_IPD      ~ 'Patient admission as',
+      SIRS         ~ '(Any) SIRS >= 2 scores',
+      QSofa        ~ '(Any) qSOFA >= 2 scores',
+      SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
+      Sepsis_Scale ~ 'Sepsis determination (SOFA)'
+    ),
+    digits = Age_year ~ 1,
+    missing = "no",
+    sort = list(Occupation ~ "frequency")
+  ) %>%
+  bold_labels() %>%
+  # Add labels describing stat for each variable
+  add_stat_label()
+t1o <- format_table(t1o)
+t1o
+
+
 ```
 
 <br>
