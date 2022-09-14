@@ -70,18 +70,29 @@ df_sumscr <- df_scr %>%
 
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
-  mutate(across(c(dead28,Sepsis_Scale), ~ as.numeric(.))) %>% 
+  mutate(across(c(dead28,Sepsis_Scale), ~ as.numeric(.))) %>%
   summarise(
-    enr         = n(),
-    exc_pending = sum(is.na(dead28), na.rm = TRUE),
-    d           = sum(dead28 == 1, na.rm = TRUE),
-    d_non       = sum(dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    d_sepsis    = sum(dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    d_shock     = sum(dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    a           = sum(dead28 == 2, na.rm = TRUE),
-    a_non       = sum(dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    a_sepsis    = sum(dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    a_shock     = sum(dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE)
+    enr          = n(),
+    ipd          = sum(OPD_IPD == '1 -IPD', na.rm = TRUE),
+    di           = sum(OPD_IPD == '1 -IPD' & dead28 == 1, na.rm = TRUE),
+    di_non       = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    di_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    di_shock     = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    ai           = sum(OPD_IPD == '1 -IPD' & dead28 == 2, na.rm = TRUE),
+    ai_non       = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    ai_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    ai_shock     = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE),
+    exci_pending = sum(OPD_IPD == '1 -IPD' & is.na(dead28), na.rm = TRUE),
+    opd          = sum(OPD_IPD == '2 -OPD', na.rm = TRUE),
+    do           = sum(OPD_IPD == '2 -OPD' & dead28 == 1, na.rm = TRUE),
+    do_non       = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    do_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    do_shock     = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    ao           = sum(OPD_IPD == '2 -OPD' & dead28 == 2, na.rm = TRUE),
+    ao_non       = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    ao_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    ao_shock     = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE),
+    exco_pending = sum(OPD_IPD == '2 -OPD' & is.na(dead28), na.rm = TRUE)
   )
 
 # Texts for figures
@@ -120,15 +131,15 @@ l8 <- paste0(df_sumscr$sep,
 l9 <- paste0(df_sumscr$pos_pos,
              ' (',
              percent(df_sumscr$pos_pos / df_sumscr$sep, 0.1),
-             ') SIRS + qSOFA +')
+             ')\nSIRS + qSOFA +')
 l10 <- paste0(df_sumscr$pos_neg,
               ' (',
               percent(df_sumscr$pos_neg / df_sumscr$sep, 0.1),
-              ') SIRS + qSOFA -')
+              ')\nSIRS + qSOFA -')
 l11 <- paste0(df_sumscr$neg_pos,
               ' (',
               percent(df_sumscr$neg_pos / df_sumscr$sep, 0.1),
-              ') SIRS - qSOFA +')
+              ')\nSIRS - qSOFA +')
 l12 <- paste0(df_sumscr$exc_con,
               ' (',
               percent(df_sumscr$exc_con / df_sumscr$sep, 0.1),
@@ -157,87 +168,198 @@ l18 <- paste0(df_sumenr$enr,
               ' (',
               percent(df_sumenr$enr / df_sumscr$sep, 0.1),
               ') enrolled suspected sepsis')
-l19 <- paste0(df_sumenr$exc_pending,
+l19 <- paste0(df_sumenr$ipd,
               ' (',
-              percent(df_sumenr$exc_pending / df_sumenr$enr, 0.1),
-              ')  in pending')
-l20 <- paste0(df_sumenr$d,
+              percent(df_sumenr$ipd / df_sumenr$enr, 0.1),
+              ') IPD')
+l20 <- paste0(df_sumenr$di,
               ' (',
-              percent(df_sumenr$d / (df_sumenr$d + df_sumenr$a), 0.1),
+              percent(df_sumenr$di / df_sumenr$ipd, 0.1),
               ') 28 days mortality')
-l21 <- paste0(df_sumenr$d_non,
+l21 <- paste0(df_sumenr$di_non,
               ' (',
-              percent(df_sumenr$d_non / df_sumenr$d, 0.1),
+              percent(df_sumenr$di_non / df_sumenr$di, 0.1),
               ') non-sepsis')
-l22 <- paste0(df_sumenr$d_sepsis,
+l22 <- paste0(df_sumenr$di_sepsis,
               ' (',
-              percent(df_sumenr$d_sepsis / df_sumenr$d, 0.1),
+              percent(df_sumenr$di_sepsis / df_sumenr$di, 0.1),
               ') sepsis')
-l23 <- paste0(df_sumenr$d_shock,
+l23 <- paste0(df_sumenr$di_shock,
               ' (',
-              percent(df_sumenr$d_shock / df_sumenr$d, 0.1),
+              percent(df_sumenr$di_shock / df_sumenr$di, 0.1),
               ') septic shock')
-l24 <- paste0(df_sumenr$a,
+l24 <- paste0(df_sumenr$ai,
               ' (',
-              percent(df_sumenr$a / (df_sumenr$d + df_sumenr$a), 0.1),
+              percent(df_sumenr$ai / df_sumenr$ipd, 0.1),
               ') survivors')
-l25 <- paste0(df_sumenr$a_non,
+l25 <- paste0(df_sumenr$ai_non,
               ' (',
-              percent(df_sumenr$a_non / df_sumenr$a, 0.1),
+              percent(df_sumenr$ai_non / df_sumenr$ai, 0.1),
               ') non-sepsis')
-l26 <- paste0(df_sumenr$a_sepsis,
+l26 <- paste0(df_sumenr$ai_sepsis,
               ' (',
-              percent(df_sumenr$a_sepsis / df_sumenr$a, 0.1),
+              percent(df_sumenr$ai_sepsis / df_sumenr$ai, 0.1),
               ') sepsis')
-l27 <- paste0(df_sumenr$a_shock,
+l27 <- paste0(df_sumenr$ai_shock,
               ' (',
-              percent(df_sumenr$a_shock / df_sumenr$a, 0.1),
+              percent(df_sumenr$ai_shock / df_sumenr$ai, 0.1),
               ') septic shock')
+l28 <- paste0(df_sumenr$exci_pending,
+              ' (',
+              percent(df_sumenr$exci_pending / df_sumenr$ipd, 0.1),
+              ') pending')
+l29 <- paste0(df_sumenr$opd,
+              ' (',
+              percent(df_sumenr$opd / df_sumenr$enr, 0.1),
+              ') OPD')
+l30 <- paste0(df_sumenr$do,
+              ' (',
+              percent(df_sumenr$do / df_sumenr$opd, 0.1),
+              ') 28 days mortality')
+l31 <- paste0(df_sumenr$do_non,
+              ' (',
+              percent(df_sumenr$do_non / df_sumenr$do, 0.1),
+              ') non-sepsis')
+l32 <- paste0(df_sumenr$do_sepsis,
+              ' (',
+              percent(df_sumenr$do_sepsis / df_sumenr$do, 0.1),
+              ') sepsis')
+l33 <- paste0(df_sumenr$do_shock,
+              ' (',
+              percent(df_sumenr$do_shock / df_sumenr$do, 0.1),
+              ') septic shock')
+l34 <- paste0(df_sumenr$ao,
+              ' (',
+              percent(df_sumenr$ao / df_sumenr$opd, 0.1),
+              ') survivors')
+l35 <- paste0(df_sumenr$ao_non,
+              ' (',
+              percent(df_sumenr$ao_non / df_sumenr$ao, 0.1),
+              ') non-sepsis')
+l36 <- paste0(df_sumenr$ao_sepsis,
+              ' (',
+              percent(df_sumenr$ao_sepsis / df_sumenr$ao, 0.1),
+              ') sepsis')
+l37 <- paste0(df_sumenr$ao_shock,
+              ' (',
+              percent(df_sumenr$ao_shock / df_sumenr$ao, 0.1),
+              ') septic shock')
+l38 <- paste0(df_sumenr$exco_pending,
+              ' (',
+              percent(df_sumenr$exco_pending / df_sumenr$opd, 0.1),
+              ') pending')
 
 d <- DiagrammeR::grViz(
   "digraph flowchart {
 
     graph [layout = dot,
-           label = '',
-           labelloc = t,
-           fontname = Helvetica,
-           fontsize  = 28,
+           nodesep = 1;
            compound = true]
-  
-    node [shape = box, 
+
+    node [shape = box,
+          fixedsize = t,
+          width = 4,
+          height = 0.8,
+          style = filled,
           color = gray,
-          style = filled, 
           fillcolor = WhiteSmoke,
-          fontname = Helvetica, 
-          fontsize = 20,
-          fixedsize = t, 
-          width = 6, 
-          height = 0.8]
-  
-    subgraph cluster1 {
-    
+          fontname = Helvetica,
+          fontsize = 20]
+
+    subgraph cluster_s {
+
       label = ''
-      node [shape = box, 
+      node [shape = box,
+            fixedsize = t,
+            width = 4,
+            height = 0.8,
+            style = filled,
             color = gray,
-            style = filled, 
             fillcolor = WhiteSmoke,
-            fontname = Helvetica, 
-            fontsize = 20,
-            fixedsize = t, 
-            width = 4, 
-            height = 0.8]
-  
+            fontname = Helvetica,
+            fontsize = 20]
+
       neg_pos [label = '@@11']
       pos_neg [label = '@@10']
       pos_pos [label = '@@9']
-  
-      neg_pos;
-      pos_neg;
+
       pos_pos;
-      {rank = same; neg_pos pos_neg pos_pos}
-      
+      pos_neg;
+      neg_pos;
+      {rank = same; pos_pos pos_neg neg_pos}
+
     }
-  
+
+    subgraph cluster_i {
+
+      label = ''
+      node [shape = box,
+            fixedsize = t,
+            width = 4,
+            height = 0.8,
+            style = filled,
+            color = gray,
+            fillcolor = WhiteSmoke,
+            fontname = Helvetica,
+            fontsize = 20]
+
+      exci_pending [label = '@@28']
+      ai [label =
+<
+@@24<br/><br/>
+&#8226; @@25<br ALIGN = 'LEFT'/>
+&#8226; @@26<br ALIGN = 'LEFT'/>
+&#8226; @@27<br ALIGN = 'LEFT'/>
+>
+      ]
+      di [label =
+<
+@@20<br/><br/>
+&#8226; @@21<br ALIGN = 'LEFT'/>
+&#8226; @@22<br ALIGN = 'LEFT'/>
+&#8226; @@23<br ALIGN = 'LEFT'/>
+>
+      ]
+
+      di -> ai -> exci_pending [style = invis];
+
+    }
+
+    subgraph cluster_o {
+
+      label = ''
+      node [shape = box,
+            fixedsize = t,
+            width = 4,
+            height = 0.8,
+            style = filled,
+            color = gray,
+            fillcolor = WhiteSmoke,
+            fontname = Helvetica,
+            fontsize = 20]
+
+      exco_pending [label = '@@38']
+      ao [label =
+<
+@@34<br/><br/>
+&#8226; @@35<br ALIGN = 'LEFT'/>
+&#8226; @@36<br ALIGN = 'LEFT'/>
+&#8226; @@37<br ALIGN = 'LEFT'/>
+>
+      ]
+      do [label =
+<
+@@30<br/><br/>
+&#8226; @@31<br ALIGN = 'LEFT'/>
+&#8226; @@32<br ALIGN = 'LEFT'/>
+&#8226; @@33<br ALIGN = 'LEFT'/>
+>
+      ]
+
+      do -> ao -> exco_pending [style = invis];
+
+    }
+
     scr_NP [label = '@@1']
     scr_MS [label = '@@2']
     scr [label = '@@3']
@@ -251,7 +373,7 @@ d <- DiagrammeR::grViz(
     exc_inf [label = '@@7']
     sep [label = '@@8']
     exc_con [label =
-<    
+<
 @@12<br/><br/>
 &#8226; @@13<br ALIGN = 'LEFT'/>
 &#8226; @@14<br ALIGN = 'LEFT'/>
@@ -261,53 +383,37 @@ d <- DiagrammeR::grViz(
 >
         ]
     enr [label = '@@18']
-    exc_pending [label = '@@19']
-    d [label = 
-<
-@@20<br/><br/>
-&#8226; @@21<br ALIGN = 'LEFT'/>
-&#8226; @@22<br ALIGN = 'LEFT'/>
-&#8226; @@23<br ALIGN = 'LEFT'/>
->
-      ]
-    a [label = 
-<
-@@24<br/><br/>
-&#8226; @@25<br ALIGN = 'LEFT'/>
-&#8226; @@26<br ALIGN = 'LEFT'/>
-&#8226; @@27<br ALIGN = 'LEFT'/>
->
-      ]
-  
+    ipd [label = '@@19']
+    opd [label = '@@29']
+
     blank1 [label = '', width = 0.01, height = 0.01]
     blank2 [label = '', width = 0.01, height = 0.01]
     blank3 [label = '', width = 0.01, height = 0.01]
     blank4 [label = '', width = 0.01, height = 0.01]
-    blank5 [label = '', width = 0.01, height = 0.01]
-  
-    scr_NP  -> scr [minlen = 3];
-    scr     -> scr_MS [dir = back, minlen = 3];
+
+    scr_NP  -> scr;
+    scr     -> scr_MS [dir = back];
     {rank = same; scr_NP scr scr_MS};
     scr     -> blank1 [dir = none];
-    blank1  -> exc_48 [minlen = 5];
+    blank1  -> exc_48;
     {rank = same; blank1 exc_48};
     blank1  -> inf;
     inf     -> blank2 [dir = none];
-    blank2  -> exc_inf [minlen = 5];
+    blank2  -> exc_inf;
     {rank = same; blank2 exc_inf};
     blank2  -> sep;
-    sep     -> pos_neg [lhead = cluster1];
-    pos_neg -> blank3 [dir = none , ltail = cluster1];
-    blank3  -> exc_con [minlen = 5];
+    sep     -> pos_neg [lhead = cluster_s];
+    pos_neg -> blank3 [dir = none, ltail = cluster_s];
+    blank3  -> exc_con;
     {rank = same; blank3 exc_con};
     blank3  -> enr;
     enr     -> blank4 [dir = none];
-    blank4  -> exc_pending [minlen = 5];
-    {rank = same; blank4 exc_pending};
-    blank4  -> blank5 [dir = none];
-    blank5  -> d;
-    blank5  -> a
-    
+    ipd     -> blank4 [dir = back];
+    blank4  -> opd;
+    {rank = same; ipd blank4 opd};
+    ipd     -> di [lhead = cluster_i];
+    opd     -> do [lhead = cluster_o];
+
   }
 
   [1]: l1
@@ -337,5 +443,16 @@ d <- DiagrammeR::grViz(
   [25]: l25
   [26]: l26
   [27]: l27
-      
+  [28]: l28
+  [29]: l29
+  [30]: l30
+  [31]: l31
+  [32]: l32
+  [33]: l33
+  [34]: l34
+  [35]: l35
+  [36]: l36
+  [37]: l37
+  [38]: l38
+
 ")
