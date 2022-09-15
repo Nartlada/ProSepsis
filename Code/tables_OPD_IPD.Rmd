@@ -58,7 +58,9 @@ format_table_2 <- function(t, grp = ""){
     # Convert to gt and use default left align
     as_gt( include = -cols_align) %>%
     # Standard column width to fit every table
-    cols_width(label ~ px(200)) %>%
+    cols_width(label ~ px(180), 
+               ends_with('value') ~ px(30),
+               everything() ~ px(60)) %>%
 
     # Add footnote about pending cases
     tab_footnote(
@@ -321,6 +323,41 @@ vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever))
   ) %>%
   format_table_1()
 }
+
+create_t4_trt <- function(df){
+vars <- names(sort_var(df, Pneumonia:Malaria))
+df %>%
+  zap_labels() %>%
+  mutate(
+    across(Principal1:Principal3, ~ na_if(., "")),
+    Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
+                    1,
+                    0)
+  ) %>%
+  select(dead28, vars, Others) %>%
+  tbl_summary(by = dead28,
+              missing = "no") %>%
+  format_table_1()
+}
+
+create_t4 <- function(df){
+ df %>%
+  select(dead28,
+         DischargeStatus,
+         DischargeType,
+         TotalCharge) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      DischargeStatus ~ 'Discharge status (IDP only)',
+      DischargeType   ~ 'Discharge type (IDP only)'
+    ),
+    missing = "no"
+  ) %>%
+  bold_labels() %>%
+  format_table_1()
+}
+
 ```
 
 ```{r data}
@@ -570,42 +607,28 @@ t2_trt_all
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t4_trt}
-# vars <- names(sort_var(Pneumonia:Malaria))
-# t4_trt <- df_enr %>%
-#   zap_labels() %>%
-#   mutate(
-#     across(Principal1:Principal3, ~ na_if(., "")),
-#     Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
-#                     1,
-#                     0)
-#   ) %>%
-#   select(dead28, vars, Others) %>%
-#   tbl_summary(by = dead28,
-#               missing = "no") %>%
-#   format_table("Principal Diagnosis")
-# t4_trt
+t4_trt <- create_t4_trt(df_enr)
+t4i_trt <- create_t4_trt(df_enr_i)
+t4o_trt <- create_t4_trt(df_enr_o)
+t4_trt_all <-
+  tbl_merge(list(t4_trt, t4i_trt, t4o_trt),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Principal diagnosis")  
+t4_trt_all
+
 
 ```
-# 
-# <br>
-# 
+
+<br>
+ 
 ```{r t4}
-# t4 <- df_enr %>%
-#   select(dead28,
-#          DischargeStatus,
-#          DischargeType,
-#          TotalCharge) %>%
-#   tbl_summary(
-#     by = dead28,
-#     label = list(
-#       DischargeStatus ~ 'Discharge status (IDP only)',
-#       DischargeType   ~ 'Discharge type (IDP only)'
-#     ),
-#     missing = "no"
-#   ) %>%
-#   bold_labels() %>%
-#   format_table()
-# t4
+t4 <- create_t4(df_enr)
+t4i <- create_t4(df_enr_i)
+t4o <- create_t4(df_enr_o)
+
+t4all <- tbl_merge(list(t4, t4i, t4o), tab_spanner = c("**Total**","**IPD**","**OPD**"))
+t4all
+
 ```
 
 ```{r}
