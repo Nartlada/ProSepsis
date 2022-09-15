@@ -284,9 +284,9 @@ n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
 
 <center>
 
-# ```{r flowchart}
-# source("flowchart.R", local = knitr::knit_global())
-# d
+```{r flowchart}
+ source("flowchart.R", local = knitr::knit_global())
+ d
 ```
 
 </center>

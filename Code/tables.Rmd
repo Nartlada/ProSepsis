@@ -35,7 +35,7 @@ format_table <- function(t, grp = "") {
   if (deparse(substitute(t)) == 't1') {
     t <- t %>% add_p(include = -c('SIRSqSOFA', 'SIRS', 'QSofa'))
   } else {
-    t <- t %>% add_p(test.args = all_tests("fisher.test") ~ list(workspace=2e9))
+    t <- t %>% add_p()
   }
   
   t <- t %>%
@@ -91,15 +91,19 @@ sort_var <- function(...) {
 # Screening
 df_scr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   )
 
 # Enrollment
 df_enr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28 = factor(
@@ -467,8 +471,7 @@ t4 <- df_enr %>%
          DischargeStatus,
          DischargeType,
          OPDOutcome,
-         Outcome28Days,
-         TotalCharge) %>%
+         Outcome28Days) %>%
   tbl_summary(
     by = dead28,
     label = list(
