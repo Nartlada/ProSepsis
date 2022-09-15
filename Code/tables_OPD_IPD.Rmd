@@ -75,156 +75,20 @@ format_table <- function(t, grp = "") {
   
 }
 
+
 # Sort dichotomous variables by descending frequency
-sort_var <- function(...) {
+sort_var <- function(df, ...) {
   
-  df_enr %>%
+    df %>%
     filter(!is.na(dead28)) %>% 
     select(...) %>%
     map_dbl(sum, na.rm = TRUE) %>%
     sort(decreasing = TRUE)
   
 }
-```
 
-```{r data}
-# Screening
-df_scr <-
-  read_sas(
-    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-  )
-
-# Enrollment
-df_enr_i <-
-  read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-  ) %>%
-  filter(OPD_IPD == 1) %>% 
-  mutate(
-    dead28 = factor(
-      dead28,
-      levels = c(1, 2),
-      labels = c('Dead', 'Alive')
-    ),
-    across(
-      c(
-        Sex,
-        PlaceChk_n,
-        Occupation,
-        OPD_IPD,
-        Sepsis_Scale,
-        HIV,
-        Covid21,
-        DischargeStatus,
-        DischargeType,
-        OPDOutcome,
-        Outcome28Days
-      ),
-      ~ as_factor(.)
-    ),
-    across(
-      c(
-        Refer,
-        SIRS,
-        QSofa,
-        UnSmoke:UnAlcohol,
-        NP,
-        CB,
-        Sofa_Sepsis,
-        HBsAgr,
-        HBc,
-        AntiHBs,
-        AntiHCV,
-        Influenza,
-        Leptor,
-        MalariaR,
-        Melio,
-        RSV
-      ),
-      ~ ifelse(. == 2, 0, .)
-    )
-  )
-
-df_enr_o <-
-  read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-  ) %>%
-  filter(OPD_IPD == 2) %>% 
-  mutate(
-    dead28 = factor(
-      dead28,
-      levels = c(1, 2),
-      labels = c('Dead', 'Alive')
-    ),
-    across(
-      c(
-        Sex,
-        PlaceChk_n,
-        Occupation,
-        OPD_IPD,
-        Sepsis_Scale,
-        HIV,
-        Covid21,
-        DischargeStatus,
-        DischargeType,
-        OPDOutcome,
-        Outcome28Days
-      ),
-      ~ as_factor(.)
-    ),
-    across(
-      c(
-        Refer,
-        SIRS,
-        QSofa,
-        UnSmoke:UnAlcohol,
-        NP,
-        CB,
-        Sofa_Sepsis,
-        HBsAgr,
-        HBc,
-        AntiHBs,
-        AntiHCV,
-        Influenza,
-        Leptor,
-        MalariaR,
-        Melio,
-        RSV
-      ),
-      ~ ifelse(. == 2, 0, .)
-    )
-  )
-
-n_enr  = nrow(df_enr)
-n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
-
-# n_miss_i = sum(is.na(df_enr_i$dead28), na.rm = TRUE)
-# n_miss_o = sum(is.na(df_enr_o$dead28), na.rm = TRUE)
-
-```
-
-<br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
-
-<center>
-
-```{r flowchart}
-source("flowchart.R", local = knitr::knit_global())
-d
-```
-
-</center>
-
-<br>
-
-\newpage
-
-**Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
-
-```{r t1}
-t1i <- df_enr_i %>%
+create_t1 <- function(df){
+t1 <-  df %>%
    mutate(
     SIRSqSOFA = ifelse(Group == 1, 1, 0)
   ) %>% 
@@ -235,7 +99,6 @@ t1i <- df_enr_i %>%
     PlaceChk_n,
     Occupation,
     Refer,
-    OPD_IPD,
     SIRS,
     QSofa,
     SIRSqSOFA,
@@ -247,7 +110,6 @@ t1i <- df_enr_i %>%
       Age_year     ~ 'Age',
       PlaceChk_n   ~ 'Admission ward',
       Refer        ~ 'Transferred',
-      OPD_IPD      ~ 'Patient admission as',
       SIRS         ~ '(Any) SIRS >= 2 scores',
       QSofa        ~ '(Any) qSOFA >= 2 scores',
       SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
@@ -260,69 +122,23 @@ t1i <- df_enr_i %>%
   bold_labels() %>%
   # Add labels describing stat for each variable
   add_stat_label()
-t1i <- format_table(t1i)
+t1<- format_table(t1)
+  return(t1)
+}
 
-t1o <- df_enr_o %>%
-   mutate(
-    SIRSqSOFA = ifelse(Group == 1, 1, 0)
-  ) %>% 
-  select(
-    dead28,
-    Age_year,
-    Sex,
-    PlaceChk_n,
-    Occupation,
-    Refer,
-    OPD_IPD,
-    SIRS,
-    QSofa,
-    SIRSqSOFA,
-    Sepsis_Scale
-  ) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      Age_year     ~ 'Age',
-      PlaceChk_n   ~ 'Admission ward',
-      Refer        ~ 'Transferred',
-      OPD_IPD      ~ 'Patient admission as',
-      SIRS         ~ '(Any) SIRS >= 2 scores',
-      QSofa        ~ '(Any) qSOFA >= 2 scores',
-      SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
-      Sepsis_Scale ~ 'Sepsis determination (SOFA)'
-    ),
-    digits = Age_year ~ 1,
-    missing = "no",
-    sort = list(Occupation ~ "frequency")
-  ) %>%
-  bold_labels() %>%
-  # Add labels describing stat for each variable
-  add_stat_label()
-t1o <- format_table(t1o)
-t1o
-
-
-```
-
-<br>
-
-\newpage
-
-```{r t1_cc}
-vars <- names(sort_var(CCFever:CCJointPain))
-t1_cc <- df_enr %>%
+create_t1_cc <- function(df){
+  vars <- names(sort_var(df, CCFever:CCJointPain))
+  df %>%
   zap_labels() %>% 
   select(dead28, vars, CCOther) %>%
   tbl_summary(by = dead28) %>% 
   format_table("Chief Complaint")
-t1_cc
-```
+}
 
-<br>
 
-```{r t1_if}
-vars <- names(sort_var(IFTropSep:IFNerve))
-t1_if <- df_enr %>%
+create_t1_if <- function(df){
+  vars <- names(sort_var(df, IFTropSep:IFNerve))
+  df %>%
   zap_labels() %>% 
   select(dead28, vars, IFOth) %>%
   tbl_summary(
@@ -339,7 +155,172 @@ t1_if <- df_enr %>%
     )
   ) %>%
   format_table("Source of Infection")
-t1_if
+}
+
+```
+
+```{r data}
+# Screening
+df_scr <-
+  read_sas(
+    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+  )
+
+# Enrollment
+# df_enr_i <-
+#   read_sas(
+#     "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+#     "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+#   ) %>%
+#   filter(OPD_IPD == 1) %>% 
+#   mutate(
+#     dead28 = factor(
+#       dead28,
+#       levels = c(1, 2),
+#       labels = c('Dead', 'Alive')
+#     ),
+#     across(
+#       c(
+#         Sex,
+#         PlaceChk_n,
+#         Occupation,
+#         OPD_IPD,
+#         Sepsis_Scale,
+#         HIV,
+#         Covid21,
+#         DischargeStatus,
+#         DischargeType,
+#         OPDOutcome,
+#         Outcome28Days
+#       ),
+#       ~ as_factor(.)
+#     ),
+#     across(
+#       c(
+#         Refer,
+#         SIRS,
+#         QSofa,
+#         UnSmoke:UnAlcohol,
+#         NP,
+#         CB,
+#         Sofa_Sepsis,
+#         HBsAgr,
+#         HBc,
+#         AntiHBs,
+#         AntiHCV,
+#         Influenza,
+#         Leptor,
+#         MalariaR,
+#         Melio,
+#         RSV
+#       ),
+#       ~ ifelse(. == 2, 0, .)
+#     )
+#   )
+
+df_enr <-
+  read_sas(
+    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+  ) %>%
+  mutate(
+    dead28 = factor(
+      dead28,
+      levels = c(1, 2),
+      labels = c('Dead', 'Alive')
+    ),
+    across(
+      c(
+        Sex,
+        PlaceChk_n,
+        Occupation,
+        OPD_IPD,
+        Sepsis_Scale,
+        HIV,
+        Covid21,
+        DischargeStatus,
+        DischargeType,
+        OPDOutcome,
+        Outcome28Days
+      ),
+      ~ as_factor(.)
+    ),
+    across(
+      c(
+        Refer,
+        SIRS,
+        QSofa,
+        UnSmoke:UnAlcohol,
+        NP,
+        CB,
+        Sofa_Sepsis,
+        HBsAgr,
+        HBc,
+        AntiHBs,
+        AntiHCV,
+        Influenza,
+        Leptor,
+        MalariaR,
+        Melio,
+        RSV
+      ),
+      ~ ifelse(. == 2, 0, .)
+    )
+  )
+
+df_enr_i <- filter(df_enr, OPD_IPD == '1 -IPD')
+df_enr_o <- filter(df_enr, OPD_IPD == '2 -OPD')
+
+n_enr  = nrow(df_enr)
+n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
+
+# n_miss_i = sum(is.na(df_enr_i$dead28), na.rm = TRUE)
+# n_miss_o = sum(is.na(df_enr_o$dead28), na.rm = TRUE)
+
+```
+
+<br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
+
+<center>
+
+# ```{r flowchart}
+# source("flowchart.R", local = knitr::knit_global())
+# d
+```
+
+</center>
+
+<br>
+
+\newpage
+
+**Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
+
+```{r t1}
+t1 <- create_t1(df_enr)
+t1i <- create_t1(df_enr_i)
+t1o <- create_t1(df_enr_o)
+
+```
+
+<br>
+
+\newpage
+
+```{r t1_cc}
+t1_cc <- create_t1_cc(df_enr)
+t1i_cc <- create_t1_cc(df_enr_i)
+t1o_cc <- create_t1_cc(df_enr_o)
+
+```
+
+<br>
+
+```{r t1_if}
+t1_if <- create_t1_if(df_enr)
+t1i_if <- create_t1_if(df_enr_i)
+t1o_if <- create_t1_if(df_enr_o)
 ```
 
 <br>
