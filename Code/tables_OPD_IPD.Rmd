@@ -29,7 +29,7 @@ theme_gtsummary_compact(font_size = 10)
 
 ```{r functions}
 # Format gtsummary outputs
-format_table <- function(t, grp = "") {
+format_table_1 <- function(t)  {
 
   # Hide p-values of SIRSqSOFA, SIRS, and QSofa in table 1
   if (deparse(substitute(t)) == 't1') {
@@ -49,17 +49,21 @@ format_table <- function(t, grp = "") {
         all_stat_cols(stat_0 = FALSE) ~ "**{level}**<br>N = {n}",
         stat_0 ~ "**Overall**<br>N = {N}"
       )
-    ) %>%
+    ) 
+}
+
+format_table_2 <- function(t, grp = ""){
+  t <- t %>% 
+   #  modify_caption(cap) 
     # Convert to gt and use default left align
-    as_gt(include = -cols_align) %>%
+    as_gt( include = -cols_align) %>%
     # Standard column width to fit every table
-    cols_width(label ~ px(230),
-               p.value ~ px(60),
-               everything() ~ px(100)) %>%
+    cols_width(label ~ px(200)) %>%
+
     # Add footnote about pending cases
     tab_footnote(
-      footnote = str_glue(n_miss_i, " cases are pending for final outcome"),
-      locations = cells_column_labels(columns = "stat_0")
+      footnote = str_glue(n_miss, " cases are pending for final outcome"),
+      locations = cells_column_labels(columns = "stat_0_1")
     )
 
   # Add a row group for 'check all that apply' variables
@@ -70,9 +74,9 @@ format_table <- function(t, grp = "") {
       tab_style(style = cell_text(weight = "bold"),
                 locations = cells_row_groups(groups = everything()))
   }
-  
-  return(t)
-  
+
+   return(t)
+  #
 }
 
 
@@ -88,7 +92,7 @@ sort_var <- function(df, ...) {
 }
 
 create_t1 <- function(df){
-t1 <-  df %>%
+  t <- df %>%
    mutate(
     SIRSqSOFA = ifelse(Group == 1, 1, 0)
   ) %>% 
@@ -121,9 +125,9 @@ t1 <-  df %>%
   ) %>%
   bold_labels() %>%
   # Add labels describing stat for each variable
-  add_stat_label()
-t1<- format_table(t1)
-  return(t1)
+  add_stat_label() 
+  t <- format_table_1(t)
+  return(t)
 }
 
 create_t1_cc <- function(df){
@@ -132,7 +136,7 @@ create_t1_cc <- function(df){
   zap_labels() %>% 
   select(dead28, vars, CCOther) %>%
   tbl_summary(by = dead28) %>% 
-  format_table("Chief Complaint")
+  format_table_1()
 }
 
 
@@ -153,10 +157,170 @@ create_t1_if <- function(df){
       IFNerve       ~ 'Central nervous system',
       IFOth         ~ 'Others'
     )
-  ) %>%
-  format_table("Source of Infection")
+  )%>% 
+  format_table_1()
 }
 
+create_t2_un <- function(df){
+  vars <- names(sort_var(df, UnDiabetes:UnThalassemia))
+  df %>% 
+  zap_labels() %>% 
+  select(dead28, vars, UnOth) %>%
+  tbl_summary(by = dead28) %>%
+  format_table_1()
+  #format_table("Underlying Condition/Co-morbidity")
+}
+
+create_t2_risk <- function(df){
+  vars <- names(sort_var(df, UnSmoke:UnAlcohol))
+  df %>% 
+  select(dead28, vars, HIV, Covid21) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(UnSmoke   ~ 'Smoking',
+                 UnAlcohol ~ 'Alcohol'),
+    missing = "no"
+  ) %>%
+  format_table_1()
+  #format_table("Risk Behavior")
+}
+
+create_t2_pui <- function(df){
+  df %>% 
+  select(dead28, NP, CB) %>%
+  tbl_summary(by = dead28,
+              missing = "no") %>%
+    format_table_1()
+  #format_table("PUI (SARS-CoV2 NGS and TAC)")
+}
+
+create_t2_dx <- function(df){
+  vars <- names(sort_var(df, DxFever:DxMening))
+  df %>% 
+  zap_labels() %>% 
+  select(dead28, vars, DxOther) %>%
+  tbl_summary(by = dead28) %>%
+    format_table_1()
+ # format_table("Provisional Diagnosis")
+}
+
+create_t2_or <- function(df){
+  df %>% 
+  mutate(
+    across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .))
+  ) %>% 
+  select(dead28, SOFA1:SOFA6, Sofa_Sepsis) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      SOFA1       ~ 'RS (PaO2/Fio2 <400 or infiltration on CXR)',
+      SOFA2       ~ 'Liver (Bilirubin > 1.2 mg/dl)',
+      SOFA3       ~ 'Cardiovascular (MAP <70 mmHg)',
+      SOFA4       ~ 'CNS (Glasgow Coma Scale <15)',
+      SOFA5       ~ 'Blood (Platelet < 150×103/μl)',
+      SOFA6       ~ 'Renal (Cr.>1.2 mg/dl)',
+      Sofa_Sepsis ~ 'SOFA score (SOFA_Total2) >= 2'
+    ),
+    missing = "no"
+  ) %>%
+ format_table_1()
+    # format_table("Organ Dysfunction")
+}
+
+create_t2_cul_s <- function(df){
+  df %>% 
+  zap_labels() %>% 
+  select(dead28, CulBlood_ever:CulOther_ever) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      CulBlood_ever  ~ 'Blood',
+      CulSputum_ever ~ 'Sputum',
+      CulUrine_ever  ~ 'Urine',
+      CulCSF_ever    ~ 'CSF',
+      CulOther_ever  ~ 'Others'
+    )
+  ) %>%
+  format_table_1()
+    #format_table("Microbiology: Culture Source")
+}
+
+create_t2_rdt <- function(df){
+vars <-
+  names(
+    sort_var(df,
+      covid19_r:denguel_r,
+      HBsAgr,
+      HBc,
+      AntiHBs,
+      AntiHCV,
+      hbshcv_r,
+      Influenza,
+      Leptor,
+      MalariaR,
+      Melio,
+      scrubt_r,
+      RSV
+    )
+  )
+  df %>% 
+  select(dead28, vars) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      covid19_r ~ 'COVID-19 +',
+      dengue_r  ~ 'Dengue +',
+      denguel_r ~ 'Dengue + (lab)',
+      HBsAgr    ~ 'HBsAg +',
+      HBc       ~ 'HBc +',
+      AntiHBs   ~ 'Anti-HBs +',
+      AntiHCV   ~ 'Anti-HCV +',
+      hbshcv_r  ~ 'Anti-HBs/Anti-HCV +',
+      Influenza ~ 'Influenza +',
+      Leptor    ~ 'Leptospirosis +',
+      MalariaR  ~ 'Malaria +',
+      Melio     ~ 'Melioidosis +',
+      scrubt_r  ~ 'Scrub typhus +',
+      RSV       ~ 'RSV +'
+    ),
+    missing = "no"
+  ) %>% 
+  format_table_1()
+}
+
+create_t2_trt <- function(df){
+vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever)) 
+ df %>%
+  zap_labels() %>% 
+  select(dead28, vars, otheranti_ever) %>%
+  tbl_summary(
+    by = dead28,
+    label = list(
+      penicillin_ever   ~ 'Penicillin',
+      cephalG1_ever     ~ 'Cephalosporin 1st',
+      cephalG2_ever     ~ 'Cephalosporin 2nd',
+      cephalG3_ever     ~ 'Cephalosporin 3rd',
+      cephalG4_ever     ~ 'Cephalosporin 4th',
+      macroclide_ever   ~ 'Macrolide',
+      tetra_ever        ~ 'Tetracycline',
+      quinolone_ever    ~ 'Quinolone',
+      amino_ever        ~ 'Aminoglycoside',
+      sulfon_ever       ~ 'Sulfonamide',
+      carbapenem_ever   ~ 'Carbapenem',
+      lincomycin_ever   ~ 'Lincomycin',
+      polypep_ever      ~ 'Polypep',
+      vancomycin_ever   ~ 'Vancomycin',
+      tbdrug_ever       ~ 'TB drugs',
+      antifungal_ever   ~ 'Antifungal',
+      antiviral_ever    ~ 'Antiviral',
+      antimalaria_ever  ~ 'Antimalarial',
+      parasitedrug_ever ~ 'Parasite drugs',
+      otheranti_ever    ~ 'Others'
+    ),
+    missing = "no"
+  ) %>%
+  format_table_1()
+}
 ```
 
 ```{r data}
@@ -168,56 +332,6 @@ df_scr <-
   )
 
 # Enrollment
-# df_enr_i <-
-#   read_sas(
-#     "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-#     "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-#   ) %>%
-#   filter(OPD_IPD == 1) %>% 
-#   mutate(
-#     dead28 = factor(
-#       dead28,
-#       levels = c(1, 2),
-#       labels = c('Dead', 'Alive')
-#     ),
-#     across(
-#       c(
-#         Sex,
-#         PlaceChk_n,
-#         Occupation,
-#         OPD_IPD,
-#         Sepsis_Scale,
-#         HIV,
-#         Covid21,
-#         DischargeStatus,
-#         DischargeType,
-#         OPDOutcome,
-#         Outcome28Days
-#       ),
-#       ~ as_factor(.)
-#     ),
-#     across(
-#       c(
-#         Refer,
-#         SIRS,
-#         QSofa,
-#         UnSmoke:UnAlcohol,
-#         NP,
-#         CB,
-#         Sofa_Sepsis,
-#         HBsAgr,
-#         HBc,
-#         AntiHBs,
-#         AntiHCV,
-#         Influenza,
-#         Leptor,
-#         MalariaR,
-#         Melio,
-#         RSV
-#       ),
-#       ~ ifelse(. == 2, 0, .)
-#     )
-#   )
 
 df_enr <-
   read_sas(
@@ -266,8 +380,14 @@ df_enr <-
         RSV
       ),
       ~ ifelse(. == 2, 0, .)
-    )
+    ),
+    covid19_r = ifelse(grepl('1', Covid_tests, fixed = TRUE), 1, 0),
+    dengue_r  = ifelse(grepl('1', Dengue_tests, fixed = TRUE), 1, 0),
+    denguel_r = ifelse(grepl('1', DengueL_tests, fixed = TRUE), 1, 0),
+    hbshcv_r  = ifelse(grepl('1', HBSHCV_tests, fixed = TRUE), 1, 0),
+    scrubt_r  = ifelse(grepl('1', ScrubT_tests, fixed = TRUE), 1, 0)
   )
+
 
 df_enr_i <- filter(df_enr, OPD_IPD == '1 -IPD')
 df_enr_o <- filter(df_enr, OPD_IPD == '2 -OPD')
@@ -302,6 +422,9 @@ t1 <- create_t1(df_enr)
 t1i <- create_t1(df_enr_i)
 t1o <- create_t1(df_enr_o)
 
+t1all <- tbl_merge(list(t1, t1i, t1o), tab_spanner = c("**Total**","**IPD**","**OPD**"))
+t1all
+
 ```
 
 <br>
@@ -313,6 +436,9 @@ t1_cc <- create_t1_cc(df_enr)
 t1i_cc <- create_t1_cc(df_enr_i)
 t1o_cc <- create_t1_cc(df_enr_o)
 
+t1_cc_all <- tbl_merge(list(t1_cc, t1i_cc, t1o_cc), tab_spanner = c("**Total**","**IPD**","**OPD**")) %>% 
+format_table_2("Chief Complaint")  
+t1_cc_all
 ```
 
 <br>
@@ -321,6 +447,9 @@ t1o_cc <- create_t1_cc(df_enr_o)
 t1_if <- create_t1_if(df_enr)
 t1i_if <- create_t1_if(df_enr_i)
 t1o_if <- create_t1_if(df_enr_o)
+t1_if_all <- tbl_merge(list(t1_if, t1i_if, t1o_if), tab_spanner = c("**Total**","**IPD**","**OPD**")) %>% 
+format_table_2("Source of Infection")  
+t1_if_all
 ```
 
 <br>
@@ -330,97 +459,80 @@ t1o_if <- create_t1_if(df_enr_o)
 **Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t2_un}
-vars <- names(sort_var(UnDiabetes:UnThalassemia))
-t2_un <- df_enr %>%
-  zap_labels() %>% 
-  select(dead28, vars, UnOth) %>%
-  tbl_summary(by = dead28) %>%
-  format_table("Underlying Condition/Co-morbidity")
-t2_un
+t2_un <- create_t2_un(df_enr)
+t2i_un <- create_t2_un(df_enr_i)
+t2o_un <- create_t2_un(df_enr_o)
+t2_un_all <-
+  tbl_merge(list(t2_un, t2i_un, t2o_un),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Underlying Condition/Co-morbidity")
+t2_un_all
 ```
 
 <br>
 
 ```{r t2_risk}
-vars <- names(sort_var(UnSmoke:UnAlcohol))
-t2_risk <- df_enr %>%
-  select(dead28, vars, HIV, Covid21) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(UnSmoke   ~ 'Smoking',
-                 UnAlcohol ~ 'Alcohol'),
-    missing = "no"
-  ) %>%
-  format_table("Risk Behavior")
-t2_risk
+t2_risk <- create_t2_risk(df_enr)
+t2i_risk <- create_t2_risk(df_enr_i)
+t2o_risk <- create_t2_risk(df_enr_o)
+t2_risk_all <-
+  tbl_merge(list(t2_risk, t2i_risk, t2o_risk),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Risk Behavior")  
+t2_risk_all
 ```
 
 <br>
 
 ```{r t2_pui}
-t2_pui <- df_enr %>%
-  select(dead28, NP, CB) %>%
-  tbl_summary(by = dead28,
-              missing = "no") %>%
-  format_table("PUI (SARS-CoV2 NGS and TAC)")
-t2_pui
+t2_pui <- create_t2_pui(df_enr)
+t2i_pui <- create_t2_pui(df_enr_i)
+t2o_pui <- create_t2_pui(df_enr_o)
+t2_pui_all <-
+  tbl_merge(list(t2_pui, t2i_pui, t2o_pui),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("PUI (SARS-CoV2 NGS and TAC)")  
+t2_pui_all
 ```
 
 <br>
 
 ```{r t2_dx}
-vars <- names(sort_var(DxFever:DxMening))
-t2_dx <- df_enr %>%
-  zap_labels() %>% 
-  select(dead28, vars, DxOther) %>%
-  tbl_summary(by = dead28) %>%
-  format_table("Provisional Diagnosis")
-t2_dx
+t2_dx <- create_t2_dx(df_enr)
+t2i_dx <- create_t2_dx(df_enr_i)
+t2o_dx <- create_t2_dx(df_enr_o)
+t2_dx_all <-
+  tbl_merge(list(t2_dx, t2i_dx, t2o_dx),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Provisional Diagnosis")  
+t2_dx_all
 ```
 
 <br>
 
 ```{r t2_or}
-t2_or <- df_enr %>%
-  mutate(
-    across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .))
-  ) %>% 
-  select(dead28, SOFA1:SOFA6, Sofa_Sepsis) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      SOFA1       ~ 'RS (PaO2/Fio2 <400 or infiltration on CXR)',
-      SOFA2       ~ 'Liver (Bilirubin > 1.2 mg/dl)',
-      SOFA3       ~ 'Cardiovascular (MAP <70 mmHg)',
-      SOFA4       ~ 'CNS (Glasgow Coma Scale <15)',
-      SOFA5       ~ 'Blood (Platelet < 150×103/μl)',
-      SOFA6       ~ 'Renal (Cr.>1.2 mg/dl)',
-      Sofa_Sepsis ~ 'SOFA score (SOFA_Total2) >= 2'
-    ),
-    missing = "no"
-  ) %>%
-  format_table("Organ Dysfunction")
-t2_or
+t2_or <- create_t2_or(df_enr)
+t2i_or <- create_t2_or(df_enr_i)
+t2o_or <- create_t2_or(df_enr_o)
+t2_or_all <-
+  tbl_merge(list(t2_or, t2i_or, t2o_or),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Organ Dysfunction")  
+t2_or_all
 ```
 
 <br>
 
 ```{r t2_cul_s}
-t2_cul_s <- df_enr %>%
-  zap_labels() %>% 
-  select(dead28, CulBlood_ever:CulOther_ever) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      CulBlood_ever  ~ 'Blood',
-      CulSputum_ever ~ 'Sputum',
-      CulUrine_ever  ~ 'Urine',
-      CulCSF_ever    ~ 'CSF',
-      CulOther_ever  ~ 'Others'
-    )
-  ) %>%
-  format_table("Microbiology: Culture Source")
-t2_cul_s
+t2_cul_s <- create_t2_cul_s(df_enr)
+t2i_cul_s <- create_t2_cul_s(df_enr_i)
+t2o_cul_s <- create_t2_cul_s(df_enr_o)
+t2_cul_s_all <-
+  tbl_merge(list(t2_cul_s, t2i_cul_s, t2o_cul_s),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Microbiology: Culture source")  
+t2_cul_s_all
+
 ```
 
 <br>
@@ -428,89 +540,27 @@ t2_cul_s
 \newpage
 
 ```{r t2_rdt}
-df_enr$covid19_r <- ifelse(grepl('1', df_enr$Covid_tests, fixed = TRUE), 1, 0)
-df_enr$dengue_r  <- ifelse(grepl('1', df_enr$Dengue_tests, fixed = TRUE), 1, 0)
-df_enr$denguel_r <- ifelse(grepl('1', df_enr$DengueL_tests, fixed = TRUE), 1, 0)
-df_enr$hbshcv_r  <- ifelse(grepl('1', df_enr$HBSHCV_tests, fixed = TRUE), 1, 0)
-df_enr$scrubt_r  <- ifelse(grepl('1', df_enr$ScrubT_tests, fixed = TRUE), 1, 0)
-vars <-
-  names(
-    sort_var(
-      covid19_r:denguel_r,
-      HBsAgr,
-      HBc,
-      AntiHBs,
-      AntiHCV,
-      hbshcv_r,
-      Influenza,
-      Leptor,
-      MalariaR,
-      Melio,
-      scrubt_r,
-      RSV
-    )
-  )
-t2_rdt <- df_enr %>%
-  select(dead28, vars) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      covid19_r ~ 'COVID-19 +',
-      dengue_r  ~ 'Dengue +',
-      denguel_r ~ 'Dengue + (lab)',
-      HBsAgr    ~ 'HBsAg +',
-      HBc       ~ 'HBc +',
-      AntiHBs   ~ 'Anti-HBs +',
-      AntiHCV   ~ 'Anti-HCV +',
-      hbshcv_r  ~ 'Anti-HBs/Anti-HCV +',
-      Influenza ~ 'Influenza +',
-      Leptor    ~ 'Leptospirosis +',
-      MalariaR  ~ 'Malaria +',
-      Melio     ~ 'Melioidosis +',
-      scrubt_r  ~ 'Scrub typhus +',
-      RSV       ~ 'RSV +'
-    ),
-    missing = "no"
-  ) %>%
-  format_table("RDT")
-t2_rdt
+t2_rdt <- create_t2_rdt(df_enr)
+t2i_rdt <- create_t2_rdt(df_enr_i)
+t2o_rdt <- create_t2_rdt(df_enr_o)
+t2_rdt_all <-
+  tbl_merge(list(t2_rdt, t2i_rdt, t2o_rdt),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("RDT")  
+t2_rdt_all
 ```
 
 <br>
 
 ```{r t2_trt}
-vars <- names(sort_var(penicillin_ever:parasitedrug_ever))
-t2_trt <- df_enr %>%
-  zap_labels() %>% 
-  select(dead28, vars, otheranti_ever) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      penicillin_ever   ~ 'Penicillin',
-      cephalG1_ever     ~ 'Cephalosporin 1st',
-      cephalG2_ever     ~ 'Cephalosporin 2nd',
-      cephalG3_ever     ~ 'Cephalosporin 3rd',
-      cephalG4_ever     ~ 'Cephalosporin 4th',
-      macroclide_ever   ~ 'Macrolide',
-      tetra_ever        ~ 'Tetracycline',
-      quinolone_ever    ~ 'Quinolone',
-      amino_ever        ~ 'Aminoglycoside',
-      sulfon_ever       ~ 'Sulfonamide',
-      carbapenem_ever   ~ 'Carbapenem',
-      lincomycin_ever   ~ 'Lincomycin',
-      polypep_ever      ~ 'Polypep',
-      vancomycin_ever   ~ 'Vancomycin',
-      tbdrug_ever       ~ 'TB drugs',
-      antifungal_ever   ~ 'Antifungal',
-      antiviral_ever    ~ 'Antiviral',
-      antimalaria_ever  ~ 'Antimalarial',
-      parasitedrug_ever ~ 'Parasite drugs',
-      otheranti_ever    ~ 'Others'
-    ),
-    missing = "no"
-  ) %>%
-  format_table("Treatment Received")
-t2_trt
+t2_trt <- create_t2_trt(df_enr)
+t2i_trt <- create_t2_trt(df_enr_i)
+t2o_trt <- create_t2_trt(df_enr_o)
+t2_trt_all <-
+  tbl_merge(list(t2_trt, t2i_trt, t2o_trt),
+            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Treatment (received)")  
+t2_trt_all
 ```
 
 <br>
@@ -519,46 +569,43 @@ t2_trt
 
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
-```{r t4_dx}
-vars <- names(sort_var(Pneumonia:Malaria))
-t4_dx <- df_enr %>%
-  zap_labels() %>%
-  mutate(
-    across(Principal1:Principal3, ~ na_if(., "")),
-    Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
-                    1,
-                    0)
-  ) %>%
-  select(dead28, vars, Others) %>%
-  tbl_summary(by = dead28,
-              missing = "no") %>%
-  format_table("Principal Diagnosis")
-t4_dx
+```{r t4_trt}
+# vars <- names(sort_var(Pneumonia:Malaria))
+# t4_trt <- df_enr %>%
+#   zap_labels() %>%
+#   mutate(
+#     across(Principal1:Principal3, ~ na_if(., "")),
+#     Others = ifelse(!is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
+#                     1,
+#                     0)
+#   ) %>%
+#   select(dead28, vars, Others) %>%
+#   tbl_summary(by = dead28,
+#               missing = "no") %>%
+#   format_table("Principal Diagnosis")
+# t4_trt
+
 ```
-
-<br>
-
+# 
+# <br>
+# 
 ```{r t4}
-t4 <- df_enr %>%
-  select(dead28,
-         DischargeStatus,
-         DischargeType,
-         OPDOutcome,
-         Outcome28Days,
-         TotalCharge) %>%
-  tbl_summary(
-    by = dead28,
-    label = list(
-      DischargeStatus ~ 'Discharge status (IDP only)',
-      DischargeType   ~ 'Discharge type (IDP only)',
-      OPDOutcome      ~ 'Treatment outcome after 28 OPD admission (OPD only)',
-      Outcome28Days   ~ 'Treatment outcome after 28 days (FU by phone)'
-    ),
-    missing = "no"
-  ) %>%
-  bold_labels() %>%
-  format_table()
-t4
+# t4 <- df_enr %>%
+#   select(dead28,
+#          DischargeStatus,
+#          DischargeType,
+#          TotalCharge) %>%
+#   tbl_summary(
+#     by = dead28,
+#     label = list(
+#       DischargeStatus ~ 'Discharge status (IDP only)',
+#       DischargeType   ~ 'Discharge type (IDP only)'
+#     ),
+#     missing = "no"
+#   ) %>%
+#   bold_labels() %>%
+#   format_table()
+# t4
 ```
 
 ```{r}
