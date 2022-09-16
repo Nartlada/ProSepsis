@@ -16,51 +16,68 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library(haven)      # Read SAS dataset
-library(purrr)      # Apply function (sum) to each element 
+library(purrr)      # Apply function (sum) to each element
 library(scales)     # Format numeric values
 library(DiagrammeR) # Create flowchart
-library(gtsummary)  # Create publication-ready summary tables 
+library(gtsummary)  # Create publication-ready summary tables
 library(survival)   # Survival analysis
 library(gt)         # Format gtsummary output
 
 theme_gtsummary_compact(font_size = 10)
-# theme_gtsummary_journal("lancet")
 ```
 
 ```{r functions}
-# Format gtsummary outputs
-format_table_1 <- function(t)  {
+# Format gtsummary outputs before merging
+format_table_1 <- function(t, overall)  {
 
   # Hide p-values of SIRSqSOFA, SIRS, and QSofa in table 1
   if (deparse(substitute(t)) == 't1') {
-    t <- t %>% add_p(include = -c('SIRSqSOFA', 'SIRS', 'QSofa'))
+    t <- add_p(t, include = -c('SIRSqSOFA', 'SIRS', 'QSofa'))
   } else {
-    t <- t %>% add_p(test.args = all_tests("fisher.test") ~ list(workspace=2e9))
+    t <- add_p(t, test.args = all_tests("fisher.test") ~ list(workspace = 2e9))
+  }
+
+  # Bold p-value if significant
+  t <- bold_p(t, t = 0.05)
+
+  # Add overall column if overall = TRUE
+  if (overall == TRUE) {
+    t <- t %>%
+      add_overall() %>%
+      # Empty stub head label and split header line
+      modify_header(
+        update = list(
+          label ~ "",
+          all_stat_cols(stat_0 = FALSE) ~ "**{level}**<br>N = {n}",
+          stat_0 ~ "**Overall**<br>N = {N}"
+        )
+      )
+  } else {
+    t <- t %>%
+      # Empty stub head label and split header line
+      modify_header(
+        update = list(
+          label ~ "",
+          all_stat_cols() ~ "**{level}**<br>N = {n}"
+        )
+      )
   }
   
-  t <- t %>%
-    bold_p(t = 0.05) %>%                         # Bold p-value if significant
-    add_overall() %>%                            # Add overall column
-    modify_spanning_header(c("stat_1", "stat_2") ~ "**28-day Mortality**") %>%
-    # Empty stub head label and split header line
-    modify_header(                     
-      update = list(
-        label ~ "",
-        all_stat_cols(stat_0 = FALSE) ~ "**{level}**<br>N = {n}",
-        stat_0 ~ "**Overall**<br>N = {N}"
-      )
-    ) 
+  modify_footnote(t, starts_with('stat') ~ NA)
+
 }
 
-format_table_2 <- function(t, grp = ""){
-  t <- t %>% 
-   #  modify_caption(cap) 
+# Format gtsummary outputs after merging
+format_table_2 <- function(t, grp = "") {
+
+  t <- t  %>%
     # Convert to gt and use default left align
-    as_gt( include = -cols_align) %>%
+    as_gt() %>%
     # Standard column width to fit every table
-    cols_width(label ~ px(180), 
-               ends_with('value') ~ px(30),
-               everything() ~ px(60)) %>%
+    cols_width(label ~ px(230),
+               stat_0_1 ~ px(100),
+               starts_with('p.value') ~ px(50),
+               everything() ~ px(70)) %>%
 
     # Add footnote about pending cases
     tab_footnote(
@@ -70,34 +87,38 @@ format_table_2 <- function(t, grp = ""){
 
   # Add a row group for 'check all that apply' variables
   if (grp != "") {
-    t <- t %>%
-      tab_row_group(group = grp,
+    t %>%
+      tab_row_group(group = paste0(grp, ', n (%)'),
                     rows = everything()) %>%
       tab_style(style = cell_text(weight = "bold"),
-                locations = cells_row_groups(groups = everything()))
+                locations = cells_row_groups(groups = everything())) %>% 
+      tab_options(row_group.border.top.width = 1,
+                  row_group.border.bottom.width = 1,
+                  table.border.bottom.style = "hidden")
+  } else {
+    t %>% 
+      tab_options(table.border.bottom.style = "hidden")
   }
 
-   return(t)
-  #
 }
 
 
 # Sort dichotomous variables by descending frequency
 sort_var <- function(df, ...) {
-  
+
     df %>%
-    filter(!is.na(dead28)) %>% 
+    filter(!is.na(dead28)) %>%
     select(...) %>%
     map_dbl(sum, na.rm = TRUE) %>%
     sort(decreasing = TRUE)
-  
+
 }
 
-create_t1 <- function(df){
-  t <- df %>%
+create_t1 <- function(df, overall = FALSE) {
+  t1 <- df %>%
    mutate(
     SIRSqSOFA = ifelse(Group == 1, 1, 0)
-  ) %>% 
+  ) %>%
   select(
     dead28,
     Age_year,
@@ -121,31 +142,29 @@ create_t1 <- function(df){
       SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
       Sepsis_Scale ~ 'Sepsis determination (SOFA)'
     ),
-    digits = Age_year ~ 1,
     missing = "no",
     sort = list(Occupation ~ "frequency")
   ) %>%
   bold_labels() %>%
   # Add labels describing stat for each variable
-  add_stat_label() 
-  t <- format_table_1(t)
-  return(t)
+  add_stat_label()
+  t1 <- format_table_1(t1, overall)
+  return(t1)
 }
 
-create_t1_cc <- function(df){
+create_t1_cc <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, CCFever:CCJointPain))
   df %>%
-  zap_labels() %>% 
+  zap_labels() %>%
   select(dead28, vars, CCOther) %>%
-  tbl_summary(by = dead28) %>% 
-  format_table_1()
+  tbl_summary(by = dead28) %>%
+  format_table_1(overall)
 }
 
-
-create_t1_if <- function(df){
+create_t1_if <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, IFTropSep:IFNerve))
   df %>%
-  zap_labels() %>% 
+  zap_labels() %>%
   select(dead28, vars, IFOth) %>%
   tbl_summary(
     by = dead28,
@@ -159,23 +178,23 @@ create_t1_if <- function(df){
       IFNerve       ~ 'Central nervous system',
       IFOth         ~ 'Others'
     )
-  )%>% 
-  format_table_1()
+  )%>%
+  format_table_1(overall)
 }
 
-create_t2_un <- function(df){
+create_t2_un <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, UnDiabetes:UnThalassemia))
-  df %>% 
-  zap_labels() %>% 
+  df %>%
+  zap_labels() %>%
   select(dead28, vars, UnOth) %>%
   tbl_summary(by = dead28) %>%
-  format_table_1()
+  format_table_1(overall)
   #format_table("Underlying Condition/Co-morbidity")
 }
 
-create_t2_risk <- function(df){
+create_t2_risk <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, UnSmoke:UnAlcohol))
-  df %>% 
+  df %>%
   select(dead28, vars, HIV, Covid21) %>%
   tbl_summary(
     by = dead28,
@@ -183,34 +202,34 @@ create_t2_risk <- function(df){
                  UnAlcohol ~ 'Alcohol'),
     missing = "no"
   ) %>%
-  format_table_1()
+  format_table_1(overall)
   #format_table("Risk Behavior")
 }
 
-create_t2_pui <- function(df){
-  df %>% 
+create_t2_pui <- function(df, overall = FALSE) {
+  df %>%
   select(dead28, NP, CB) %>%
   tbl_summary(by = dead28,
               missing = "no") %>%
-    format_table_1()
+    format_table_1(overall)
   #format_table("PUI (SARS-CoV2 NGS and TAC)")
 }
 
-create_t2_dx <- function(df){
+create_t2_dx <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, DxFever:DxMening))
-  df %>% 
-  zap_labels() %>% 
+  df %>%
+  zap_labels() %>%
   select(dead28, vars, DxOther) %>%
   tbl_summary(by = dead28) %>%
-    format_table_1()
+    format_table_1(overall)
  # format_table("Provisional Diagnosis")
 }
 
-create_t2_or <- function(df){
-  df %>% 
+create_t2_or <- function(df, overall = FALSE) {
+  df %>%
   mutate(
     across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .))
-  ) %>% 
+  ) %>%
   select(dead28, SOFA1:SOFA6, Sofa_Sepsis) %>%
   tbl_summary(
     by = dead28,
@@ -225,13 +244,13 @@ create_t2_or <- function(df){
     ),
     missing = "no"
   ) %>%
- format_table_1()
+ format_table_1(overall)
     # format_table("Organ Dysfunction")
 }
 
-create_t2_cul_s <- function(df){
-  df %>% 
-  zap_labels() %>% 
+create_t2_cul_s <- function(df, overall = FALSE) {
+  df %>%
+  zap_labels() %>%
   select(dead28, CulBlood_ever:CulOther_ever) %>%
   tbl_summary(
     by = dead28,
@@ -243,11 +262,11 @@ create_t2_cul_s <- function(df){
       CulOther_ever  ~ 'Others'
     )
   ) %>%
-  format_table_1()
+  format_table_1(overall)
     #format_table("Microbiology: Culture Source")
 }
 
-create_t2_rdt <- function(df){
+create_t2_rdt <- function(df, overall = FALSE) {
 vars <-
   names(
     sort_var(df,
@@ -265,7 +284,7 @@ vars <-
       RSV
     )
   )
-  df %>% 
+  df %>%
   select(dead28, vars) %>%
   tbl_summary(
     by = dead28,
@@ -286,14 +305,14 @@ vars <-
       RSV       ~ 'RSV +'
     ),
     missing = "no"
-  ) %>% 
-  format_table_1()
+  ) %>%
+  format_table_1(overall)
 }
 
-create_t2_trt <- function(df){
-vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever)) 
+create_t2_trt <- function(df, overall = FALSE) {
+vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever))
  df %>%
-  zap_labels() %>% 
+  zap_labels() %>%
   select(dead28, vars, otheranti_ever) %>%
   tbl_summary(
     by = dead28,
@@ -321,10 +340,10 @@ vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever))
     ),
     missing = "no"
   ) %>%
-  format_table_1()
+  format_table_1(overall)
 }
 
-create_t4_trt <- function(df){
+create_t4_dx <- function(df, overall = FALSE) {
 vars <- names(sort_var(df, Pneumonia:Malaria))
 df %>%
   zap_labels() %>%
@@ -337,10 +356,10 @@ df %>%
   select(dead28, vars, Others) %>%
   tbl_summary(by = dead28,
               missing = "no") %>%
-  format_table_1()
+  format_table_1(overall)
 }
 
-create_t4 <- function(df){
+create_t4 <- function(df, overall = FALSE) {
  df %>%
   select(dead28,
          DischargeStatus,
@@ -355,7 +374,9 @@ create_t4 <- function(df){
     missing = "no"
   ) %>%
   bold_labels() %>%
-  format_table_1()
+  # Add labels describing stat for each variable
+  add_stat_label() %>% 
+  format_table_1(overall)
 }
 
 ```
@@ -364,16 +385,20 @@ create_t4 <- function(df){
 # Screening
 df_scr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   )
 
 # Enrollment
 
 df_enr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28 = factor(
@@ -455,13 +480,13 @@ n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
 **Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t1}
-t1 <- create_t1(df_enr)
+t1t <- create_t1(df_enr, TRUE)
 t1i <- create_t1(df_enr_i)
 t1o <- create_t1(df_enr_o)
-
-t1all <- tbl_merge(list(t1, t1i, t1o), tab_spanner = c("**Total**","**IPD**","**OPD**"))
-t1all
-
+t1  <- tbl_merge(list(t1t, t1i, t1o),
+                 tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2()
+t1
 ```
 
 <br>
@@ -469,24 +494,25 @@ t1all
 \newpage
 
 ```{r t1_cc}
-t1_cc <- create_t1_cc(df_enr)
+t1t_cc <- create_t1_cc(df_enr, TRUE)
 t1i_cc <- create_t1_cc(df_enr_i)
 t1o_cc <- create_t1_cc(df_enr_o)
-
-t1_cc_all <- tbl_merge(list(t1_cc, t1i_cc, t1o_cc), tab_spanner = c("**Total**","**IPD**","**OPD**")) %>% 
-format_table_2("Chief Complaint")  
-t1_cc_all
+t1_cc  <- tbl_merge(list(t1t_cc, t1i_cc, t1o_cc),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Chief Complaint")
+t1_cc
 ```
 
 <br>
 
 ```{r t1_if}
-t1_if <- create_t1_if(df_enr)
+t1t_if <- create_t1_if(df_enr, TRUE)
 t1i_if <- create_t1_if(df_enr_i)
 t1o_if <- create_t1_if(df_enr_o)
-t1_if_all <- tbl_merge(list(t1_if, t1i_if, t1o_if), tab_spanner = c("**Total**","**IPD**","**OPD**")) %>% 
-format_table_2("Source of Infection")  
-t1_if_all
+t1_if  <- tbl_merge(list(t1t_if, t1i_if, t1o_if),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Source of Infection")
+t1_if
 ```
 
 <br>
@@ -496,80 +522,73 @@ t1_if_all
 **Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
 ```{r t2_un}
-t2_un <- create_t2_un(df_enr)
+t2t_un <- create_t2_un(df_enr, TRUE)
 t2i_un <- create_t2_un(df_enr_i)
 t2o_un <- create_t2_un(df_enr_o)
-t2_un_all <-
-  tbl_merge(list(t2_un, t2i_un, t2o_un),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+t2_un  <- tbl_merge(list(t2t_un, t2i_un, t2o_un),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
   format_table_2("Underlying Condition/Co-morbidity")
-t2_un_all
+t2_un
 ```
 
 <br>
 
 ```{r t2_risk}
-t2_risk <- create_t2_risk(df_enr)
+t2t_risk <- create_t2_risk(df_enr, TRUE)
 t2i_risk <- create_t2_risk(df_enr_i)
 t2o_risk <- create_t2_risk(df_enr_o)
-t2_risk_all <-
-  tbl_merge(list(t2_risk, t2i_risk, t2o_risk),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Risk Behavior")  
-t2_risk_all
+t2_risk  <- tbl_merge(list(t2t_risk, t2i_risk, t2o_risk),
+                      tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Risk Behavior")
+t2_risk
 ```
 
 <br>
 
 ```{r t2_pui}
-t2_pui <- create_t2_pui(df_enr)
+t2t_pui <- create_t2_pui(df_enr, TRUE)
 t2i_pui <- create_t2_pui(df_enr_i)
 t2o_pui <- create_t2_pui(df_enr_o)
-t2_pui_all <-
-  tbl_merge(list(t2_pui, t2i_pui, t2o_pui),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("PUI (SARS-CoV2 NGS and TAC)")  
-t2_pui_all
+t2_pui  <- tbl_merge(list(t2t_pui, t2i_pui, t2o_pui),
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("PUI (SARS-CoV2 NGS and TAC)")
+t2_pui
 ```
 
 <br>
 
 ```{r t2_dx}
-t2_dx <- create_t2_dx(df_enr)
+t2t_dx <- create_t2_dx(df_enr, TRUE)
 t2i_dx <- create_t2_dx(df_enr_i)
 t2o_dx <- create_t2_dx(df_enr_o)
-t2_dx_all <-
-  tbl_merge(list(t2_dx, t2i_dx, t2o_dx),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Provisional Diagnosis")  
-t2_dx_all
+t2_dx  <- tbl_merge(list(t2t_dx, t2i_dx, t2o_dx),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Provisional Diagnosis")
+t2_dx
 ```
 
 <br>
 
 ```{r t2_or}
-t2_or <- create_t2_or(df_enr)
+t2t_or <- create_t2_or(df_enr, TRUE)
 t2i_or <- create_t2_or(df_enr_i)
 t2o_or <- create_t2_or(df_enr_o)
-t2_or_all <-
-  tbl_merge(list(t2_or, t2i_or, t2o_or),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Organ Dysfunction")  
-t2_or_all
+t2_or  <- tbl_merge(list(t2t_or, t2i_or, t2o_or),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Organ Dysfunction")
+t2_or
 ```
 
 <br>
 
 ```{r t2_cul_s}
-t2_cul_s <- create_t2_cul_s(df_enr)
+t2t_cul_s <- create_t2_cul_s(df_enr, TRUE)
 t2i_cul_s <- create_t2_cul_s(df_enr_i)
 t2o_cul_s <- create_t2_cul_s(df_enr_o)
-t2_cul_s_all <-
-  tbl_merge(list(t2_cul_s, t2i_cul_s, t2o_cul_s),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Microbiology: Culture source")  
-t2_cul_s_all
-
+t2_cul_s  <- tbl_merge(list(t2t_cul_s, t2i_cul_s, t2o_cul_s),
+                       tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Microbiology: Culture Source")
+t2_cul_s
 ```
 
 <br>
@@ -577,27 +596,25 @@ t2_cul_s_all
 \newpage
 
 ```{r t2_rdt}
-t2_rdt <- create_t2_rdt(df_enr)
+t2t_rdt <- create_t2_rdt(df_enr, TRUE)
 t2i_rdt <- create_t2_rdt(df_enr_i)
 t2o_rdt <- create_t2_rdt(df_enr_o)
-t2_rdt_all <-
-  tbl_merge(list(t2_rdt, t2i_rdt, t2o_rdt),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("RDT")  
-t2_rdt_all
+t2_rdt  <- tbl_merge(list(t2t_rdt, t2i_rdt, t2o_rdt),
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("RDT")
+t2_rdt
 ```
 
 <br>
 
 ```{r t2_trt}
-t2_trt <- create_t2_trt(df_enr)
+t2t_trt <- create_t2_trt(df_enr, TRUE)
 t2i_trt <- create_t2_trt(df_enr_i)
 t2o_trt <- create_t2_trt(df_enr_o)
-t2_trt_all <-
-  tbl_merge(list(t2_trt, t2i_trt, t2o_trt),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Treatment (received)")  
-t2_trt_all
+t2_trt  <- tbl_merge(list(t2t_trt, t2i_trt, t2o_trt),
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Treatment (received)")
+t2_trt
 ```
 
 <br>
@@ -606,29 +623,26 @@ t2_trt_all
 
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
-```{r t4_trt}
-t4_trt <- create_t4_trt(df_enr)
-t4i_trt <- create_t4_trt(df_enr_i)
-t4o_trt <- create_t4_trt(df_enr_o)
-t4_trt_all <-
-  tbl_merge(list(t4_trt, t4i_trt, t4o_trt),
-            tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Principal diagnosis")  
-t4_trt_all
-
-
+```{r t4_dx}
+t4t_dx <- create_t4_dx(df_enr, TRUE)
+t4i_dx <- create_t4_dx(df_enr_i)
+t4o_dx <- create_t4_dx(df_enr_o)
+t4_dx  <- tbl_merge(list(t4t_dx, t4i_dx, t4o_dx),
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2("Principal diagnosis")
+t4_dx
 ```
 
 <br>
- 
+
 ```{r t4}
-t4 <- create_t4(df_enr)
+t4t <- create_t4(df_enr, TRUE)
 t4i <- create_t4(df_enr_i)
 t4o <- create_t4(df_enr_o)
-
-t4all <- tbl_merge(list(t4, t4i, t4o), tab_spanner = c("**Total**","**IPD**","**OPD**"))
-t4all
-
+t4  <- tbl_merge(list(t4t, t4i, t4o),
+                 tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
+  format_table_2()
+t4
 ```
 
 ```{r}
