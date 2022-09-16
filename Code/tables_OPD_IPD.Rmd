@@ -62,46 +62,38 @@ format_table_1 <- function(t, overall)  {
         )
       )
   }
-  
+
   modify_footnote(t, starts_with('stat') ~ NA)
 
 }
 
 # Format gtsummary outputs after merging
-format_table_2 <- function(t, grp = "") {
+format_table_2 <- function(t) {
 
-  t <- t  %>%
+  t %>%
     # Convert to gt and use default left align
     as_gt() %>%
     # Standard column width to fit every table
-    cols_width(label ~ px(230),
-               stat_0_1 ~ px(100),
-               starts_with('p.value') ~ px(50),
-               everything() ~ px(70)) %>%
-
+    cols_width(
+      label ~ px(230),
+      stat_0_1 ~ px(100),
+      starts_with('p.value') ~ px(50),
+      everything() ~ px(70)
+    ) %>%
     # Add footnote about pending cases
     tab_footnote(
       footnote = str_glue(n_miss, " cases are pending for final outcome"),
       locations = cells_column_labels(columns = "stat_0_1")
+    ) %>%
+    tab_style(style = cell_text(weight = "bold"),
+              locations = cells_row_groups()) %>%
+    tab_options(
+      row_group.border.top.width = 1,
+      row_group.border.bottom.width = 1,
+      table.border.bottom.style = "hidden"
     )
 
-  # Add a row group for 'check all that apply' variables
-  if (grp != "") {
-    t %>%
-      tab_row_group(group = paste0(grp, ', n (%)'),
-                    rows = everything()) %>%
-      tab_style(style = cell_text(weight = "bold"),
-                locations = cells_row_groups(groups = everything())) %>% 
-      tab_options(row_group.border.top.width = 1,
-                  row_group.border.bottom.width = 1,
-                  table.border.bottom.style = "hidden")
-  } else {
-    t %>% 
-      tab_options(table.border.bottom.style = "hidden")
-  }
-
 }
-
 
 # Sort dichotomous variables by descending frequency
 sort_var <- function(df, ...) {
@@ -375,7 +367,7 @@ create_t4 <- function(df, overall = FALSE) {
   ) %>%
   bold_labels() %>%
   # Add labels describing stat for each variable
-  add_stat_label() %>% 
+  add_stat_label() %>%
   format_table_1(overall)
 }
 
@@ -484,35 +476,27 @@ t1t <- create_t1(df_enr, TRUE)
 t1i <- create_t1(df_enr_i)
 t1o <- create_t1(df_enr_o)
 t1  <- tbl_merge(list(t1t, t1i, t1o),
-                 tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2()
-t1
-```
+                 tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-\newpage
-
-```{r t1_cc}
 t1t_cc <- create_t1_cc(df_enr, TRUE)
 t1i_cc <- create_t1_cc(df_enr_i)
 t1o_cc <- create_t1_cc(df_enr_o)
 t1_cc  <- tbl_merge(list(t1t_cc, t1i_cc, t1o_cc),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Chief Complaint")
-t1_cc
-```
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t1_if}
 t1t_if <- create_t1_if(df_enr, TRUE)
 t1i_if <- create_t1_if(df_enr_i)
 t1o_if <- create_t1_if(df_enr_o)
 t1_if  <- tbl_merge(list(t1t_if, t1i_if, t1o_if),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Source of Infection")
-t1_if
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
+
+t1 <- tbl_stack(list(t1, t1_cc, t1_if),
+                group_header = c('', 'Chief Complaint, n (%)', 'Source of Infection, n (%)')) %>%
+  format_table_2() %>%
+  tab_style(style = cell_borders(sides = "bottom",
+                                 style = "hidden"),
+            locations = cells_row_groups(groups = 1))
+t1
 ```
 
 <br>
@@ -521,100 +505,66 @@ t1_if
 
 **Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
-```{r t2_un}
+```{r t2}
 t2t_un <- create_t2_un(df_enr, TRUE)
 t2i_un <- create_t2_un(df_enr_i)
 t2o_un <- create_t2_un(df_enr_o)
 t2_un  <- tbl_merge(list(t2t_un, t2i_un, t2o_un),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Underlying Condition/Co-morbidity")
-t2_un
-```
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_risk}
 t2t_risk <- create_t2_risk(df_enr, TRUE)
 t2i_risk <- create_t2_risk(df_enr_i)
 t2o_risk <- create_t2_risk(df_enr_o)
 t2_risk  <- tbl_merge(list(t2t_risk, t2i_risk, t2o_risk),
-                      tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Risk Behavior")
-t2_risk
-```
+                      tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_pui}
 t2t_pui <- create_t2_pui(df_enr, TRUE)
 t2i_pui <- create_t2_pui(df_enr_i)
 t2o_pui <- create_t2_pui(df_enr_o)
 t2_pui  <- tbl_merge(list(t2t_pui, t2i_pui, t2o_pui),
-                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("PUI (SARS-CoV2 NGS and TAC)")
-t2_pui
-```
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_dx}
 t2t_dx <- create_t2_dx(df_enr, TRUE)
 t2i_dx <- create_t2_dx(df_enr_i)
 t2o_dx <- create_t2_dx(df_enr_o)
 t2_dx  <- tbl_merge(list(t2t_dx, t2i_dx, t2o_dx),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Provisional Diagnosis")
-t2_dx
-```
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_or}
 t2t_or <- create_t2_or(df_enr, TRUE)
 t2i_or <- create_t2_or(df_enr_i)
 t2o_or <- create_t2_or(df_enr_o)
 t2_or  <- tbl_merge(list(t2t_or, t2i_or, t2o_or),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Organ Dysfunction")
-t2_or
-```
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_cul_s}
 t2t_cul_s <- create_t2_cul_s(df_enr, TRUE)
 t2i_cul_s <- create_t2_cul_s(df_enr_i)
 t2o_cul_s <- create_t2_cul_s(df_enr_o)
 t2_cul_s  <- tbl_merge(list(t2t_cul_s, t2i_cul_s, t2o_cul_s),
-                       tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Microbiology: Culture Source")
-t2_cul_s
-```
+                       tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-\newpage
-
-```{r t2_rdt}
 t2t_rdt <- create_t2_rdt(df_enr, TRUE)
 t2i_rdt <- create_t2_rdt(df_enr_i)
 t2o_rdt <- create_t2_rdt(df_enr_o)
 t2_rdt  <- tbl_merge(list(t2t_rdt, t2i_rdt, t2o_rdt),
-                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("RDT")
-t2_rdt
-```
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t2_trt}
 t2t_trt <- create_t2_trt(df_enr, TRUE)
 t2i_trt <- create_t2_trt(df_enr_i)
 t2o_trt <- create_t2_trt(df_enr_o)
 t2_trt  <- tbl_merge(list(t2t_trt, t2i_trt, t2o_trt),
-                     tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Treatment (received)")
-t2_trt
+                     tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
+
+t2 <- tbl_stack(list(t2_un, t2_risk, t2_pui, t2_dx, t2_or, t2_cul_s, t2_rdt, t2_trt),
+                group_header = c('Underlying Condition/Co-morbidity, n (%)',
+                                 'Risk Behavior, n (%)',
+                                 'PUI (SARS-CoV2 NGS and TAC), n (%)',
+                                 'Provisional Diagnosis, n (%)',
+                                 'Organ Dysfunction, n (%)',
+                                 'Microbiology: Culture Source, n (%)',
+                                 'RDT, n (%)',
+                                 'Treatment (received), n (%)')) %>%
+  format_table_2()
+t2
 ```
 
 <br>
@@ -623,25 +573,25 @@ t2_trt
 
 **Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
 
-```{r t4_dx}
+```{r t4}
 t4t_dx <- create_t4_dx(df_enr, TRUE)
 t4i_dx <- create_t4_dx(df_enr_i)
 t4o_dx <- create_t4_dx(df_enr_o)
 t4_dx  <- tbl_merge(list(t4t_dx, t4i_dx, t4o_dx),
-                    tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2("Principal diagnosis")
-t4_dx
-```
+                    tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
 
-<br>
-
-```{r t4}
 t4t <- create_t4(df_enr, TRUE)
 t4i <- create_t4(df_enr_i)
 t4o <- create_t4(df_enr_o)
 t4  <- tbl_merge(list(t4t, t4i, t4o),
-                 tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>%
-  format_table_2()
+                 tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
+
+t4 <- tbl_stack(list(t4_dx, t4),
+                group_header = c('Principal diagnosis, n (%)', '')) %>%
+  format_table_2() %>%
+  tab_style(style = cell_borders(sides = "bottom",
+                                 style = "hidden"),
+            locations = cells_row_groups(groups = 2))
 t4
 ```
 
