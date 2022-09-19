@@ -99,7 +99,7 @@ format_table_2 <- function(t) {
 sort_var <- function(df, ...) {
 
     df %>%
-    filter(!is.na(dead28)) %>%
+    filter(!is.na(dead28c)) %>%
     select(...) %>%
     map_dbl(sum, na.rm = TRUE) %>%
     sort(decreasing = TRUE)
@@ -112,7 +112,7 @@ create_t1 <- function(df, overall = FALSE) {
     SIRSqSOFA = ifelse(Group == 1, 1, 0)
   ) %>%
   select(
-    dead28,
+    dead28c,
     Age_year,
     Sex,
     PlaceChk_n,
@@ -124,7 +124,7 @@ create_t1 <- function(df, overall = FALSE) {
     Sepsis_Scale
   ) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       Age_year     ~ 'Age',
       PlaceChk_n   ~ 'Admission ward',
@@ -148,8 +148,8 @@ create_t1_cc <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, CCFever:CCJointPain))
   df %>%
   zap_labels() %>%
-  select(dead28, vars, CCOther) %>%
-  tbl_summary(by = dead28) %>%
+  select(dead28c, vars, CCOther) %>%
+  tbl_summary(by = dead28c) %>%
   format_table_1(overall)
 }
 
@@ -157,9 +157,9 @@ create_t1_if <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, IFTropSep:IFNerve))
   df %>%
   zap_labels() %>%
-  select(dead28, vars, IFOth) %>%
+  select(dead28c, vars, IFOth) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       IFTropSep     ~ 'Tropical infection',
       IFRespiratory ~ 'Respiratory',
@@ -178,8 +178,8 @@ create_t2_un <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, UnDiabetes:UnThalassemia))
   df %>%
   zap_labels() %>%
-  select(dead28, vars, UnOth) %>%
-  tbl_summary(by = dead28) %>%
+  select(dead28c, vars, UnOth) %>%
+  tbl_summary(by = dead28c) %>%
   format_table_1(overall)
   #format_table("Underlying Condition/Co-morbidity")
 }
@@ -187,9 +187,9 @@ create_t2_un <- function(df, overall = FALSE) {
 create_t2_risk <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, UnSmoke:UnAlcohol))
   df %>%
-  select(dead28, vars, HIV, Covid21) %>%
+  select(dead28c, vars, HIV, Covid21) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(UnSmoke   ~ 'Smoking',
                  UnAlcohol ~ 'Alcohol'),
     missing = "no"
@@ -200,8 +200,8 @@ create_t2_risk <- function(df, overall = FALSE) {
 
 create_t2_pui <- function(df, overall = FALSE) {
   df %>%
-  select(dead28, NP, CB) %>%
-  tbl_summary(by = dead28,
+  select(dead28c, NP, CB) %>%
+  tbl_summary(by = dead28c,
               missing = "no") %>%
     format_table_1(overall)
   #format_table("PUI (SARS-CoV2 NGS and TAC)")
@@ -211,8 +211,8 @@ create_t2_dx <- function(df, overall = FALSE) {
   vars <- names(sort_var(df, DxFever:DxMening))
   df %>%
   zap_labels() %>%
-  select(dead28, vars, DxOther) %>%
-  tbl_summary(by = dead28) %>%
+  select(dead28c, vars, DxOther) %>%
+  tbl_summary(by = dead28c) %>%
     format_table_1(overall)
  # format_table("Provisional Diagnosis")
 }
@@ -222,9 +222,9 @@ create_t2_or <- function(df, overall = FALSE) {
   mutate(
     across(SOFA1:SOFA6, ~ ifelse(. > 1, 1, .))
   ) %>%
-  select(dead28, SOFA1:SOFA6, Sofa_Sepsis) %>%
+  select(dead28c, SOFA1:SOFA6, Sofa_Sepsis) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       SOFA1       ~ 'RS (PaO2/Fio2 <400 or infiltration on CXR)',
       SOFA2       ~ 'Liver (Bilirubin > 1.2 mg/dl)',
@@ -243,9 +243,9 @@ create_t2_or <- function(df, overall = FALSE) {
 create_t2_cul_s <- function(df, overall = FALSE) {
   df %>%
   zap_labels() %>%
-  select(dead28, CulBlood_ever:CulOther_ever) %>%
+  select(dead28c, CulBlood_ever:CulOther_ever) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       CulBlood_ever  ~ 'Blood',
       CulSputum_ever ~ 'Sputum',
@@ -277,9 +277,9 @@ vars <-
     )
   )
   df %>%
-  select(dead28, vars) %>%
+  select(dead28c, vars) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       covid19_r ~ 'COVID-19 +',
       dengue_r  ~ 'Dengue +',
@@ -305,9 +305,9 @@ create_t2_trt <- function(df, overall = FALSE) {
 vars <- names(sort_var(df, penicillin_ever:parasitedrug_ever))
  df %>%
   zap_labels() %>%
-  select(dead28, vars, otheranti_ever) %>%
+  select(dead28c, vars, otheranti_ever) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       penicillin_ever   ~ 'Penicillin',
       cephalG1_ever     ~ 'Cephalosporin 1st',
@@ -345,20 +345,20 @@ df %>%
                     1,
                     0)
   ) %>%
-  select(dead28, vars, Others) %>%
-  tbl_summary(by = dead28,
+  select(dead28c, vars, Others) %>%
+  tbl_summary(by = dead28c,
               missing = "no") %>%
   format_table_1(overall)
 }
 
 create_t4 <- function(df, overall = FALSE) {
  df %>%
-  select(dead28,
+  select(dead28c,
          DischargeStatus,
          DischargeType,
          TotalCharge) %>%
   tbl_summary(
-    by = dead28,
+    by = dead28c,
     label = list(
       DischargeStatus ~ 'Discharge status (IDP only)',
       DischargeType   ~ 'Discharge type (IDP only)'
@@ -393,8 +393,8 @@ df_enr <-
     "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   ) %>%
   mutate(
-    dead28 = factor(
-      dead28,
+    dead28c = factor(
+      dead28c,
       levels = c(1, 2),
       labels = c('Dead', 'Alive')
     ),
@@ -447,10 +447,10 @@ df_enr_i <- filter(df_enr, OPD_IPD == '1 -IPD')
 df_enr_o <- filter(df_enr, OPD_IPD == '2 -OPD')
 
 n_enr  = nrow(df_enr)
-n_miss = sum(is.na(df_enr$dead28), na.rm = TRUE)
+n_miss = sum(is.na(df_enr$dead28c), na.rm = TRUE)
 
-# n_miss_i = sum(is.na(df_enr_i$dead28), na.rm = TRUE)
-# n_miss_o = sum(is.na(df_enr_o$dead28), na.rm = TRUE)
+# n_miss_i = sum(is.na(df_enr_i$dead28c), na.rm = TRUE)
+# n_miss_o = sum(is.na(df_enr_o$dead28c), na.rm = TRUE)
 
 ```
 
@@ -597,10 +597,10 @@ t4
 
 ```{r}
 # uni <- df_enr %>%
-#   select(Age_year, Sex, Refer, Sepsis:Cancer, Liver, TotalCharge, dead28, stime) %>%
-#   mutate(dead28 = ifelse(dead28 == 0, 2, dead28)) %>%
+#   select(Age_year, Sex, Refer, Sepsis:Cancer, Liver, TotalCharge, dead28c, stime) %>%
+#   mutate(dead28c = ifelse(dead28c == 0, 2, dead28c)) %>%
 #   tbl_uvregression(method = coxph,
-#                    y = Surv(stime, dead28),
+#                    y = Surv(stime, dead28c),
 #                    exponentiate = TRUE) %>%
 #   add_global_p()
 # uni

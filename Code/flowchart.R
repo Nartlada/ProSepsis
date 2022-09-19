@@ -70,29 +70,29 @@ df_sumscr <- df_scr %>%
 
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
-  mutate(across(c(dead28,Sepsis_Scale), ~ as.numeric(.))) %>%
+  mutate(across(c(dead28c,Sepsis_Scale), ~ as.numeric(.))) %>%
   summarise(
     enr          = n(),
     ipd          = sum(OPD_IPD == '1 -IPD', na.rm = TRUE),
-    di           = sum(OPD_IPD == '1 -IPD' & dead28 == 1, na.rm = TRUE),
-    di_non       = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    di_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    di_shock     = sum(OPD_IPD == '1 -IPD' & dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    ai           = sum(OPD_IPD == '1 -IPD' & dead28 == 2, na.rm = TRUE),
-    ai_non       = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    ai_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    ai_shock     = sum(OPD_IPD == '1 -IPD' & dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE),
-    exci_pending = sum(OPD_IPD == '1 -IPD' & is.na(dead28), na.rm = TRUE),
+    di           = sum(OPD_IPD == '1 -IPD' & dead28c == 1, na.rm = TRUE),
+    di_non       = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    di_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    di_shock     = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    ai           = sum(OPD_IPD == '1 -IPD' & dead28c == 2, na.rm = TRUE),
+    ai_non       = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    ai_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    ai_shock     = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 3, na.rm = TRUE),
+    exci_pending = sum(OPD_IPD == '1 -IPD' & is.na(dead28c), na.rm = TRUE),
     opd          = sum(OPD_IPD == '2 -OPD', na.rm = TRUE),
-    do           = sum(OPD_IPD == '2 -OPD' & dead28 == 1, na.rm = TRUE),
-    do_non       = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    do_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    do_shock     = sum(OPD_IPD == '2 -OPD' & dead28 == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    ao           = sum(OPD_IPD == '2 -OPD' & dead28 == 2, na.rm = TRUE),
-    ao_non       = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    ao_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    ao_shock     = sum(OPD_IPD == '2 -OPD' & dead28 == 2 & Sepsis_Scale == 3, na.rm = TRUE),
-    exco_pending = sum(OPD_IPD == '2 -OPD' & is.na(dead28), na.rm = TRUE)
+    do           = sum(OPD_IPD == '2 -OPD' & dead28c == 1, na.rm = TRUE),
+    do_non       = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 1, na.rm = TRUE),
+    do_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 2, na.rm = TRUE),
+    do_shock     = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 3, na.rm = TRUE),
+    ao           = sum(OPD_IPD == '2 -OPD' & dead28c == 2, na.rm = TRUE),
+    ao_non       = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 1, na.rm = TRUE),
+    ao_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 2, na.rm = TRUE),
+    ao_shock     = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 3, na.rm = TRUE),
+    exco_pending = sum(OPD_IPD == '2 -OPD' & is.na(dead28c), na.rm = TRUE)
   )
 
 # Texts for figures
