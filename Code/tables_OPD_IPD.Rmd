@@ -377,20 +377,20 @@ create_t4 <- function(df, overall = FALSE) {
 # Screening
 df_scr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   )
 
 # Enrollment
 
 df_enr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/MF/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28c = factor(
@@ -493,9 +493,9 @@ t1_if  <- tbl_merge(list(t1t_if, t1i_if, t1o_if),
 t1 <- tbl_stack(list(t1, t1_cc, t1_if),
                 group_header = c('', 'Chief Complaint, n (%)', 'Source of Infection, n (%)')) %>%
   format_table_2() %>%
-  tab_style(style = cell_borders(sides = "bottom",
-                                 style = "hidden"),
+  tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
             locations = cells_row_groups(groups = 1))
+
 t1
 ```
 
@@ -589,8 +589,7 @@ t4  <- tbl_merge(list(t4t, t4i, t4o),
 t4 <- tbl_stack(list(t4_dx, t4),
                 group_header = c('Principal diagnosis, n (%)', '')) %>%
   format_table_2() %>%
-  tab_style(style = cell_borders(sides = "bottom",
-                                 style = "hidden"),
+  tab_style(style = cell_borders(sides = "bottom", style = 'hidden'),
             locations = cells_row_groups(groups = 2))
 t4
 ```

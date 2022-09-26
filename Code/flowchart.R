@@ -259,12 +259,12 @@ d <- DiagrammeR::grViz(
     node [shape = box,
           fixedsize = t,
           width = 4,
-          height = 0.8,
+          height = 1,
           style = filled,
           color = gray,
           fillcolor = WhiteSmoke,
           fontname = Helvetica,
-          fontsize = 20]
+          fontsize = 24]
 
     subgraph cluster_s {
 
@@ -272,12 +272,12 @@ d <- DiagrammeR::grViz(
       node [shape = box,
             fixedsize = t,
             width = 4,
-            height = 0.8,
+            height = 1,
             style = filled,
             color = gray,
             fillcolor = WhiteSmoke,
             fontname = Helvetica,
-            fontsize = 20]
+            fontsize = 24]
 
       neg_pos [label = '@@11']
       pos_neg [label = '@@10']
@@ -296,12 +296,12 @@ d <- DiagrammeR::grViz(
       node [shape = box,
             fixedsize = t,
             width = 4,
-            height = 0.8,
+            height = 1,
             style = filled,
             color = gray,
             fillcolor = WhiteSmoke,
             fontname = Helvetica,
-            fontsize = 20]
+            fontsize = 24]
 
       exci_pending [label = '@@28']
       ai [label =
@@ -331,12 +331,12 @@ d <- DiagrammeR::grViz(
       node [shape = box,
             fixedsize = t,
             width = 4,
-            height = 0.8,
+            height = 1,
             style = filled,
             color = gray,
             fillcolor = WhiteSmoke,
             fontname = Helvetica,
-            fontsize = 20]
+            fontsize = 24]
 
       exco_pending [label = '@@38']
       ao [label =
@@ -456,3 +456,4 @@ d <- DiagrammeR::grViz(
   [38]: l38
 
 ")
+
