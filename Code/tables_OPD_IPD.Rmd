@@ -97,7 +97,9 @@ format_table_2 <- function(t) {
       locations = cells_column_labels(columns = "stat_0_1")
     )
   }
-
+  
+  return(gt)
+  
 }
 
 # Sort dichotomous variables by descending frequency
@@ -661,7 +663,7 @@ t2
 
 **Table 3**: Microbiological blood culture results and multidrug resistance profile of common bacterial pathogens causing of sepsis (N=`r n_amr`)
 
-```{r t3a}
+```{r t3}
 t3at <- create_t3(df_enr, overall = TRUE)
 t3ai <- create_t3(df_enr_i)
 t3ao <- create_t3(df_enr_o)
@@ -669,15 +671,13 @@ t3a  <- tbl_merge(list(t3at, t3ai, t3ao),
                   tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>% 
   format_table_2()
 t3a
-```
 
-```{r t3b}
 t3bt <- create_t3(df_enr, sepsis, TRUE)
 t3bi <- create_t3(df_enr_i, sepsis)
 t3bo <- create_t3(df_enr_o, sepsis)
 t3b  <- tbl_merge(list(t3bt, t3bi, t3bo),
-                  tab_spanner = c("**Total**", "**IPD**", "**OPD**")) %>% 
-  format_table_2()
+                  tab_spanner = c("**Total**", "**IPD**", "**OPD**"))
+t3b  <- format_table_2(t3b)
 t3b
 ```
 
