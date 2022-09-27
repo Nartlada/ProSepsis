@@ -381,34 +381,22 @@ create_t4 <- function(df, overall = FALSE) {
 # Screening
 df_scr <-
   read_sas(
-<<<<<<< HEAD
+
+   
     "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
     "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    # "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
-=======
-    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
->>>>>>> 9936796bb49d7823754f49a2b4fd3605508f61b1
+
   )
 
 # Enrollment
 
 df_enr <-
   read_sas(
-<<<<<<< HEAD
     "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
     "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
     # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
     # "C:/Projects/ProSepsis/SAS/MF/prosepsis.sas7bcat"
-=======
-    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
->>>>>>> 9936796bb49d7823754f49a2b4fd3605508f61b1
+
   ) %>%
   mutate(
     dead28c = factor(
