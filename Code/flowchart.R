@@ -65,11 +65,17 @@ df_sumscr <- df_scr %>%
         IsConsent == 2 &
         ReasonNo == 5,
       na.rm = TRUE
-    )
+    ),
+    exc_sirsneg = sum(infect == 1 & IsConsent == 1 &
+                        N_sirs < 2, na.rm = TRUE),
+    exc_msopd   = sum(infect == 1 & IsConsent == 1 &
+                        N_sirs >= 2 &
+                        (OPD_IPD == 2 & HospitalID == 2), na.rm = TRUE)
   )
 
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
+  # filter(SIRS == 1 & !(OPD_IPD == '2 -OPD' & HospitalID == 2)) %>% 
   mutate(across(c(dead28c,Sepsis_Scale), ~ as.numeric(.))) %>%
   summarise(
     enr          = n(),
@@ -164,87 +170,95 @@ l17 <- paste0(df_sumscr$reason5,
               ' (',
               percent(df_sumscr$reason5 / df_sumscr$sep, 0.1),
               ') other')
-l18 <- paste0(df_sumenr$enr,
+l18 <- paste0(df_sumscr$exc_sirsneg,
+              ' (',
+              percent(df_sumscr$exc_sirsneg / df_sumscr$sep, 0.1),
+              ') SIRS -')
+l19 <- paste0(df_sumscr$exc_msopd,
+              ' (',
+              percent(df_sumscr$exc_msopd / df_sumscr$sep, 0.1),
+              ') OPD in Mae Sot')
+l20 <- paste0(df_sumenr$enr,
               ' (',
               percent(df_sumenr$enr / df_sumscr$sep, 0.1),
               ') enrolled suspected sepsis')
-l19 <- paste0(df_sumenr$ipd,
+l21 <- paste0(df_sumenr$ipd,
               ' (',
               percent(df_sumenr$ipd / df_sumenr$enr, 0.1),
               ') IPD')
-l20 <- paste0(df_sumenr$di,
+l22 <- paste0(df_sumenr$di,
               ' (',
               percent(df_sumenr$di / df_sumenr$ipd, 0.1),
               ') 28 days mortality')
-l21 <- paste0(df_sumenr$di_non,
+l23 <- paste0(df_sumenr$di_non,
               ' (',
               percent(df_sumenr$di_non / df_sumenr$di, 0.1),
               ') non-sepsis')
-l22 <- paste0(df_sumenr$di_sepsis,
+l24 <- paste0(df_sumenr$di_sepsis,
               ' (',
               percent(df_sumenr$di_sepsis / df_sumenr$di, 0.1),
               ') sepsis')
-l23 <- paste0(df_sumenr$di_shock,
+l25 <- paste0(df_sumenr$di_shock,
               ' (',
               percent(df_sumenr$di_shock / df_sumenr$di, 0.1),
               ') septic shock')
-l24 <- paste0(df_sumenr$ai,
+l26 <- paste0(df_sumenr$ai,
               ' (',
               percent(df_sumenr$ai / df_sumenr$ipd, 0.1),
               ') survivors')
-l25 <- paste0(df_sumenr$ai_non,
+l27 <- paste0(df_sumenr$ai_non,
               ' (',
               percent(df_sumenr$ai_non / df_sumenr$ai, 0.1),
               ') non-sepsis')
-l26 <- paste0(df_sumenr$ai_sepsis,
+l28 <- paste0(df_sumenr$ai_sepsis,
               ' (',
               percent(df_sumenr$ai_sepsis / df_sumenr$ai, 0.1),
               ') sepsis')
-l27 <- paste0(df_sumenr$ai_shock,
+l29 <- paste0(df_sumenr$ai_shock,
               ' (',
               percent(df_sumenr$ai_shock / df_sumenr$ai, 0.1),
               ') septic shock')
-l28 <- paste0(df_sumenr$exci_pending,
+l30 <- paste0(df_sumenr$exci_pending,
               ' (',
               percent(df_sumenr$exci_pending / df_sumenr$ipd, 0.1),
               ') pending')
-l29 <- paste0(df_sumenr$opd,
+l31 <- paste0(df_sumenr$opd,
               ' (',
               percent(df_sumenr$opd / df_sumenr$enr, 0.1),
               ') OPD')
-l30 <- paste0(df_sumenr$do,
+l32 <- paste0(df_sumenr$do,
               ' (',
               percent(df_sumenr$do / df_sumenr$opd, 0.1),
               ') 28 days mortality')
-l31 <- paste0(df_sumenr$do_non,
+l33 <- paste0(df_sumenr$do_non,
               ' (',
               percent(df_sumenr$do_non / df_sumenr$do, 0.1),
               ') non-sepsis')
-l32 <- paste0(df_sumenr$do_sepsis,
+l34 <- paste0(df_sumenr$do_sepsis,
               ' (',
               percent(df_sumenr$do_sepsis / df_sumenr$do, 0.1),
               ') sepsis')
-l33 <- paste0(df_sumenr$do_shock,
+l35 <- paste0(df_sumenr$do_shock,
               ' (',
               percent(df_sumenr$do_shock / df_sumenr$do, 0.1),
               ') septic shock')
-l34 <- paste0(df_sumenr$ao,
+l36 <- paste0(df_sumenr$ao,
               ' (',
               percent(df_sumenr$ao / df_sumenr$opd, 0.1),
               ') survivors')
-l35 <- paste0(df_sumenr$ao_non,
+l37 <- paste0(df_sumenr$ao_non,
               ' (',
               percent(df_sumenr$ao_non / df_sumenr$ao, 0.1),
               ') non-sepsis')
-l36 <- paste0(df_sumenr$ao_sepsis,
+l38 <- paste0(df_sumenr$ao_sepsis,
               ' (',
               percent(df_sumenr$ao_sepsis / df_sumenr$ao, 0.1),
               ') sepsis')
-l37 <- paste0(df_sumenr$ao_shock,
+l39 <- paste0(df_sumenr$ao_shock,
               ' (',
               percent(df_sumenr$ao_shock / df_sumenr$ao, 0.1),
               ') septic shock')
-l38 <- paste0(df_sumenr$exco_pending,
+l40 <- paste0(df_sumenr$exco_pending,
               ' (',
               percent(df_sumenr$exco_pending / df_sumenr$opd, 0.1),
               ') pending')
@@ -303,21 +317,21 @@ d <- DiagrammeR::grViz(
             fontname = Helvetica,
             fontsize = 20]
 
-      exci_pending [label = '@@28']
+      exci_pending [label = '@@30']
       ai [label =
 <
-@@24<br/><br/>
-&#8226; @@25<br ALIGN = 'LEFT'/>
-&#8226; @@26<br ALIGN = 'LEFT'/>
+@@26<br/><br/>
 &#8226; @@27<br ALIGN = 'LEFT'/>
+&#8226; @@28<br ALIGN = 'LEFT'/>
+&#8226; @@29<br ALIGN = 'LEFT'/>
 >
       ]
       di [label =
 <
-@@20<br/><br/>
-&#8226; @@21<br ALIGN = 'LEFT'/>
-&#8226; @@22<br ALIGN = 'LEFT'/>
+@@22<br/><br/>
 &#8226; @@23<br ALIGN = 'LEFT'/>
+&#8226; @@24<br ALIGN = 'LEFT'/>
+&#8226; @@25<br ALIGN = 'LEFT'/>
 >
       ]
 
@@ -338,21 +352,21 @@ d <- DiagrammeR::grViz(
             fontname = Helvetica,
             fontsize = 20]
 
-      exco_pending [label = '@@38']
+      exco_pending [label = '@@40']
       ao [label =
 <
-@@34<br/><br/>
-&#8226; @@35<br ALIGN = 'LEFT'/>
-&#8226; @@36<br ALIGN = 'LEFT'/>
+@@36<br/><br/>
 &#8226; @@37<br ALIGN = 'LEFT'/>
+&#8226; @@38<br ALIGN = 'LEFT'/>
+&#8226; @@39<br ALIGN = 'LEFT'/>
 >
       ]
       do [label =
 <
-@@30<br/><br/>
-&#8226; @@31<br ALIGN = 'LEFT'/>
-&#8226; @@32<br ALIGN = 'LEFT'/>
+@@32<br/><br/>
 &#8226; @@33<br ALIGN = 'LEFT'/>
+&#8226; @@34<br ALIGN = 'LEFT'/>
+&#8226; @@35<br ALIGN = 'LEFT'/>
 >
       ]
 
@@ -370,7 +384,7 @@ d <- DiagrammeR::grViz(
 >
         ]
     inf [label = '@@6']
-    exc_inf [label = '@@7']
+    exc_sirs_qs [label = '@@7']
     sep [label = '@@8']
     exc_con [label =
 <
@@ -382,14 +396,21 @@ d <- DiagrammeR::grViz(
 &#8226; @@17<br ALIGN = 'LEFT'/>
 >
         ]
-    enr [label = '@@18']
-    ipd [label = '@@19']
-    opd [label = '@@29']
+    exc_enr [label =
+<
+&#8226; @@18<br ALIGN = 'LEFT'/>
+&#8226; @@19<br ALIGN = 'LEFT'/>
+>
+        ,fillcolor = yellow]
+    enr [label = '@@20']
+    ipd [label = '@@21']
+    opd [label = '@@31']
 
     blank1 [label = '', width = 0.01, height = 0.01]
     blank2 [label = '', width = 0.01, height = 0.01]
     blank3 [label = '', width = 0.01, height = 0.01]
     blank4 [label = '', width = 0.01, height = 0.01]
+    blank5 [label = '', width = 0.01, height = 0.01]
 
     scr_NP  -> scr;
     scr     -> scr_MS [dir = back];
@@ -399,18 +420,21 @@ d <- DiagrammeR::grViz(
     {rank = same; blank1 exc_48};
     blank1  -> inf;
     inf     -> blank2 [dir = none];
-    blank2  -> exc_inf;
-    {rank = same; blank2 exc_inf};
+    blank2  -> exc_sirs_qs;
+    {rank = same; blank2 exc_sirs_qs};
     blank2  -> sep;
     sep     -> pos_neg [lhead = cluster_s];
     pos_neg -> blank3 [dir = none, ltail = cluster_s];
     blank3  -> exc_con;
     {rank = same; blank3 exc_con};
-    blank3  -> enr;
-    enr     -> blank4 [dir = none];
-    ipd     -> blank4 [dir = back];
-    blank4  -> opd;
-    {rank = same; ipd blank4 opd};
+    blank3  -> blank4 [dir = none];
+    blank4  -> exc_enr;
+    {rank = same; blank4 exc_enr};
+    blank4  -> enr;
+    enr     -> blank5 [dir = none];
+    ipd     -> blank5 [dir = back];
+    blank5  -> opd;
+    {rank = same; ipd blank5 opd};
     ipd     -> di [lhead = cluster_i];
     opd     -> do [lhead = cluster_o];
 
@@ -454,5 +478,7 @@ d <- DiagrammeR::grViz(
   [36]: l36
   [37]: l37
   [38]: l38
+  [39]: l39
+  [40]: l40
 
 ")
