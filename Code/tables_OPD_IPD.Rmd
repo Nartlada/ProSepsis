@@ -86,6 +86,9 @@ format_table_2 <- function(t) {
     tab_style(style = cell_text(weight = "bold"),
               locations = cells_body(columns = label,
                                      rows = variable %in% c("gramneg","grampos"))) %>%
+        tab_style(style = cell_text(weight = "bold"),
+              locations = cells_body(columns = label,
+                                     rows = variable %in% c("OxyInbu","vasopressor","oxygensupp","Hypoglycemia"))) %>%
     tab_options(
       row_group.border.top.width = 1,
       row_group.border.bottom.width = 1,
