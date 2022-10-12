@@ -95,14 +95,14 @@ format_table_2 <- function(t) {
       table.border.bottom.style = "hidden"
     )
 
-  if (deparse(substitute(t)) != 't3b') {
-    # Add footnote about pending cases
-    gt <- tab_footnote(
-      gt,
-      footnote = str_glue(n_miss, " cases are pending for final outcome"),
-      locations = cells_column_labels(columns = "stat_0_1")
-    )
-  }
+  #if (deparse(substitute(t)) != 't3b') {
+  #   # Add footnote about pending cases
+  #   gt <- tab_footnote(
+  #     gt,
+  #     footnote = str_glue(n_miss, " cases are pending for final outcome"),
+  #     locations = cells_column_labels(columns = "stat_0_1")
+  #   )
+  # }
   
   return(gt)
   

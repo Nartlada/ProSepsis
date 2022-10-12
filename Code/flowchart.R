@@ -218,50 +218,47 @@ l29 <- paste0(df_sumenr$ai_shock,
               ' (',
               percent(df_sumenr$ai_shock / df_sumenr$ai, 0.1),
               ') septic shock')
-l30 <- paste0(df_sumenr$exci_pending,
-              ' (',
-              percent(df_sumenr$exci_pending / df_sumenr$ipd, 0.1),
-              ') pending')
-l31 <- paste0(df_sumenr$opd,
+# l30 <- paste0(df_sumenr$exci_pending,
+#               ' (',
+#               percent(df_sumenr$exci_pending / df_sumenr$ipd, 0.1),
+#               ') pending')
+l30 <- paste0(df_sumenr$opd,
               ' (',
               percent(df_sumenr$opd / df_sumenr$enr, 0.1),
               ') OPD')
-l32 <- paste0(df_sumenr$do,
+l31 <- paste0(df_sumenr$do,
               ' (',
               percent(df_sumenr$do / df_sumenr$opd, 0.1),
               ') 28 days mortality')
-l33 <- paste0(df_sumenr$do_non,
+l32 <- paste0(df_sumenr$do_non,
               ' (',
               percent(df_sumenr$do_non / df_sumenr$do, 0.1),
               ') non-sepsis')
-l34 <- paste0(df_sumenr$do_sepsis,
+l33 <- paste0(df_sumenr$do_sepsis,
               ' (',
               percent(df_sumenr$do_sepsis / df_sumenr$do, 0.1),
               ') sepsis')
-l35 <- paste0(df_sumenr$do_shock,
+l34 <- paste0(df_sumenr$do_shock,
               ' (',
               percent(df_sumenr$do_shock / df_sumenr$do, 0.1),
               ') septic shock')
-l36 <- paste0(df_sumenr$ao,
+l35 <- paste0(df_sumenr$ao,
               ' (',
               percent(df_sumenr$ao / df_sumenr$opd, 0.1),
               ') survivors')
-l37 <- paste0(df_sumenr$ao_non,
+l36 <- paste0(df_sumenr$ao_non,
               ' (',
               percent(df_sumenr$ao_non / df_sumenr$ao, 0.1),
               ') non-sepsis')
-l38 <- paste0(df_sumenr$ao_sepsis,
+l37 <- paste0(df_sumenr$ao_sepsis,
               ' (',
               percent(df_sumenr$ao_sepsis / df_sumenr$ao, 0.1),
               ') sepsis')
-l39 <- paste0(df_sumenr$ao_shock,
+l38 <- paste0(df_sumenr$ao_shock,
               ' (',
               percent(df_sumenr$ao_shock / df_sumenr$ao, 0.1),
               ') septic shock')
-l40 <- paste0(df_sumenr$exco_pending,
-              ' (',
-              percent(df_sumenr$exco_pending / df_sumenr$opd, 0.1),
-              ') pending')
+
 
 d <- DiagrammeR::grViz(
   "digraph flowchart {
@@ -317,7 +314,7 @@ d <- DiagrammeR::grViz(
             fontname = Helvetica,
             fontsize = 24]
 
-      exci_pending [label = '@@30']
+      
       ai [label =
 <
 @@26<br/><br/>
@@ -335,7 +332,7 @@ d <- DiagrammeR::grViz(
 >
       ]
 
-      di -> ai -> exci_pending [style = invis];
+      di -> ai [style = invis];
 
     }
 
@@ -352,25 +349,24 @@ d <- DiagrammeR::grViz(
             fontname = Helvetica,
             fontsize = 24]
 
-      exco_pending [label = '@@40']
       ao [label =
 <
-@@36<br/><br/>
+@@35<br/><br/>
+&#8226; @@36<br ALIGN = 'LEFT'/>
 &#8226; @@37<br ALIGN = 'LEFT'/>
 &#8226; @@38<br ALIGN = 'LEFT'/>
-&#8226; @@39<br ALIGN = 'LEFT'/>
 >
       ]
       do [label =
 <
-@@32<br/><br/>
+@@31<br/><br/>
+&#8226; @@32<br ALIGN = 'LEFT'/>
 &#8226; @@33<br ALIGN = 'LEFT'/>
 &#8226; @@34<br ALIGN = 'LEFT'/>
-&#8226; @@35<br ALIGN = 'LEFT'/>
 >
       ]
 
-      do -> ao -> exco_pending [style = invis];
+       do -> ao [style = invis];
 
     }
 
@@ -404,7 +400,7 @@ d <- DiagrammeR::grViz(
         ,fillcolor = yellow]
     enr [label = '@@20']
     ipd [label = '@@21']
-    opd [label = '@@31']
+    opd [label = '@@30']
 
     blank1 [label = '', width = 0.01, height = 0.01]
     blank2 [label = '', width = 0.01, height = 0.01]
@@ -478,8 +474,8 @@ d <- DiagrammeR::grViz(
   [36]: l36
   [37]: l37
   [38]: l38
-  [39]: l39
-  [40]: l40
+
+  
 
 ")
 
