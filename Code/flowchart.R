@@ -68,7 +68,7 @@ df_sumscr <- df_scr %>%
     ),
     exc_sirsneg = sum(infect == 1 & IsConsent == 1 &
                         N_sirs < 2, na.rm = TRUE),
-    exc_msopd   = sum(infect == 1 & IsConsent == 1 &
+    msopd   = sum(infect == 1 & IsConsent == 1 &
                         N_sirs >= 2 &
                         (OPD_IPD == 2 & HospitalID == 2), na.rm = TRUE)
   )
@@ -76,29 +76,20 @@ df_sumscr <- df_scr %>%
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
   # filter(SIRS == 1 & !(OPD_IPD == '2 -OPD' & HospitalID == 2)) %>% 
-  mutate(across(c(dead28c,Sepsis_Scale), ~ as.numeric(.))) %>%
+  mutate(across(c(dead28,Review_Scaler), ~ as.numeric(.))) %>%
   summarise(
-    enr          = n(),
-    ipd          = sum(OPD_IPD == '1 -IPD', na.rm = TRUE),
-    di           = sum(OPD_IPD == '1 -IPD' & dead28c == 1, na.rm = TRUE),
-    di_non       = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    di_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    di_shock     = sum(OPD_IPD == '1 -IPD' & dead28c == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    ai           = sum(OPD_IPD == '1 -IPD' & dead28c == 2, na.rm = TRUE),
-    ai_non       = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    ai_sepsis    = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    ai_shock     = sum(OPD_IPD == '1 -IPD' & dead28c == 2 & Sepsis_Scale == 3, na.rm = TRUE),
-    exci_pending = sum(OPD_IPD == '1 -IPD' & is.na(dead28c), na.rm = TRUE),
-    opd          = sum(OPD_IPD == '2 -OPD', na.rm = TRUE),
-    do           = sum(OPD_IPD == '2 -OPD' & dead28c == 1, na.rm = TRUE),
-    do_non       = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 1, na.rm = TRUE),
-    do_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 2, na.rm = TRUE),
-    do_shock     = sum(OPD_IPD == '2 -OPD' & dead28c == 1 & Sepsis_Scale == 3, na.rm = TRUE),
-    ao           = sum(OPD_IPD == '2 -OPD' & dead28c == 2, na.rm = TRUE),
-    ao_non       = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 1, na.rm = TRUE),
-    ao_sepsis    = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 2, na.rm = TRUE),
-    ao_shock     = sum(OPD_IPD == '2 -OPD' & dead28c == 2 & Sepsis_Scale == 3, na.rm = TRUE),
-    exco_pending = sum(OPD_IPD == '2 -OPD' & is.na(dead28c), na.rm = TRUE)
+    enr       = n(),
+    npopd     = sum(OPD_IPD == '2 -OPD', na.rm = TRUE),
+    ipd       = sum(OPD_IPD == '1 -IPD', na.rm = TRUE),
+    non       = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 1, na.rm = TRUE),
+    non_d     = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 1 & dead28 == 1, na.rm = TRUE),
+    non_a     = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 1 & dead28 == 2, na.rm = TRUE),
+    sepsis    = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 2, na.rm = TRUE),
+    sepsis_d  = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 2 & dead28 == 1, na.rm = TRUE),
+    sepsis_a  = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 2 & dead28 == 2, na.rm = TRUE),
+    shock     = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 3, na.rm = TRUE),
+    shock_d   = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 3 & dead28 == 1, na.rm = TRUE),
+    shock_a   = sum(OPD_IPD == '1 -IPD' & Review_Scaler == 3 & dead28 == 2, na.rm = TRUE)
   )
 
 # Texts for figures
@@ -174,91 +165,62 @@ l18 <- paste0(df_sumscr$exc_sirsneg,
               ' (',
               percent(df_sumscr$exc_sirsneg / df_sumscr$sep, 0.1),
               ') SIRS -')
-l19 <- paste0(df_sumscr$exc_msopd,
+l19 <- paste0(df_sumenr$enr + df_sumscr$msopd,
               ' (',
-              percent(df_sumscr$exc_msopd / df_sumscr$sep, 0.1),
-              ') OPD in Mae Sot')
-l20 <- paste0(df_sumenr$enr,
-              ' (',
-              percent(df_sumenr$enr / df_sumscr$sep, 0.1),
+              percent((df_sumenr$enr + df_sumscr$msopd) / df_sumscr$sep, 0.1),
               ') enrolled suspected sepsis')
-l21 <- paste0(df_sumenr$ipd,
+l20 <- paste0(df_sumenr$npopd + df_sumscr$msopd,
               ' (',
-              percent(df_sumenr$ipd / df_sumenr$enr, 0.1),
-              ') IPD')
-l22 <- paste0(df_sumenr$di,
-              ' (',
-              percent(df_sumenr$di / df_sumenr$ipd, 0.1),
-              ') 28 days mortality')
-l23 <- paste0(df_sumenr$di_non,
-              ' (',
-              percent(df_sumenr$di_non / df_sumenr$di, 0.1),
-              ') non-sepsis')
-l24 <- paste0(df_sumenr$di_sepsis,
-              ' (',
-              percent(df_sumenr$di_sepsis / df_sumenr$di, 0.1),
-              ') sepsis')
-l25 <- paste0(df_sumenr$di_shock,
-              ' (',
-              percent(df_sumenr$di_shock / df_sumenr$di, 0.1),
-              ') septic shock')
-l26 <- paste0(df_sumenr$ai,
-              ' (',
-              percent(df_sumenr$ai / df_sumenr$ipd, 0.1),
-              ') survivors')
-l27 <- paste0(df_sumenr$ai_non,
-              ' (',
-              percent(df_sumenr$ai_non / df_sumenr$ai, 0.1),
-              ') non-sepsis')
-l28 <- paste0(df_sumenr$ai_sepsis,
-              ' (',
-              percent(df_sumenr$ai_sepsis / df_sumenr$ai, 0.1),
-              ') sepsis')
-l29 <- paste0(df_sumenr$ai_shock,
-              ' (',
-              percent(df_sumenr$ai_shock / df_sumenr$ai, 0.1),
-              ') septic shock')
-# l30 <- paste0(df_sumenr$exci_pending,
-#               ' (',
-#               percent(df_sumenr$exci_pending / df_sumenr$ipd, 0.1),
-#               ') pending')
-l30 <- paste0(df_sumenr$opd,
-              ' (',
-              percent(df_sumenr$opd / df_sumenr$enr, 0.1),
+              percent((df_sumenr$npopd + df_sumscr$msopd)/ (df_sumenr$enr + df_sumscr$msopd), 0.1),
               ') OPD')
-l31 <- paste0(df_sumenr$do,
+l21 <- paste0(df_sumenr$npopd,
               ' (',
-              percent(df_sumenr$do / df_sumenr$opd, 0.1),
-              ') 28 days mortality')
-l32 <- paste0(df_sumenr$do_non,
+              percent(df_sumenr$npopd / (df_sumenr$enr + df_sumscr$msopd), 0.1),
+              ') Nakorn Phanom')
+l22 <- paste0(df_sumscr$msopd,
               ' (',
-              percent(df_sumenr$do_non / df_sumenr$do, 0.1),
+              percent(df_sumscr$msopd / (df_sumenr$enr + df_sumscr$msopd), 0.1),
+              ') Mae Sot')
+l23 <- paste0(df_sumenr$ipd,
+              ' (',
+              percent(df_sumenr$ipd / (df_sumenr$enr + df_sumscr$msopd), 0.1),
+              ') IPD')
+l24 <- paste0(df_sumenr$non,
+              ' (',
+              percent(df_sumenr$non / df_sumenr$ipd, 0.1),
               ') non-sepsis')
-l33 <- paste0(df_sumenr$do_sepsis,
+l25 <- paste0(df_sumenr$non_d,
               ' (',
-              percent(df_sumenr$do_sepsis / df_sumenr$do, 0.1),
+              percent(df_sumenr$non_d / df_sumenr$non, 0.1),
+              ') dead')
+l26 <- paste0(df_sumenr$non_a,
+              ' (',
+              percent(df_sumenr$non_a / df_sumenr$non, 0.1),
+              ') alive')
+l27 <- paste0(df_sumenr$sepsis,
+              ' (',
+              percent(df_sumenr$sepsis / df_sumenr$ipd, 0.1),
               ') sepsis')
-l34 <- paste0(df_sumenr$do_shock,
+l28 <- paste0(df_sumenr$sepsis_d,
               ' (',
-              percent(df_sumenr$do_shock / df_sumenr$do, 0.1),
+              percent(df_sumenr$non_d / df_sumenr$sepsis, 0.1),
+              ') dead')
+l29 <- paste0(df_sumenr$sepsis_a,
+              ' (',
+              percent(df_sumenr$non_a / df_sumenr$sepsis, 0.1),
+              ') alive')
+l30 <- paste0(df_sumenr$shock,
+              ' (',
+              percent(df_sumenr$shock / df_sumenr$ipd, 0.1),
               ') septic shock')
-l35 <- paste0(df_sumenr$ao,
+l31 <- paste0(df_sumenr$shock_d,
               ' (',
-              percent(df_sumenr$ao / df_sumenr$opd, 0.1),
-              ') survivors')
-l36 <- paste0(df_sumenr$ao_non,
+              percent(df_sumenr$non_d / df_sumenr$shock, 0.1),
+              ') dead')
+l32 <- paste0(df_sumenr$shock_a,
               ' (',
-              percent(df_sumenr$ao_non / df_sumenr$ao, 0.1),
-              ') non-sepsis')
-l37 <- paste0(df_sumenr$ao_sepsis,
-              ' (',
-              percent(df_sumenr$ao_sepsis / df_sumenr$ao, 0.1),
-              ') sepsis')
-l38 <- paste0(df_sumenr$ao_shock,
-              ' (',
-              percent(df_sumenr$ao_shock / df_sumenr$ao, 0.1),
-              ') septic shock')
-
+              percent(df_sumenr$non_a / df_sumenr$shock, 0.1),
+              ') alive')
 
 d <- DiagrammeR::grViz(
   "digraph flowchart {
@@ -301,75 +263,6 @@ d <- DiagrammeR::grViz(
 
     }
 
-    subgraph cluster_i {
-
-      label = ''
-      node [shape = box,
-            fixedsize = t,
-            width = 4,
-            height = 1,
-            style = filled,
-            color = gray,
-            fillcolor = WhiteSmoke,
-            fontname = Helvetica,
-            fontsize = 24]
-
-      
-      ai [label =
-<
-@@26<br/><br/>
-&#8226; @@27<br ALIGN = 'LEFT'/>
-&#8226; @@28<br ALIGN = 'LEFT'/>
-&#8226; @@29<br ALIGN = 'LEFT'/>
->
-      ]
-      di [label =
-<
-@@22<br/><br/>
-&#8226; @@23<br ALIGN = 'LEFT'/>
-&#8226; @@24<br ALIGN = 'LEFT'/>
-&#8226; @@25<br ALIGN = 'LEFT'/>
->
-      ]
-
-      di -> ai [style = invis];
-
-    }
-
-    subgraph cluster_o {
-
-      label = ''
-      node [shape = box,
-            fixedsize = t,
-            width = 4,
-            height = 1,
-            style = filled,
-            color = gray,
-            fillcolor = WhiteSmoke,
-            fontname = Helvetica,
-            fontsize = 24]
-
-      ao [label =
-<
-@@35<br/><br/>
-&#8226; @@36<br ALIGN = 'LEFT'/>
-&#8226; @@37<br ALIGN = 'LEFT'/>
-&#8226; @@38<br ALIGN = 'LEFT'/>
->
-      ]
-      do [label =
-<
-@@31<br/><br/>
-&#8226; @@32<br ALIGN = 'LEFT'/>
-&#8226; @@33<br ALIGN = 'LEFT'/>
-&#8226; @@34<br ALIGN = 'LEFT'/>
->
-      ]
-
-       do -> ao [style = invis];
-
-    }
-
     scr_NP [label = '@@1']
     scr_MS [label = '@@2']
     scr [label = '@@3']
@@ -392,15 +285,26 @@ d <- DiagrammeR::grViz(
 &#8226; @@17<br ALIGN = 'LEFT'/>
 >
         ]
-    exc_enr [label =
+
+    exc_enr [label = '@@18']
+    enr [label = '@@19']
+    opd [label = 
 <
-&#8226; @@18<br ALIGN = 'LEFT'/>
-&#8226; @@19<br ALIGN = 'LEFT'/>
+@@20<br/><br/>
+&#8226; @@21<br ALIGN = 'LEFT'/>
+&#8226; @@22<br ALIGN = 'LEFT'/>
 >
-        ,fillcolor = yellow]
-    enr [label = '@@20']
-    ipd [label = '@@21']
-    opd [label = '@@30']
+        ]
+    ipd [label = '@@23']
+    non [label = '@@24']
+    non_d [label = '@@25']
+    non_a [label = '@@26']
+    sepsis [label = '@@27']
+    sepsis_d [label = '@@28']
+    sepsis_a [label = '@@29']
+    shock [label = '@@30']
+    shock_d [label = '@@31']
+    shock_a [label = '@@32']
 
     blank1 [label = '', width = 0.01, height = 0.01]
     blank2 [label = '', width = 0.01, height = 0.01]
@@ -428,11 +332,20 @@ d <- DiagrammeR::grViz(
     {rank = same; blank4 exc_enr};
     blank4  -> enr;
     enr     -> blank5 [dir = none];
-    ipd     -> blank5 [dir = back];
     blank5  -> opd;
-    {rank = same; ipd blank5 opd};
-    ipd     -> di [lhead = cluster_i];
-    opd     -> do [lhead = cluster_o];
+    {rank = same; blank5 opd};
+    blank5  -> ipd;
+    ipd     -> non;
+    ipd     -> sepsis;
+    ipd     -> shock;
+    {rank = same; non sepsis shock};
+    non     -> non_d;
+    non     -> non_a;
+    sepsis  -> sepsis_d;
+    sepsis  -> sepsis_a;
+    shock   -> shock_d;
+    shock   -> shock_a;
+    {rank = same; non_d non_a sepsis_d sepsis_a shock_d shock_a};
 
   }
 
@@ -468,14 +381,6 @@ d <- DiagrammeR::grViz(
   [30]: l30
   [31]: l31
   [32]: l32
-  [33]: l33
-  [34]: l34
-  [35]: l35
-  [36]: l36
-  [37]: l37
-  [38]: l38
-
-  
 
 ")
 
