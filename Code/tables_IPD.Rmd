@@ -31,7 +31,6 @@ theme_gtsummary_compact(font_size = 10)
 # Format gtsummary outputs before merging
 format_table_1 <- function(t, overall)  {
   
-  
   # Hide p-values of SIRSqSOFA, SIRS, and QSofa in table 1
   if (deparse(substitute(t)) == 't1') {
     t <- add_p(t, include = -c('SIRSqSOFA', 'SIRS', 'QSofa'))
@@ -43,8 +42,6 @@ format_table_1 <- function(t, overall)  {
     # Bold p-value if significant
     t <- bold_p(t, t = 0.05)
   }
-
-
 
   # Add overall column if overall = TRUE
   if (overall == TRUE) {
@@ -133,6 +130,49 @@ sort_var <- function(df, ...) {
 
 }
 
+create_t1t <- function(df) {
+  t1 <- df %>%
+    mutate(
+      SIRSqSOFA = ifelse(Group == 1, 1, 0),
+      Age_gp4 = cut(
+        Age_year,
+        breaks = c(0, 14, 44, 64 , Inf),
+        labels = c('<15', '15-44', '45-64', '>64')
+      )
+    ) %>%
+    select(
+      Age_year,
+      Age_gp4,
+      Sex,
+      BMIgp,
+      PlaceChk_n,
+      Occupation,
+      Refer,
+      SIRS,
+      QSofa,
+      SIRSqSOFA,
+      Sepsis_Scale
+    ) %>%
+    tbl_summary(
+      label = list(
+        Age_year     ~ 'Age',
+        Age_gp4      ~ 'Age group',
+        BMIgp        ~ 'BMI range',
+        PlaceChk_n   ~ 'Admission ward',
+        Refer        ~ 'Transferred',
+        SIRS         ~ '(Any) SIRS >= 2 scores',
+        QSofa        ~ '(Any) qSOFA >= 2 scores',
+        SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
+        Sepsis_Scale ~ 'Sepsis determination (SOFA)'
+      ),
+      missing = "no",
+      statistic = list(all_categorical() ~ "{n}")
+    ) %>%
+    bold_labels() %>%
+    # Add labels describing stat for each variable
+    add_stat_label()
+}
+
 create_t1 <- function(df, overall = FALSE) {
   t1 <- df %>%
     mutate(
@@ -170,13 +210,20 @@ create_t1 <- function(df, overall = FALSE) {
         SIRSqSOFA    ~ '(Any) SIRS and qSOFA >= 2 scores',
         Sepsis_Scale ~ 'Sepsis determination (SOFA)'
       ),
-      missing = "no",
-      sort = list(Occupation ~ "frequency")
+      missing = "no"
     ) %>%
     bold_labels() %>%
     # Add labels describing stat for each variable
     add_stat_label()
   t1 <- format_table_1(t1, overall)
+}
+
+create_t1t_cc <- function(df) {
+  vars <- names(sort_var(df, CCFever:CCJointPain))
+  df %>%
+    zap_labels() %>%
+    select(vars, CCOther) %>%
+    tbl_summary(statistic = list(all_categorical() ~ "{n}"))
 }
 
 create_t1_cc <- function(df, overall = FALSE) {
@@ -186,6 +233,26 @@ create_t1_cc <- function(df, overall = FALSE) {
     select(dead28c, vars, CCOther) %>%
     tbl_summary(by = dead28c) %>%
     format_table_1(overall)
+}
+
+create_t1t_if <- function(df, overall = FALSE) {
+  vars <- names(sort_var(df, IFTropSep:IFNerve))
+  df %>%
+    zap_labels() %>%
+    select(vars, IFOth) %>%
+    tbl_summary(
+      label = list(
+        IFTropSep     ~ 'Tropical infection',
+        IFRespiratory ~ 'Respiratory',
+        IFBlood       ~ 'Blood',
+        IFGas         ~ 'Gastrointestinal track',
+        IFUrine       ~ 'Urinary',
+        IFSkin        ~ 'Skin/Soft tissue/bone',
+        IFNerve       ~ 'Central nervous system',
+        IFOth         ~ 'Others'
+      ),
+      statistic = list(all_categorical() ~ "{n}")
+    )
 }
 
 create_t1_if <- function(df, overall = FALSE) {
@@ -431,15 +498,23 @@ create_t4 <- function(df, overall = FALSE) {
 ```
 
 ```{r data}
+# Screening
+df_scr <-
+  read_sas(
+    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+  )
 
 # Enrollment
 
 df_enr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   ) %>%
   # filter(OPD_IPD == 1) %>% 
   mutate(
@@ -573,14 +648,11 @@ var_label(df_enr) <- list(
 )
 
 df_ipd <- filter(df_enr,OPD_IPD == "1 -IPD")
-df_ipd_n <- filter(df_enr, OPD_IPD == "1 -IPD" & Review_Scaler == 1)
-df_ipd_s <- filter(df_enr, OPD_IPD == "1 -IPD" & Review_Scaler == 2)
-df_ipd_h <- filter(df_enr, OPD_IPD == "1 -IPD" & Review_Scaler == 3)
+df_ipd_n <- filter(df_ipd, Review_Scaler == 1)
+df_ipd_s <- filter(df_ipd, Review_Scaler == 2)
+df_ipd_h <- filter(df_ipd, Review_Scaler == 3)
 
-n_enr  <- nrow(df_enr)
-n_miss <- sum(is.na(df_enr$dead28c), na.rm = TRUE)
-# n_miss_i <- sum(is.na(df_enr_i$dead28c), na.rm = TRUE)
-# n_miss_o <- sum(is.na(df_enr_o$dead28c), na.rm = TRUE)
+n_ipd  <- nrow(df_ipd)
 n_amr <- sum(df_enr$total_org > 0, na.rm = TRUE)
 ```
 
@@ -599,24 +671,24 @@ n_amr <- sum(df_enr$total_org > 0, na.rm = TRUE)
 
 \newpage
 
-**Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
+**Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
 
 ```{r t1}
-t1t <- create_t1(df_ipd, TRUE)
+t1t <- create_t1t(df_ipd)
 t1n <- create_t1(df_ipd_n)
 t1s <- create_t1(df_ipd_s)
 t1h <- create_t1(df_ipd_h)
 t1  <- tbl_merge(list(t1t, t1n, t1s, t1h),
                  tab_spanner = c("**Total**", "**Non-Sepsis**", "**Sepsis**", "**Septic shock**"))
 
-t1t_cc <- create_t1_cc(df_ipd, TRUE)
+t1t_cc <- create_t1t_cc(df_ipd)
 t1n_cc <- create_t1_cc(df_ipd_n)
 t1s_cc <- create_t1_cc(df_ipd_s)
 t1h_cc <- create_t1_cc(df_ipd_h)
 t1_cc  <- tbl_merge(list(t1t_cc, t1n_cc, t1s_cc, t1h_cc),
                     tab_spanner = c("**Total**", "**Non-Sepsis**", "**Sepsis**", "**Septic shock**"))
 
-t1t_if <- create_t1_if(df_ipd, TRUE)
+t1t_if <- create_t1t_if(df_ipd, TRUE)
 t1n_if <- create_t1_if(df_ipd_n)
 t1s_if <- create_t1_if(df_ipd_s)
 t1h_if <- create_t1_if(df_ipd_h)
@@ -636,7 +708,7 @@ t1
 
 \newpage
 
-**Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
+**Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
 
 ```{r t2}
 t2t <- create_t2(df_ipd, TRUE)
@@ -736,7 +808,7 @@ t3  <- tbl_merge(list(t3a, t3b),
 
 \newpage
 
-**Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_enr`)
+**Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
 
 ```{r t4}
 t4t_dx <- create_t4_dx(df_ipd, TRUE)
