@@ -203,11 +203,11 @@ l27 <- paste0(df_sumenr$sepsis,
               ') sepsis')
 l28 <- paste0(df_sumenr$sepsis_d,
               ' (',
-              percent(df_sumenr$non_d / df_sumenr$sepsis, 0.1),
+              percent(df_sumenr$sepsis_d / df_sumenr$sepsis, 0.1),
               ') dead')
 l29 <- paste0(df_sumenr$sepsis_a,
               ' (',
-              percent(df_sumenr$non_a / df_sumenr$sepsis, 0.1),
+              percent(df_sumenr$sepsis_a / df_sumenr$sepsis, 0.1),
               ') alive')
 l30 <- paste0(df_sumenr$shock,
               ' (',
@@ -215,11 +215,11 @@ l30 <- paste0(df_sumenr$shock,
               ') septic shock')
 l31 <- paste0(df_sumenr$shock_d,
               ' (',
-              percent(df_sumenr$non_d / df_sumenr$shock, 0.1),
+              percent(df_sumenr$shock_d / df_sumenr$shock, 0.1),
               ') dead')
 l32 <- paste0(df_sumenr$shock_a,
               ' (',
-              percent(df_sumenr$non_a / df_sumenr$shock, 0.1),
+              percent(df_sumenr$shock_a / df_sumenr$shock, 0.1),
               ') alive')
 
 d <- DiagrammeR::grViz(
