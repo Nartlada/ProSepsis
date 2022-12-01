@@ -338,6 +338,7 @@ d <- DiagrammeR::grViz(
     ipd     -> non;
     ipd     -> sepsis;
     ipd     -> shock;
+    non -> sepsis -> shock [style=invis, minlen = 6];
     {rank = same; non sepsis shock};
     non     -> non_d;
     non     -> non_a;
@@ -345,7 +346,8 @@ d <- DiagrammeR::grViz(
     sepsis  -> sepsis_a;
     shock   -> shock_d;
     shock   -> shock_a;
-    {rank = same; non_d non_a sepsis_d sepsis_a shock_d shock_a};
+    non_d -> non_a -> sepsis_d -> sepsis_a -> shock_d -> shock_a [style=invis];
+    {rank = same; non_d non_a sepsis_d sepsis_a shock_d shock_a };
 
   }
 
