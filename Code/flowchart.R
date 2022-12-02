@@ -226,7 +226,8 @@ d <- DiagrammeR::grViz(
   "digraph flowchart {
 
     graph [layout = dot,
-           nodesep = 1;
+           nodesep = 1,
+           splines = ortho,
            compound = true]
 
     node [shape = box,
