@@ -75,13 +75,18 @@ sort_var <- function(df, ...) {
     sort(decreasing = TRUE)
 }
 
-create_tt <- function(df, vars, bold = TRUE, label = '') {
-  t <- tbl_summary(df %>% select(vars),
+create_tt <- function(df,
+                      vars,
+                      bold = TRUE,
+                      label = '') {
+  t <- tbl_summary(df %>% select(vars), 
+                   by = dead28c,
                    missing = "no") %>%
-    modify_header(update = list(
-      label ~ label,
-      stat_0 ~ "**Overall**<br>N = {N}"
-    )) %>%
+    add_p(test.args = all_tests("fisher.test") ~ list(workspace = 2e9)) %>%
+    # Bold p-value if significant
+    bold_p(t = 0.05) %>%
+    modify_header(update = list(label ~ label,
+                                stat_0 ~ "**Overall**<br>N = {N}")) %>% 
     modify_footnote(update = stat_0 ~ NA)
   if (bold == TRUE) {
     t <- t %>% bold_labels() %>%
@@ -148,19 +153,19 @@ create_t3 <- function(df, outcome = dead28c, vars) {
 # Screening
 df_scr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   )
 
 # Enrollment
 df_enr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28c = factor(
@@ -169,9 +174,9 @@ df_enr <-
       labels = c('Dead', 'Alive')
     ),
     sepsis = factor(
-      Review_Scaler,
-      levels = c(1, 2,3),
-      labels = c( 'Non-sepsis','Sepsis', 'Septic shock')
+      Review_Sepsisr,
+      levels = c(2,1),
+      labels = c( 'Non-sepsis','Sepsis')
     ),
     across(
       c(

@@ -76,8 +76,8 @@ df_sumscr <- df_scr %>%
 # Figures in boxes after enrollment are from enrollment (df_enr)
 df_sumenr <- df_enr %>%
   # filter(SIRS == 1 & !(OPD_IPD == '2 -OPD' & HospitalID == 2)) %>% 
-  mutate(across(c(dead28,Review_Sepsisr), ~ as.numeric(.)),
-         Review_Sepsisr = ifelse(Review_Sepsisr == 1,2,1)) %>%
+  mutate(across(c(dead28,Review_Sepsisr), ~ as.numeric(.)), 
+         Review_Sepsisr = ifelse(Review_Sepsisr==1,2,1)) %>%
   summarise(
     enr       = n(),
     npopd     = sum(OPD_IPD == '2 -OPD', na.rm = TRUE),
@@ -85,7 +85,7 @@ df_sumenr <- df_enr %>%
     non       = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 1, na.rm = TRUE),
     non_d     = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 1 & dead28 == 1, na.rm = TRUE),
     non_a     = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 1 & dead28 == 2, na.rm = TRUE),
-    sepsis    = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 2, na.rm = TRUE),
+    sepsis    = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 2 , na.rm = TRUE),
     sepsis_d  = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 2 & dead28 == 1, na.rm = TRUE),
     sepsis_a  = sum(OPD_IPD == '1 -IPD' & Review_Sepsisr == 2 & dead28 == 2, na.rm = TRUE)
   )
@@ -201,11 +201,11 @@ l27 <- paste0(df_sumenr$sepsis,
               ') sepsis')
 l28 <- paste0(df_sumenr$sepsis_d,
               ' (',
-              percent(df_sumenr$sepsis_d / df_sumenr$sepsis, 0.1),
+              percent(df_sumenr$non_d / df_sumenr$sepsis, 0.1),
               ') dead')
 l29 <- paste0(df_sumenr$sepsis_a,
               ' (',
-              percent(df_sumenr$sepsis_a / df_sumenr$sepsis, 0.1),
+              percent(df_sumenr$non_a / df_sumenr$sepsis, 0.1),
               ') alive')
 
 
@@ -213,7 +213,7 @@ d <- DiagrammeR::grViz(
   "digraph flowchart {
 
     graph [layout = dot,
-           nodesep = 1,
+           nodesep = 1;
            compound = true]
 
     node [shape = box,
@@ -290,6 +290,7 @@ d <- DiagrammeR::grViz(
     sepsis_d [label = '@@28']
     sepsis_a [label = '@@29']
 
+
     blank1 [label = '', width = 0.01, height = 0.01]
     blank2 [label = '', width = 0.01, height = 0.01]
     blank3 [label = '', width = 0.01, height = 0.01]
@@ -321,13 +322,12 @@ d <- DiagrammeR::grViz(
     blank5  -> ipd;
     ipd     -> non;
     ipd     -> sepsis;
-    non -> sepsis [style=invis, minlen = 6];
-    {rank = same; non sepsis };
+    {rank = same; non sepsis} ;
     non     -> non_d;
     non     -> non_a;
     sepsis  -> sepsis_d;
     sepsis  -> sepsis_a;
-    non_d -> non_a -> sepsis_d -> sepsis_a [style=invis];
+
     {rank = same; non_d non_a sepsis_d sepsis_a };
 
   }
@@ -361,6 +361,7 @@ d <- DiagrammeR::grViz(
   [27]: l27
   [28]: l28
   [29]: l29
+
 
 ")
 
