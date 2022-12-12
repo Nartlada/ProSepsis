@@ -37,7 +37,6 @@ format_table <- function(t) {
     # Standard column width to fit every table
     cols_width(
       label ~ px(230),
-      stat_0_1 ~ px(100),
       starts_with('p.value') ~ px(50),
       everything() ~ px(70)
     ) %>%
@@ -75,6 +74,22 @@ sort_var <- function(df, ...) {
     sort(decreasing = TRUE)
 }
 
+create_ttO <- function(df, vars, bold = TRUE, label = '') {
+  t <- tbl_summary(df %>% select(vars),
+                   missing = "no") %>%
+    modify_header(update = list(
+      label ~ label,
+      stat_0 ~ "**Overall**<br>N = {N}"
+    )) %>%
+    modify_footnote(update = stat_0 ~ NA)
+  if (bold == TRUE) {
+    t <- t %>% bold_labels() %>%
+      add_stat_label()
+  }
+  return(t)
+}
+
+
 create_tt <- function(df,
                       vars,
                       bold = TRUE,
@@ -85,9 +100,12 @@ create_tt <- function(df,
     add_p(test.args = all_tests("fisher.test") ~ list(workspace = 2e9)) %>%
     # Bold p-value if significant
     bold_p(t = 0.05) %>%
-    modify_header(update = list(label ~ label,
-                                stat_0 ~ "**Overall**<br>N = {N}")) %>% 
-    modify_footnote(update = stat_0 ~ NA)
+    modify_header(update = list(
+        label ~ "",
+        all_stat_cols() ~ "**{level}**<br>N = {n}"
+      )) %>% 
+    modify_spanning_header(c('stat_1', 'stat_2', 'p.value') ~ "**Overall**") %>% 
+    modify_footnote(update = all_stat_cols() ~ NA)
   if (bold == TRUE) {
     t <- t %>% bold_labels() %>%
       add_stat_label()
@@ -426,17 +444,17 @@ df <- df_ipd %>%
   ) %>% 
   zap_labels()
 
-vars <- names(select(df, Age_year:Sepsis_Scale))
+vars <- names(select(df, dead28c, Age_year:Sepsis_Scale))
 t1t <- create_tt(df, vars)
 t1s <- create_ts(df, vars)
 t1  <- tbl_merge(list(t1t, t1s), tab_spanner = FALSE)
 
-vars <- append(names(sort_var(df, CCFever:CCJointPain)), 'CCOther')
+vars <- append(names(sort_var(df, CCFever:CCJointPain)), c('dead28c', 'CCOther'))
 t1t_cc <- create_tt(df, vars, FALSE)
 t1s_cc <- create_ts2(df, vars)
 t1_cc  <- tbl_merge(list(t1t_cc, t1s_cc), tab_spanner = FALSE)
 
-vars <- append(names(sort_var(df, IFTropSep:IFNerve)), 'IFOth')
+vars <- append(names(sort_var(df, IFTropSep:IFNerve)), c('dead28c','IFOth'))
 t1t_if <- create_tt(df, vars, FALSE)
 t1s_if <- create_ts2(df, vars)
 t1_if  <- tbl_merge(list(t1t_if, t1s_if), tab_spanner = FALSE)
@@ -529,42 +547,42 @@ df <- df_ipd %>%
   ) %>% 
   zap_labels()
 
-vars <- append(names(sort_var(df, UnDiabetes:UnThalassemia)),'UnOth')
+vars <- append(names(sort_var(df, UnDiabetes:UnThalassemia)),c('dead28c','UnOth'))
 t2t_un <- create_tt(df, vars, FALSE)
 t2s_un <- create_ts2(df, vars)
 t2_un  <- tbl_merge(list(t2t_un, t2s_un), tab_spanner = FALSE)
 
-vars <- names(select(df, UnSmoke:UnAlcohol, HIV, Covid21))
+vars <- names(select(df, dead28c, UnSmoke:UnAlcohol, HIV, Covid21))
 t2t_risk <- create_tt(df, vars, FALSE)
 t2s_risk <- create_ts2(df, vars)
 t2_risk  <- tbl_merge(list(t2t_risk, t2s_risk), tab_spanner = FALSE)
 
-vars <- names(select(df, NP, CB))
+vars <- names(select(df, dead28c, NP, CB))
 t2t_pui <- create_tt(df, vars, FALSE)
 t2s_pui <- create_ts2(df, vars)
 t2_pui  <- tbl_merge(list(t2t_pui, t2s_pui), tab_spanner = FALSE)
 
-vars <- append(names(sort_var(df, DxFever:DxMening)), 'DxOther')
+vars <- append(names(sort_var(df, DxFever:DxMening)), c('dead28c','DxOther'))
 t2t_dx <- create_tt(df, vars, FALSE)
 t2s_dx <- create_ts2(df, vars)
 t2_dx  <- tbl_merge(list(t2t_dx, t2s_dx), tab_spanner = FALSE)
 
-vars <- names(select(df, SOFA1:SOFA6, Sofa_Sepsis))
+vars <- names(select(df, dead28c, SOFA1:SOFA6, Sofa_Sepsis))
 t2t_or <- create_tt(df, vars, FALSE)
 t2s_or <- create_ts2(df, vars)
 t2_or  <- tbl_merge(list(t2t_or, t2s_or), tab_spanner = FALSE)
 
-vars <- names(select(df, OxyInbu, vasopressor, oxygensupp, Hypoglycemia))
+vars <- names(select(df, dead28c, OxyInbu, vasopressor, oxygensupp, Hypoglycemia))
 t2t  <- create_tt(df, vars)
 t2s  <- create_ts(df, vars)
 t2   <- tbl_merge(list(t2t, t2s), tab_spanner = FALSE)
 
-vars <- names(select(df, CulBlood_ever:CulOther_ever))
+vars <- names(select(df, dead28c, CulBlood_ever:CulOther_ever))
 t2t_cul <- create_tt(df, vars, FALSE)
 t2s_cul <- create_ts2(df, vars)
 t2_cul  <- tbl_merge(list(t2t_cul, t2s_cul), tab_spanner = FALSE)
 
-vars <- names(sort_var(
+vars <- append(names(sort_var(
       df,
       covid19_r:denguel_r,
       HBsAgr,
@@ -579,12 +597,13 @@ vars <- names(sort_var(
       scrubt_r,
       RSV
   )
-)
+), 'dead28c')
+
 t2t_rdt <- create_tt(df, vars, FALSE)
 t2s_rdt <- create_ts2(df, vars)
 t2_rdt  <- tbl_merge(list(t2t_rdt, t2s_rdt), tab_spanner = FALSE)
 
-vars <- append(names(sort_var(df, penicillin_ever:parasitedrug_ever)), 'otheranti_ever')
+vars <- append(names(sort_var(df, penicillin_ever:parasitedrug_ever)), c('dead28c', 'otheranti_ever'))
 t2t_trt <- create_tt(df, vars, FALSE)
 t2s_trt <- create_ts2(df, vars)
 t2_trt  <- tbl_merge(list(t2t_trt, t2s_trt), tab_spanner = FALSE)
@@ -630,7 +649,7 @@ df <- df_ipd %>%
 varsneg <- names(sort_var(df, achromobacter:vibrio))
 varspos <- names(sort_var(df, dermacoccus:streptococcus_su))
 vars <- c('gramneg', varsneg, 'grampos', varspos)
-t3t_all  <- create_tt(df, vars, FALSE, 'All')
+t3t_all  <- create_ttO(df, vars, FALSE, 'All')
 t3a_all  <- create_t3(df_ipd, dead28c, vars)
 t3b_all  <- create_t3(df_ipd, sepsis, vars)
 t3ab_all <- tbl_merge(list(t3a_all, t3b_all), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
@@ -641,7 +660,7 @@ t3_all
 varsneg <- names(sort_var(df, achromobacter_m:vibrio_m))
 varspos <- names(sort_var(df, dermacoccus_m:streptococcus_su_m))
 vars <- c('gramneg_m', varsneg, 'grampos_m', varspos)
-t3t_mdr  <- create_tt(df, vars, FALSE, 'MDR')
+t3t_mdr  <- create_ttO(df, vars, FALSE, 'MDR')
 t3a_mdr  <- create_t3(df_ipd, dead28c, vars)
 t3b_mdr  <- create_t3(df_ipd, sepsis, vars)
 t3ab_mdr <- tbl_merge(list(t3a_mdr, t3b_mdr), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
@@ -677,12 +696,12 @@ df <- df_ipd %>%
                       DischargeType   = 'Discharge type ') %>%
   zap_labels()
 
-vars <- append(names(sort_var(df, Pneumonia:Malaria)), 'Others')
+vars <- append(names(sort_var(df, Pneumonia:Malaria)), c('dead28c','Others'))
 t4t_dx <- create_tt(df, vars, FALSE)
 t4s_dx <- create_ts2(df, vars)
 t4_dx  <- tbl_merge(list(t4t_dx, t4s_dx), tab_spanner = FALSE)
 
-vars <- names(select(df, DischargeStatus, DischargeType, TotalCharge))
+vars <- names(select(df, dead28c, DischargeStatus, DischargeType, TotalCharge))
 t4t <- create_tt(df, vars)
 t4s <- create_ts(df, vars)
 t4  <- tbl_merge(list(t4t, t4s), tab_spanner = FALSE)

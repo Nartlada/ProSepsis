@@ -428,20 +428,20 @@ create_t4 <- function(df, overall = FALSE) {
 # Screening
 df_scr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   )
 
 # Enrollment
 
 df_enr <-
   read_sas(
-    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28c = factor(
