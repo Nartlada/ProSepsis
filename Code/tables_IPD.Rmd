@@ -175,6 +175,9 @@ create_t3 <- function(df, outcome = dead28c, vars) {
     add_p(test.args = all_tests("fisher.test") ~ list(workspace = 2e9)) %>%
     # Bold p-value if significant
     bold_p(t = 0.05) %>%
+    modify_header(update = list(
+      label ~ "",
+      all_stat_cols() ~ "**{level}**<br>N = {n}")) %>%
     modify_footnote(update = all_stat_cols() ~ NA)
 }
 ```
