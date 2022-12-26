@@ -65,17 +65,26 @@ format_table <- function(t) {
 
 }
 
+notzero <- function(X)
+{
+  if (X > 0)
+    return(TRUE)
+  else
+    return(FALSE)
+}
+
 # Sort dichotomous variables by descending frequency
 sort_var <- function(df, ...) {
-    df %>%
+  df %>%
     filter(!is.na(dead28c)) %>%
     select(...) %>%
     map_dbl(sum, na.rm = TRUE) %>%
-    sort(decreasing = TRUE)
+    sort(decreasing = TRUE) %>% 
+    Filter(notzero,.)    
 }
 
 create_ttO <- function(df, vars, bold = TRUE, label = '') {
-  t <- tbl_summary(df %>% select(vars),
+  t <- tbl_summary(df %>% select(vars), 
                    missing = "no") %>%
     modify_header(update = list(
       label ~ label,
@@ -89,22 +98,25 @@ create_ttO <- function(df, vars, bold = TRUE, label = '') {
   return(t)
 }
 
-
 create_tt <- function(df,
                       vars,
                       bold = TRUE,
                       label = '') {
-  t <- tbl_summary(df %>% select(vars), 
+  t <- tbl_summary(df %>% select(vars),
                    by = dead28c,
                    missing = "no") %>%
     add_p(test.args = all_tests("fisher.test") ~ list(workspace = 2e9)) %>%
     # Bold p-value if significant
     bold_p(t = 0.05) %>%
-    modify_header(update = list(
+    add_overall() %>% 
+    modify_header(
+      update = list(
         label ~ "",
-        all_stat_cols() ~ "**{level}**<br>N = {n}"
-      )) %>% 
-    modify_spanning_header(c('stat_1', 'stat_2', 'p.value') ~ "**Overall**") %>% 
+        all_stat_cols(stat_0 = FALSE) ~ "**{level}**<br>N = {n}",
+        stat_0 ~ "**Overall**<br>N = {N}"
+      )
+    ) %>%
+    modify_spanning_header(c('stat_0', 'stat_1', 'stat_2', 'p.value') ~ "**Overall**, N = {N}") %>%
     modify_footnote(update = all_stat_cols() ~ NA)
   if (bold == TRUE) {
     t <- t %>% bold_labels() %>%
@@ -159,10 +171,13 @@ create_t3 <- function(df, outcome = dead28c, vars) {
   outcome = enquo(outcome)
   df %>%
     select(!!outcome, vars) %>%
-    tbl_summary(by = !!outcome) %>% 
+    tbl_summary(by = !!outcome) %>%
     add_p(test.args = all_tests("fisher.test") ~ list(workspace = 2e9)) %>%
     # Bold p-value if significant
     bold_p(t = 0.05) %>%
+    modify_header(update = list(
+      label ~ "",
+      all_stat_cols() ~ "**{level}**<br>N = {n}")) %>%
     modify_footnote(update = all_stat_cols() ~ NA)
 }
 ```
@@ -171,19 +186,19 @@ create_t3 <- function(df, outcome = dead28c, vars) {
 # Screening
 df_scr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    # "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
-    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/tblPart1.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/tblPart1.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   )
 
 # Enrollment
 df_enr <-
   read_sas(
-    "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
-    "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
-    # "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
-    # "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
+    # "C:/MyD/Sepsis_Pro/MF/psmast.sas7bdat",
+    # "C:/MyD/Sepsis_Pro/LABEL/prosepsis.sas7bcat"
+    "C:/Projects/ProSepsis/SAS/MF/psmast.sas7bdat",
+    "C:/Projects/ProSepsis/SAS/LABEL/prosepsis.sas7bcat"
   ) %>%
   mutate(
     dead28c = factor(
@@ -194,7 +209,7 @@ df_enr <-
     sepsis = factor(
       Review_Sepsisr,
       levels = c(2,1),
-      labels = c( 'Non-sepsis','Sepsis')
+      labels = c('Non-sepsis', 'Sepsis')
     ),
     across(
       c(
@@ -310,74 +325,40 @@ var_label(df_enr) <- list(
                               ' (', sum(df_enr$gramneg_i),          ifelse(sum(df_enr$gramneg_i) == 1,' isolation)',' isolations)')),
   grampos            = paste0(var_label(df_enr$grampos),
                               ' (', sum(df_enr$grampos_i),          ifelse(sum(df_enr$grampos_i) == 1,' isolation)',' isolations)')),
-  achromobacter_m    = paste0(var_label(df_enr$achromobacter),
-                              ' (', sum(df_enr$achromobacter_i),    ifelse(sum(df_enr$achromobacter_i) == 1,' isolation)',' isolations)')),
-  acinetobacter_b_m  = paste0(var_label(df_enr$acinetobacter_b),
-                              ' (', sum(df_enr$acinetobacter_b_i),  ifelse(sum(df_enr$acinetobacter_b_i) == 1,' isolation)',' isolations)')),
-  acinetobacter_l_m  = paste0(var_label(df_enr$acinetobacter_l),
-                              ' (', sum(df_enr$acinetobacter_l_i),  ifelse(sum(df_enr$acinetobacter_l_i) == 1,' isolation)',' isolations)')),
-  aerobic_m          = paste0(var_label(df_enr$aerobic),
-                              ' (', sum(df_enr$aerobic_i),          ifelse(sum(df_enr$aerobic_i) == 1,' isolation)',' isolations)')),
-  aeromonas_m        = paste0(var_label(df_enr$aeromonas),
-                              ' (', sum(df_enr$aeromonas_i),        ifelse(sum(df_enr$aeromonas_i) == 1,' isolation)',' isolations)')),
-  burkholderia_c_m   = paste0(var_label(df_enr$burkholderia_c),
-                              ' (', sum(df_enr$burkholderia_c_i),   ifelse(sum(df_enr$burkholderia_c_i) == 1,' isolation)',' isolations)')),
-  burkholderia_p_m   = paste0(var_label(df_enr$burkholderia_p),
-                              ' (', sum(df_enr$burkholderia_p_i),   ifelse(sum(df_enr$burkholderia_p_i) == 1,' isolation)',' isolations)')),
-  dermacoccus_m      = paste0(var_label(df_enr$dermacoccus),
-                              ' (', sum(df_enr$dermacoccus_i),      ifelse(sum(df_enr$dermacoccus_i) == 1,' isolation)',' isolations)')),
-  edwardsiella_m     = paste0(var_label(df_enr$edwardsiella),
-                              ' (', sum(df_enr$edwardsiella_i),     ifelse(sum(df_enr$edwardsiella_i) == 1,' isolation)',' isolations)')),
-  enterobacter_m     = paste0(var_label(df_enr$enterobacter),
-                              ' (', sum(df_enr$enterobacter_i),     ifelse(sum(df_enr$enterobacter_i) == 1,' isolation)',' isolations)')),
-  enterococcus_m     = paste0(var_label(df_enr$enterococcus),
-                              ' (', sum(df_enr$enterococcus_i),     ifelse(sum(df_enr$enterococcus_i) == 1,' isolation)',' isolations)')),
-  escherichia_m      = paste0(var_label(df_enr$escherichia),
-                              ' (', sum(df_enr$escherichia_i),      ifelse(sum(df_enr$escherichia_i) == 1,' isolation)',' isolations)')),
-  haemophilus_m      = paste0(var_label(df_enr$haemophilus),
-                              ' (', sum(df_enr$haemophilus_i),      ifelse(sum(df_enr$haemophilus_i) == 1,' isolation)',' isolations)')),
-  klebsiella_m       = paste0(var_label(df_enr$klebsiella),
-                              ' (', sum(df_enr$klebsiella_i),       ifelse(sum(df_enr$klebsiella_i) == 1,' isolation)',' isolations)')),
-  kluyvera_m         = paste0(var_label(df_enr$kluyvera),
-                              ' (', sum(df_enr$kluyvera_i),         ifelse(sum(df_enr$kluyvera_i) == 1,' isolation)',' isolations)')),
-  micrococcus_m      = paste0(var_label(df_enr$micrococcus),
-                              ' (', sum(df_enr$micrococcus_i),      ifelse(sum(df_enr$micrococcus_i) == 1,' isolation)',' isolations)')),
-  morexella_m        = paste0(var_label(df_enr$morexella),
-                              ' (', sum(df_enr$morexella_i),        ifelse(sum(df_enr$morexella_i) == 1,' isolation)',' isolations)')),
-  proteus_m          = paste0(var_label(df_enr$proteus),
-                              ' (', sum(df_enr$proteus_i),          ifelse(sum(df_enr$proteus_i) == 1,' isolation)',' isolations)')),
-  providencia_m      = paste0(var_label(df_enr$providencia),
-                              ' (', sum(df_enr$providencia_i),      ifelse(sum(df_enr$providencia_i) == 1,' isolation)',' isolations)')),
-  pseudohyphae_m     = paste0(var_label(df_enr$pseudohyphae),
-                              ' (', sum(df_enr$pseudohyphae_i),     ifelse(sum(df_enr$pseudohyphae_i) == 1,' isolation)',' isolations)')),
-  salmonella_m       = paste0(var_label(df_enr$salmonella),
-                              ' (', sum(df_enr$salmonella_i),       ifelse(sum(df_enr$salmonella_i) == 1,' isolation)',' isolations)')),
-  staphylococcus_m   = paste0(var_label(df_enr$staphylococcus),
-                              ' (', sum(df_enr$staphylococcus_i),   ifelse(sum(df_enr$staphylococcus_i) == 1,' isolation)',' isolations)')),
-  stenotrophomonas_m = paste0(var_label(df_enr$stenotrophomonas),
-                              ' (', sum(df_enr$stenotrophomonas_i), ifelse(sum(df_enr$stenotrophomonas_i) == 1,' isolation)',' isolations)')),
-  streptococcus_vi_m = paste0(var_label(df_enr$streptococcus_vi),
-                              ' (', sum(df_enr$streptococcus_vi_i), ifelse(sum(df_enr$streptococcus_vi_i) == 1,' isolation)',' isolations)')),
-  streptococcus_an_m = paste0(var_label(df_enr$streptococcus_an),
-                              ' (', sum(df_enr$streptococcus_an_i), ifelse(sum(df_enr$streptococcus_an_i) == 1,' isolation)',' isolations)')),
-  streptococcus_bo_m = paste0(var_label(df_enr$streptococcus_bo),
-                              ' (', sum(df_enr$streptococcus_bo_i), ifelse(sum(df_enr$streptococcus_bo_i) == 1,' isolation)',' isolations)')),
-  streptococcus_co_m = paste0(var_label(df_enr$streptococcus_co),
-                              ' (', sum(df_enr$streptococcus_co_i), ifelse(sum(df_enr$streptococcus_co_i) == 1,' isolation)',' isolations)')),
-  streptococcus_a_m  = paste0(var_label(df_enr$streptococcus_a),
-                              ' (', sum(df_enr$streptococcus_a_i),  ifelse(sum(df_enr$streptococcus_a_i) == 1,' isolation)',' isolations)')),
-  streptococcus_b_m  = paste0(var_label(df_enr$streptococcus_b),
-                              ' (', sum(df_enr$streptococcus_b_i),  ifelse(sum(df_enr$streptococcus_b_i) == 1,' isolation)',' isolations)')),
-  streptococcus_pn_m = paste0(var_label(df_enr$streptococcus_pn),
-                              ' (', sum(df_enr$streptococcus_pn_i), ifelse(sum(df_enr$streptococcus_pn_i) == 1,' isolation)',' isolations)')),
-  streptococcus_su_m = paste0(var_label(df_enr$streptococcus_su),
-                              ' (', sum(df_enr$streptococcus_su_i), ifelse(sum(df_enr$streptococcus_su_i) == 1,' isolation)',' isolations)')),
-  vibrio_m           = paste0(var_label(df_enr$vibrio),
-                              ' (', sum(df_enr$vibrio_i),           ifelse(sum(df_enr$vibrio_i) == 1,' isolation)',' isolations)')),
-  gramneg_m          = paste0(var_label(df_enr$gramneg),
-                              ' (', sum(df_enr$gramneg_i),          ifelse(sum(df_enr$gramneg_i) == 1,' isolation)',' isolations)')),
-  grampos_m          = paste0(var_label(df_enr$grampos),
-                              ' (', sum(df_enr$grampos_i),          ifelse(sum(df_enr$grampos_i) == 1,' isolation)',' isolations)'))
+  achromobacter_m    = var_label(df_enr$achromobacter),
+  acinetobacter_b_m  = var_label(df_enr$acinetobacter_b),
+  acinetobacter_l_m  = var_label(df_enr$acinetobacter_l),
+  aerobic_m          = var_label(df_enr$aerobic),
+  aeromonas_m        = var_label(df_enr$aeromonas),
+  burkholderia_c_m   = var_label(df_enr$burkholderia_c),
+  burkholderia_p_m   = var_label(df_enr$burkholderia_p),
+  dermacoccus_m      = var_label(df_enr$dermacoccus),
+  edwardsiella_m     = var_label(df_enr$edwardsiella),
+  enterobacter_m     = var_label(df_enr$enterobacter),
+  enterococcus_m     = var_label(df_enr$enterococcus),
+  escherichia_m      = var_label(df_enr$escherichia),
+  haemophilus_m      = var_label(df_enr$haemophilus),
+  klebsiella_m       = var_label(df_enr$klebsiella),
+  kluyvera_m         = var_label(df_enr$kluyvera),
+  micrococcus_m      = var_label(df_enr$micrococcus),
+  morexella_m        = var_label(df_enr$morexella),
+  proteus_m          = var_label(df_enr$proteus),
+  providencia_m      = var_label(df_enr$providencia),
+  pseudohyphae_m     = var_label(df_enr$pseudohyphae),
+  salmonella_m       = var_label(df_enr$salmonella),
+  staphylococcus_m   = var_label(df_enr$staphylococcus),
+  stenotrophomonas_m = var_label(df_enr$stenotrophomonas),
+  streptococcus_vi_m = var_label(df_enr$streptococcus_vi),
+  streptococcus_an_m = var_label(df_enr$streptococcus_an),
+  streptococcus_bo_m = var_label(df_enr$streptococcus_bo),
+  streptococcus_co_m = var_label(df_enr$streptococcus_co),
+  streptococcus_a_m  = var_label(df_enr$streptococcus_a),
+  streptococcus_b_m  = var_label(df_enr$streptococcus_b),
+  streptococcus_pn_m = var_label(df_enr$streptococcus_pn),
+  streptococcus_su_m = var_label(df_enr$streptococcus_su),
+  vibrio_m           = var_label(df_enr$vibrio),
+  gramneg_m          = var_label(df_enr$gramneg),
+  grampos_m          = var_label(df_enr$grampos)
 )
 
 df_ipd <- filter(df_enr,OPD_IPD == "1 -IPD")
@@ -444,7 +425,7 @@ df <- df_ipd %>%
     IFSkin        = 'Skin/Soft tissue/bone',
     IFNerve       = 'Central nervous system',
     IFOth         = 'Others'
-  ) %>% 
+  ) %>%
   zap_labels()
 
 vars <- names(select(df, dead28c, Age_year:Sepsis_Scale))
@@ -551,7 +532,7 @@ t1
 df <- df_ipd %>%
   mutate(SOFA1 = ifelse(SOFA1 >= 3, 1, 0),
          across(SOFA2:SOFA6, ~ ifelse(. > 1, 1, .))) %>%
-  select(sepsis, dead28c, 
+  select(sepsis, dead28c,
          UnDiabetes:UnThalassemia, UnOth,
          UnSmoke:UnAlcohol, HIV, Covid21,
          NP, CB,
@@ -618,7 +599,7 @@ df <- df_ipd %>%
     antimalaria_ever  = 'Antimalarial',
     parasitedrug_ever = 'Parasite drugs',
     otheranti_ever    = 'Others'
-  ) %>% 
+  ) %>%
   zap_labels()
 
 vars <- append(names(sort_var(df, UnDiabetes:UnThalassemia)),c('dead28c','UnOth'))
@@ -727,8 +708,8 @@ t3t_all  <- create_ttO(df, vars, FALSE, 'All')
 t3a_all  <- create_t3(df, dead28c, vars)
 t3b_all  <- create_t3(df, sepsis, vars)
 t3ab_all <- tbl_merge(list(t3a_all, t3b_all), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
-t3_all  <- tbl_merge(list(t3t_all, t3ab_all), tab_spanner = FALSE) %>% 
-  format_table() 
+t3_all  <- tbl_merge(list(t3t_all, t3ab_all), tab_spanner = FALSE) %>%
+  format_table()
 t3_all
 
 varsneg <- names(sort_var(df, achromobacter_m:vibrio_m))
@@ -738,8 +719,8 @@ t3t_mdr  <- create_ttO(df, vars, FALSE, 'MDR')
 t3a_mdr  <- create_t3(df, dead28c, vars)
 t3b_mdr  <- create_t3(df, sepsis, vars)
 t3ab_mdr <- tbl_merge(list(t3a_mdr, t3b_mdr), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
-t3_mdr  <- tbl_merge(list(t3t_mdr, t3ab_mdr), tab_spanner = FALSE) %>% 
-  format_table() 
+t3_mdr  <- tbl_merge(list(t3t_mdr, t3ab_mdr), tab_spanner = FALSE) %>%
+  format_table()
 t3_mdr
 ```
 
