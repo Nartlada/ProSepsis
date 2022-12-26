@@ -501,20 +501,17 @@ df <- df_ipd_sep %>%
 
 vars <- names(select(df, dead28c, Age_year:Sepsis_Scale))
 t1t <- create_tt(df, vars)
-t1s <- create_ts(df, vars)
-t1  <- tbl_merge(list(t1t, t1s), tab_spanner = FALSE)
+
 
 vars <- append(names(sort_var(df, CCFever:CCJointPain)), c('dead28c', 'CCOther'))
 t1t_cc <- create_tt(df, vars, FALSE)
-t1s_cc <- create_ts2(df, vars)
-t1_cc  <- tbl_merge(list(t1t_cc, t1s_cc), tab_spanner = FALSE)
+
 
 vars <- append(names(sort_var(df, IFTropSep:IFNerve)), c('dead28c','IFOth'))
 t1t_if <- create_tt(df, vars, FALSE)
-t1s_if <- create_ts2(df, vars)
-t1_if  <- tbl_merge(list(t1t_if, t1s_if), tab_spanner = FALSE)
 
-t1 <- tbl_stack(list(t1, t1_cc, t1_if),
+
+t1 <- tbl_stack(list(t1t, t1t_cc, t1t_if),
                 group_header = c('', 'Chief Complaint, n (%)', 'Source of Infection, n (%)')) %>%
   format_table() %>%
   tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
