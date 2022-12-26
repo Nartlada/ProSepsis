@@ -382,6 +382,9 @@ var_label(df_enr) <- list(
 
 df_ipd <- filter(df_enr,OPD_IPD == "1 -IPD")
 n_ipd  <- nrow(df_ipd)
+
+df_ipd_sep <- filter(df_ipd, Review_Sepsisr == 1)
+n_ipd_sep  <- nrow(df_ipd_sep)
 ```
 
 <br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
@@ -403,6 +406,77 @@ n_ipd  <- nrow(df_ipd)
 
 ```{r t1}
 df <- df_ipd %>%
+  mutate(Age_gp4 = cut(
+    Age_year,
+    breaks = c(0, 14, 44, 64 , Inf),
+    labels = c('<15', '15-44', '45-64', '>64')
+  )) %>%
+  select(
+    sepsis,
+    dead28c,
+    Age_year,
+    Age_gp4,
+    Sex,
+    BMIgp,
+    PlaceChk_n,
+    Occupation,
+    Refer,
+    QSofa,
+    Sepsis_Scale,
+    CCFever:CCJointPain,
+    CCOther,
+    IFTropSep:IFNerve,
+    IFOth
+  ) %>%
+  set_variable_labels(
+    Age_year     = 'Age',
+    Age_gp4      = 'Age group',
+    BMIgp        = 'BMI range',
+    PlaceChk_n   = 'Admission ward',
+    Refer        = 'Transferred',
+    QSofa        = '(Any) qSOFA >= 2 scores',
+    Sepsis_Scale = 'Sepsis determination (SOFA)',
+    IFTropSep     = 'Tropical infection',
+    IFRespiratory = 'Respiratory',
+    IFBlood       = 'Blood',
+    IFGas         = 'Gastrointestinal track',
+    IFUrine       = 'Urinary',
+    IFSkin        = 'Skin/Soft tissue/bone',
+    IFNerve       = 'Central nervous system',
+    IFOth         = 'Others'
+  ) %>% 
+  zap_labels()
+
+vars <- names(select(df, dead28c, Age_year:Sepsis_Scale))
+t1t <- create_tt(df, vars)
+t1s <- create_ts(df, vars)
+t1  <- tbl_merge(list(t1t, t1s), tab_spanner = FALSE)
+
+vars <- append(names(sort_var(df, CCFever:CCJointPain)), c('dead28c', 'CCOther'))
+t1t_cc <- create_tt(df, vars, FALSE)
+t1s_cc <- create_ts2(df, vars)
+t1_cc  <- tbl_merge(list(t1t_cc, t1s_cc), tab_spanner = FALSE)
+
+vars <- append(names(sort_var(df, IFTropSep:IFNerve)), c('dead28c','IFOth'))
+t1t_if <- create_tt(df, vars, FALSE)
+t1s_if <- create_ts2(df, vars)
+t1_if  <- tbl_merge(list(t1t_if, t1s_if), tab_spanner = FALSE)
+
+t1 <- tbl_stack(list(t1, t1_cc, t1_if),
+                group_header = c('', 'Chief Complaint, n (%)', 'Source of Infection, n (%)')) %>%
+  format_table() %>%
+  tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
+            locations = cells_row_groups(groups = 1))
+t1
+```
+<br>
+
+\newpage
+
+**Table 1_1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the IPD sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd_sep`)
+
+```{r t1_1}
+df <- df_ipd_sep %>%
   mutate(Age_gp4 = cut(
     Age_year,
     breaks = c(0, 14, 44, 64 , Inf),
@@ -650,8 +724,8 @@ varsneg <- names(sort_var(df, achromobacter:vibrio))
 varspos <- names(sort_var(df, dermacoccus:streptococcus_su))
 vars <- c('gramneg', varsneg, 'grampos', varspos)
 t3t_all  <- create_ttO(df, vars, FALSE, 'All')
-t3a_all  <- create_t3(df_ipd, dead28c, vars)
-t3b_all  <- create_t3(df_ipd, sepsis, vars)
+t3a_all  <- create_t3(df, dead28c, vars)
+t3b_all  <- create_t3(df, sepsis, vars)
 t3ab_all <- tbl_merge(list(t3a_all, t3b_all), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
 t3_all  <- tbl_merge(list(t3t_all, t3ab_all), tab_spanner = FALSE) %>% 
   format_table() 
@@ -661,8 +735,8 @@ varsneg <- names(sort_var(df, achromobacter_m:vibrio_m))
 varspos <- names(sort_var(df, dermacoccus_m:streptococcus_su_m))
 vars <- c('gramneg_m', varsneg, 'grampos_m', varspos)
 t3t_mdr  <- create_ttO(df, vars, FALSE, 'MDR')
-t3a_mdr  <- create_t3(df_ipd, dead28c, vars)
-t3b_mdr  <- create_t3(df_ipd, sepsis, vars)
+t3a_mdr  <- create_t3(df, dead28c, vars)
+t3b_mdr  <- create_t3(df, sepsis, vars)
 t3ab_mdr <- tbl_merge(list(t3a_mdr, t3b_mdr), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
 t3_mdr  <- tbl_merge(list(t3t_mdr, t3ab_mdr), tab_spanner = FALSE) %>% 
   format_table() 
