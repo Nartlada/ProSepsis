@@ -215,8 +215,14 @@ df_enr <-
                         labels = c('≤ 594', '595-1055','1056-1594','1595-3273','≥ 3274')),
     procal_q51 = cut(Procal_res1, breaks = c(0, 0.285, 1.750, 7.150, 45.3, Inf),
                         labels = c('≤ 0.285', '0.286-1.750','1.751-7.150','7.151-45.3', '≥ 45.31')),
-    lactate_q51 = cut(lactate_res1, breaks = c(0, 1.05, 1.75, 2.75, 4.35, Inf),
-                        labels = c('≤ 1.05', '1.06-1.75', '1.76-2.75','2.76-4.35','≥ 4.36')),
+    # lactate_q51 = cut(lactate_res1,
+    #                 breaks = quantile(lactate_res1,
+    #                 probs = seq(0, 1, 0.2),
+    #                     na.rm = TRUE),
+    #   include.lowest = TRUE,
+    #   labels = c('≤ 1.05', '1.06-1.75', '1.76-2.75','2.76-4.35','≥ 4.36')),
+     lactate_q51 = cut(lactate_res1, breaks = c(0, 1.1, 1.8, 2.8, 4.4, Inf),
+                        labels = c('≤ 1.10', '1.11 - 1.80','1.81 - 2.80','2.81 - 4.40', '≥ 4.41')),
     
     across(
       c(
@@ -260,8 +266,10 @@ df_enr <-
     denguel_r = ifelse(grepl('1', DengueL_tests, fixed = TRUE), 1, 0),
     hbshcv_r  = ifelse(grepl('1', HBSHCV_tests, fixed = TRUE), 1, 0),
     scrubt_r  = ifelse(grepl('1', ScrubT_tests, fixed = TRUE), 1, 0),
-    CCTachDys = ifelse(CCTachypnea ==1 | CCDyspnea == 1,1,0),
-    CCNauVom  = ifelse(CCNausea == 1 | CCVomiting == 1,1,0)
+    TachypneaOrDyspnea = ifelse(CCTachypnea ==1 | CCDyspnea == 1,1,0),
+    NauseaOrVomiting  = ifelse(CCNausea == 1 | CCVomiting == 1,1,0),
+    TachypneaAndDyspnea = ifelse(CCTachypnea ==1 & CCDyspnea == 1,1,0),
+    NauseaAndVomiting  = ifelse(CCNausea == 1 & CCVomiting == 1,1,0)
   )
 
 var_label(df_enr) <- list(
@@ -378,88 +386,6 @@ n_ipd_sep  <- nrow(df_ipd_sep)
 
 ```
 
-<br><br> **Figure 1**: Flow chart presenting the number of screening and enroll patients with sepsis who participating in this sepsis epidemiology activities
-
-<center>
-
-```{r flowchart}
- source("flowchart.R", local = knitr::knit_global())
- d
-```
-
-</center>
-
-<br>
-
-\newpage
-
-**Table 1**: Descriptive statistical analysis of the baseline demographic data and clinical characteristics of the enrolled suspected sepsis cases at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
-
-```{r t1}
-df <- df_ipd %>%
-  mutate(Age_gp4 = cut(
-    Age_year,
-    breaks = c(0, 14, 44, 64 , Inf),
-    labels = c('<15', '15-44', '45-64', '>64')
-  )) %>%
-  select(
-    sepsis,
-    dead28c,
-    Age_year,
-    Age_gp4,
-    Sex,
-    BMIgp_asia,
-    PlaceChk_n,
-    Occupation,
-    Refer,
-    QSofa,
-    Sepsis_Scale,
-    CCFever:CCJointPain,
-    CCOther,
-    IFTropSep:IFNerve,
-    IFOth
-  ) %>%
-  set_variable_labels(
-    Age_year     = 'Age',
-    Age_gp4      = 'Age group',
-    BMIgp_asia        = 'BMI range',
-    PlaceChk_n   = 'Admission ward',
-    Refer        = 'Transferred',
-    QSofa        = '(Any) qSOFA >= 2 scores',
-    Sepsis_Scale = 'Sepsis determination (SOFA)',
-    IFTropSep     = 'Tropical infection',
-    IFRespiratory = 'Respiratory',
-    IFBlood       = 'Blood',
-    IFGas         = 'Gastrointestinal track',
-    IFUrine       = 'Urinary',
-    IFSkin        = 'Skin/Soft tissue/bone',
-    IFNerve       = 'Central nervous system',
-    IFOth         = 'Others'
-  ) %>%
-  zap_labels()
-
-vars <- names(select(df, dead28c, Age_year:Sepsis_Scale))
-t1t <- create_tt(df, vars)
-t1s <- create_ts(df, vars)
-t1  <- tbl_merge(list(t1t, t1s), tab_spanner = FALSE)
-
-vars <- append(names(sort_var(df, CCFever:CCJointPain)), c('dead28c', 'CCOther'))
-t1t_cc <- create_tt(df, vars, FALSE)
-t1s_cc <- create_ts2(df, vars)
-t1_cc  <- tbl_merge(list(t1t_cc, t1s_cc), tab_spanner = FALSE)
-
-vars <- append(names(sort_var(df, IFTropSep:IFNerve)), c('dead28c','IFOth'))
-t1t_if <- create_tt(df, vars, FALSE)
-t1s_if <- create_ts2(df, vars)
-t1_if  <- tbl_merge(list(t1t_if, t1s_if), tab_spanner = FALSE)
-
-t1 <- tbl_stack(list(t1, t1_cc, t1_if),
-                group_header = c('', 'Chief Complaint, n (%)', 'Source of Infection, n (%)')) %>%
-  format_table() %>%
-  tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
-            locations = cells_row_groups(groups = 1))
-t1
-```
 <br>
 
 \newpage
@@ -502,8 +428,9 @@ df <- df_ipd_sep %>%
     Procal_res1,
     procal_q51,
     CCFever:CCSputum,
-    CCTachDys,
-    CCNauVom,
+    TachypneaOrDyspnea,
+    NauseaOrVomiting,
+    
     CCAbPain:CCJointPain,
     CCOther,
     IFTropSep:IFNerve,
@@ -526,7 +453,13 @@ df <- df_ipd_sep %>%
     IFSkin        = 'Skin/Soft tissue/bone',
     IFNerve       = 'Central nervous system',
     IFOth         = 'Others',
-    occupation    = 'Occupation'
+    occupation    = 'Occupation',
+    lactate_q51   = 'Lactate (quintiles)',
+    presepsin_q51 = 'Presepsin (quintiles)',
+    procal_q51    = 'Procalcitonin (quintiles)',
+    TachypneaOrDyspnea = 'Tachypnear OR Dyspnea',
+    NauseaOrVomiting = 'Nausea OR Vomiting',
+    CCSputum      ='Phlegm '
   ) %>% 
   zap_labels()
 
@@ -550,279 +483,5 @@ t1 <- tbl_stack(list(t1t, t1t_cc, t1t_if),
 t1
 ```
 
-<br>
 
-\newpage
 
-**Table 2**: Clinical information and laboratory result of enrolled suspected sepsis cases participating at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
-
-```{r t2}
-df <- df_ipd %>%
-  mutate(SOFA1 = ifelse(SOFA1 >= 3, 1, 0),
-         across(SOFA2:SOFA6, ~ ifelse(. > 1, 1, .))) %>%
-  select(sepsis, dead28c,
-         UnDiabetes:UnThalassemia, UnOth,
-         UnSmoke:UnAlcohol, HIV, Covid21,
-         NP, CB,
-         DxFever:DxMening, DxOther,
-         SOFA1:SOFA6, Sofa_Sepsis,
-         lactate_res1, presepsin_res1,Procal_res1,
-         OxyInbu, vasopressor, oxygensupp, Hypoglycemia,
-         CulBlood_ever:CulOther_ever,
-         covid19_r:denguel_r, HBsAgr, HBc, AntiHBs, AntiHCV, hbshcv_r, Influenza, Leptor, MalariaR, Melio, scrubt_r, RSV,
-         penicillin_ever:parasitedrug_ever, otheranti_ever
-  ) %>%
-  set_variable_labels(
-    UnRenal           = 'Renal disease',
-    UnSmoke           = 'Smoking',
-    UnAlcohol         = 'Alcohol',
-    DxDengueFever     = 'Dengue fever',
-    DxNecro           = 'Necrotizing fasciitis',
-    SOFA1             = 'RS (PaO2/Fio2 < 200 with respiratory support',
-    SOFA2             = 'Liver (Bilirubin > 1.2 mg/dl)',
-    SOFA3             = 'Cardiovascular (MAP < 70 mmHg)',
-    SOFA4             = 'CNS (Glasgow Coma Scale < 15)',
-    SOFA5             = 'Blood (Platelet < 150,000 /μl)',
-    SOFA6             = 'Renal (Cr > 1.2 mg/dl)',
-    Sofa_Sepsis       = 'Sepsis: SOFA_Total >= 2',
-    OxyInbu           = 'Ventilator use',
-    vasopressor       = 'Vasopressor use',
-    oxygensupp        = 'Supplement Oxygen',
-    Hypoglycemia      = 'Hypoglycemia',
-    CulBlood_ever     = 'Blood',
-    CulSputum_ever    = 'Sputum',
-    CulUrine_ever     = 'Urine',
-    CulCSF_ever       = 'CSF',
-    CulOther_ever     = 'Others',
-    covid19_r         = 'COVID-19 +',
-    dengue_r          = 'Dengue +',
-    denguel_r         = 'Dengue + (lab)',
-    HBsAgr            = 'HBsAg +',
-    HBc               = 'HBc +',
-    AntiHBs           = 'Anti-HBs +',
-    AntiHCV           = 'Anti-HCV +',
-    hbshcv_r          = 'Anti-HBs/Anti-HCV +',
-    Influenza         = 'Influenza +',
-    Leptor            = 'Leptospirosis +',
-    MalariaR          = 'Malaria +',
-    Melio             = 'Melioidosis +',
-    scrubt_r          = 'Scrub typhus +',
-    RSV               = 'RSV +',
-    penicillin_ever   = 'Penicillin',
-    cephalG1_ever     = 'Cephalosporin 1st',
-    cephalG2_ever     = 'Cephalosporin 2nd',
-    cephalG3_ever     = 'Cephalosporin 3rd',
-    cephalG4_ever     = 'Cephalosporin 4th',
-    macroclide_ever   = 'Macrolide',
-    tetra_ever        = 'Tetracycline',
-    quinolone_ever    = 'Quinolone',
-    amino_ever        = 'Aminoglycoside',
-    sulfon_ever       = 'Sulfonamide',
-    carbapenem_ever   = 'Carbapenem',
-    lincomycin_ever   = 'Lincomycin',
-    polypep_ever      = 'Polypep',
-    vancomycin_ever   = 'Vancomycin',
-    tbdrug_ever       = 'TB drugs',
-    antifungal_ever   = 'Antifungal',
-    antiviral_ever    = 'Antiviral',
-    antimalaria_ever  = 'Antimalarial',
-    parasitedrug_ever = 'Parasite drugs',
-    otheranti_ever    = 'Others'
-  ) %>%
-  zap_labels()
-
-vars <- append(names(sort_var(df, UnDiabetes:UnThalassemia)),c('dead28c','UnOth'))
-t2t_un <- create_tt(df, vars, FALSE)
-t2s_un <- create_ts2(df, vars)
-t2_un  <- tbl_merge(list(t2t_un, t2s_un), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, UnSmoke:UnAlcohol, HIV, Covid21))
-t2t_risk <- create_tt(df, vars, FALSE)
-t2s_risk <- create_ts2(df, vars)
-t2_risk  <- tbl_merge(list(t2t_risk, t2s_risk), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, NP, CB))
-t2t_pui <- create_tt(df, vars, FALSE)
-t2s_pui <- create_ts2(df, vars)
-t2_pui  <- tbl_merge(list(t2t_pui, t2s_pui), tab_spanner = FALSE)
-
-vars <- append(names(sort_var(df, DxFever:DxMening)), c('dead28c','DxOther'))
-t2t_dx <- create_tt(df, vars, FALSE)
-t2s_dx <- create_ts2(df, vars)
-t2_dx  <- tbl_merge(list(t2t_dx, t2s_dx), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, SOFA1:SOFA6, Sofa_Sepsis))
-t2t_or <- create_tt(df, vars, FALSE)
-t2s_or <- create_ts2(df, vars)
-t2_or  <- tbl_merge(list(t2t_or, t2s_or), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, lactate_res1, presepsin_res1,Procal_res1,OxyInbu, vasopressor, oxygensupp, Hypoglycemia))
-t2t  <- create_tt(df, vars)
-t2s  <- create_ts(df, vars)
-t2   <- tbl_merge(list(t2t, t2s), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, CulBlood_ever:CulOther_ever))
-t2t_cul <- create_tt(df, vars, FALSE)
-t2s_cul <- create_ts2(df, vars)
-t2_cul  <- tbl_merge(list(t2t_cul, t2s_cul), tab_spanner = FALSE)
-
-vars <- append(names(sort_var(
-      df,
-      covid19_r:denguel_r,
-      HBsAgr,
-      HBc,
-      AntiHBs,
-      AntiHCV,
-      hbshcv_r,
-      Influenza,
-      Leptor,
-      MalariaR,
-      Melio,
-      scrubt_r,
-      RSV
-  )
-), 'dead28c')
-
-t2t_rdt <- create_tt(df, vars, FALSE)
-t2s_rdt <- create_ts2(df, vars)
-t2_rdt  <- tbl_merge(list(t2t_rdt, t2s_rdt), tab_spanner = FALSE)
-
-vars <- append(names(sort_var(df, penicillin_ever:parasitedrug_ever)), c('dead28c', 'otheranti_ever'))
-t2t_trt <- create_tt(df, vars, FALSE)
-t2s_trt <- create_ts2(df, vars)
-t2_trt  <- tbl_merge(list(t2t_trt, t2s_trt), tab_spanner = FALSE)
-
-t2 <- tbl_stack(list(t2_un, t2_risk, t2_pui, t2_dx, t2_or, t2, t2_cul, t2_rdt, t2_trt),
-                group_header = c('Underlying Condition/Co-morbidity, n (%)',
-                                 'Risk Behavior, n (%)',
-                                 'PUI (SARS-CoV2 NGS and TAC), n (%)',
-                                 'Provisional Diagnosis, n (%)',
-                                 'Organ Dysfunction, n (%)',
-                                 '',
-                                 'Microbiology: Culture Source, n (%)',
-                                 'RDT, n (%)',
-                                 'Treatment (received), n (%)')) %>%
-  format_table() %>%
-  tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
-            locations = cells_row_groups(groups = 6))
-t2
-```
-
-<br>
-
-\newpage
-
-**Table 3**: Microbiological blood culture results and common bacterial pathogens causing of sepsis
-<br>
-```{r t3}
-df <- df_ipd %>%
-  select(
-    sepsis,
-    dead28c,
-    gramneg,
-    achromobacter:vibrio,
-    grampos,
-    dermacoccus:streptococcus_su,
-    gramneg_m,
-    achromobacter_m:vibrio_m,
-    grampos_m,
-    dermacoccus_m:streptococcus_su_m
-  ) %>%
-  zap_labels()
-
-varsneg <- names(sort_var(df, achromobacter:vibrio))
-varspos <- names(sort_var(df, dermacoccus:streptococcus_su))
-vars <- c('gramneg', varsneg, 'grampos', varspos)
-t3t_all  <- create_ttO(df, vars, FALSE, 'All')
-t3a_all  <- create_t3(df, dead28c, vars)
-t3b_all  <- create_t3(df, sepsis, vars)
-t3ab_all <- tbl_merge(list(t3a_all, t3b_all), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
-t3_all  <- tbl_merge(list(t3t_all, t3ab_all), tab_spanner = FALSE) %>%
-  format_table()
-t3_all
-
-varsneg <- names(sort_var(df, achromobacter_m:vibrio_m))
-varspos <- names(sort_var(df, dermacoccus_m:streptococcus_su_m))
-vars <- c('gramneg_m', varsneg, 'grampos_m', varspos)
-t3t_mdr  <- create_ttO(df, vars, FALSE, 'MDR')
-t3a_mdr  <- create_t3(df, dead28c, vars)
-t3b_mdr  <- create_t3(df, sepsis, vars)
-t3ab_mdr <- tbl_merge(list(t3a_mdr, t3b_mdr), tab_spanner = c("**Mortality**", "**Sepsis Determination**"))
-t3_mdr  <- tbl_merge(list(t3t_mdr, t3ab_mdr), tab_spanner = FALSE) %>%
-  format_table()
-t3_mdr
-```
-
-\newpage
-
-**Table 3.1**: Microbiological blood culture results and common bacterial pathogens causing of sepsis
-```{r t3_1}
-
-df <- df_ipd_sep %>%
-  select(
-    dead28c,
-    gramneg,
-    escherichia,
-    burkholderia_p,
-    klebsiella,
-    grampos,
-    staphylococcus,
-    streptococcus_a,
-    streptococcus_su
-  ) %>%
-  zap_labels()
-
-varsneg <- names(sort_var(df, escherichia,burkholderia_p, klebsiella,))
-varspos <- names(sort_var(df, staphylococcus:streptococcus_su))
-vars <- c('gramneg', varsneg, 'grampos', varspos)
-t3t_all  <- create_ttO(df, vars, FALSE, 'All')
-t3a_all  <- create_t3(df, dead28c, vars)
-t3_all  <- tbl_merge(list(t3t_all, t3a_all), tab_spanner = FALSE) %>%
-  format_table()
-t3_all
-```
-
-<br>
-
-\newpage
-
-**Table 4**: Bivariate analysis discharge outcome of patient with sepsis activities at Nakhon Phanom and Mae Sot hospitals during November 2021- July 8, 2022 (N=`r n_ipd`)
-
-```{r t4}
-df <- df_ipd %>%
-  mutate(across(Principal1:Principal3, ~ na_if(., "")),
-         Others = ifelse(
-           !is.na(Principal1) | !is.na(Principal2) | !is.na(Principal3),
-           1,
-           0
-         )) %>%
-  select(
-    sepsis,
-    dead28c,
-    Pneumonia:Malaria,
-    Others,
-    DischargeStatus,
-    DischargeType,
-    TotalCharge
-  ) %>%
-  set_variable_labels(DischargeStatus = 'Discharge status',
-                      DischargeType   = 'Discharge type ') %>%
-  zap_labels()
-
-vars <- append(names(sort_var(df, Pneumonia:Malaria)), c('dead28c','Others'))
-t4t_dx <- create_tt(df, vars, FALSE)
-t4s_dx <- create_ts2(df, vars)
-t4_dx  <- tbl_merge(list(t4t_dx, t4s_dx), tab_spanner = FALSE)
-
-vars <- names(select(df, dead28c, DischargeStatus, DischargeType, TotalCharge))
-t4t <- create_tt(df, vars)
-t4s <- create_ts(df, vars)
-t4  <- tbl_merge(list(t4t, t4s), tab_spanner = FALSE)
-
-t4 <- tbl_stack(list(t4_dx, t4),
-                group_header = c('Principal diagnosis, n (%)', '')) %>%
-  format_table() %>%
-  tab_style(style = cell_borders(sides = "bottom", style = "hidden"),
-            locations = cells_row_groups(groups = 2))
-t4
-```
